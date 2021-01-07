@@ -42,7 +42,7 @@ public class Haematologist implements Doctor{
     }
 
     private void generateId() {
-        this.doctor_id = UUID.randomUUID().toString();
+        setDoctor_id(UUID.randomUUID().toString());
     }
 
     @Override
