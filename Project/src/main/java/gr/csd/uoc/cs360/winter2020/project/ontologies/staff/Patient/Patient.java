@@ -26,7 +26,15 @@ public class Patient implements User {
     private String Email;
 
     public Patient() {
-
+        this.Name = name;
+        this.Lastname = lastname;
+        this.Phone = phone;
+        this.Address = address;
+        this.Insurance = insurance;
+        this.Amka = amka;
+        this.Username = username;
+        this.Password = password;
+        this.Email = email;
     }
 
     public Patient(String name, String lastname, String phone, String address,
