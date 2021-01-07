@@ -14,19 +14,28 @@ import java.util.UUID;
  */
 public class Patient implements User {
 
-    private String Patient_ID = null;
-    private String Name = null;
-    private String Lastname = null;
-    private String Phone = null;
-    private String Address = null;
-    private String Insurance = null;
-    private String Amka = null;
-    private String Username = null;
-    private String Password = null;
-    private String Email = null;
+    private String Patient_ID;
+    private String employee_id;
+    private String Name;
+    private String Lastname;
+    private String Phone;
+    private String Address;
+    private String Insurance;
+    private String Amka;
+    private String Username;
+    private String Password;
+    private String Email;
 
     public Patient() {
-        //generateId();
+        this.Name = "";
+        this.Lastname = "";
+        this.Phone = "";
+        this.Address = "";
+        this.Insurance = "";
+        this.Amka = "";
+        this.Username = "";
+        this.Password = "";
+        this.Email = "";
     }
 
     public Patient(String name, String lastname, String phone, String address,
@@ -56,6 +65,14 @@ public class Patient implements User {
             return false;
         }
         return true;
+    }
+
+    public String getPatient_id() {
+        return Patient_ID;
+    }
+
+    public void setPatient_id(String patient_ID) {
+        Patient_ID = patient_ID;
     }
 
     @Override
@@ -137,4 +154,11 @@ public class Patient implements User {
         return this.Amka;
     }
 
+    public String getEmployee_id() {
+        return employee_id;
+    }
+
+    public void setEmployee_id(String employee_id) {
+        this.employee_id = employee_id;
+    }
 }

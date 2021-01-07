@@ -26,7 +26,6 @@ public class Doctor implements User{
         this.phone = "";
         this.address = "";
 
-        generateId();
     }
 
     public Doctor(String username,

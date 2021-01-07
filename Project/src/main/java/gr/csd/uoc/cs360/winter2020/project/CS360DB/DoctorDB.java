@@ -56,7 +56,7 @@ public class DoctorDB {
                 doctors.add(doc);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -100,7 +100,7 @@ public class DoctorDB {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -164,7 +164,7 @@ public class DoctorDB {
 
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -199,7 +199,7 @@ public class DoctorDB {
 
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -234,7 +234,7 @@ public class DoctorDB {
 
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -269,7 +269,7 @@ public class DoctorDB {
 
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -305,7 +305,7 @@ public class DoctorDB {
 
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -570,14 +570,14 @@ public class DoctorDB {
             try {
                 stmt.close();
             } catch (SQLException ex) {
-                Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (con != null) {
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
