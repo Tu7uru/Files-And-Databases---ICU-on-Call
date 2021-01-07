@@ -10,11 +10,12 @@ public class Doctor implements User{
     private String password = null;
     private String email = null;
     private String doctor_id = null;
+    private String employee_id = null;
     private String name = null;
     private String lastname = null;
     private String phone = null;
     private String address = null;
-    private Specialization spec = null;
+    private Spec spec = null;
 
     public Doctor() {
         this.username = "";
@@ -35,7 +36,8 @@ public class Doctor implements User{
               String lastname,
               String phone,
               String address,
-              Specialization spec
+              String employee_id,
+              Spec spec
     ) {
         this.username = username;
         this.password = password;
@@ -44,11 +46,14 @@ public class Doctor implements User{
         this.lastname = lastname;
         this.phone = phone;
         this.address = address;
+        this.employee_id = employee_id;
         this.spec = spec;
 
         generateId();
 
     }
+
+
 
     private void generateId() {
         setDoctor_id(UUID.randomUUID().toString());
@@ -63,11 +68,19 @@ public class Doctor implements User{
         return true;
     }
 
-    public Specialization getSpec() {
+    public String getEmployee_id() {
+        return employee_id;
+    }
+
+    public void setEmployee_id(String employee_id) {
+        this.employee_id = employee_id;
+    }
+
+    public Spec getSpec() {
         return spec;
     }
 
-    public void setSpec(Specialization spec) {
+    public void setSpec(Spec spec) {
         this.spec = spec;
     }
 
@@ -142,12 +155,28 @@ public class Doctor implements User{
         this.address = address;
     }
 
-    enum Specialization {
+
+    public enum Spec {
         CARDIOLOGIST,
         HAEMATOLOGIST,
         GP,
         SURGEON,
         NEUROLOGIST
+    }
+
+    public static Spec fromString(String sp) {
+        sp = sp.toLowerCase();
+        if(sp.equals("cardiologist")) {
+            return Spec.CARDIOLOGIST;
+        } else if(sp.equals("gp")) {
+            return Spec.GP;
+        } else if (sp.equals("haematologist")) {
+            return Spec.HAEMATOLOGIST;
+        } else if(sp.equals("surgeon")) {
+            return  Spec.SURGEON;
+        } else {
+            return Spec.NEUROLOGIST;
+        }
     }
 }
 
