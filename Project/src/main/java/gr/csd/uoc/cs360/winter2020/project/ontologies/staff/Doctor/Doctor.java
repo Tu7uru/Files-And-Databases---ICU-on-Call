@@ -57,7 +57,7 @@ public class Doctor implements User{
 
     @Override
     public boolean checkFields() {
-        if(username == null || username.trim().isEmpty()) {
+        if (username == null || username.trim().isEmpty() || doctor_id == null || doctor_id.trim().isEmpty()) {
             return false;
         }
         return true;

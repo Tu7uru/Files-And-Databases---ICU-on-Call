@@ -45,7 +45,7 @@ public class Employee implements User {
 
     @Override
     public boolean checkFields() {
-        if(username == null || username.trim().isEmpty()) {
+        if (username == null || username.trim().isEmpty() || employee_id == null || employee_id.trim().isEmpty()) {
             return false;
         }
         return true;
