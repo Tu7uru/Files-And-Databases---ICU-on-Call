@@ -7,6 +7,8 @@ package gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor;
 
 import gr.csd.uoc.cs360.winter2020.project.User.User;
 
+import java.util.UUID;
+
 /**
  *
  * @author Tolis
@@ -29,28 +31,43 @@ public class Cardiologist implements Doctor {
                         String phone,
                         String address
                         ) {
-        setUsername(username);
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.address = address;
 
+        generateId();
+
+    }
+
+    private void generateId() {
+        this.doctor_id = UUID.randomUUID().toString();
     }
 
     @Override
     public boolean checkFields() {
-        return false;
+        if(username == null || username.trim().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.username;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     @Override
     public String getEmail() {
-        return null;
+        return this.email;
     }
 
     @Override
@@ -60,11 +77,61 @@ public class Cardiologist implements Doctor {
 
     @Override
     public void setPassword(String password) {
-
+        this.password = password;
     }
 
     @Override
     public void setEmail(String email) {
+        this.email = email;
+    }
 
+    @Override
+    public String getDoctor_id() {
+        return doctor_id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getLastname() {
+        return lastname;
+    }
+
+    @Override
+    public String getPhone() {
+        return phone;
+    }
+
+    @Override
+    public String getAddress() {
+        return address;
+    }
+
+    @Override
+    public void setDoctor_id(String doctor_id) {
+        this.doctor_id = doctor_id;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    @Override
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Override
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
