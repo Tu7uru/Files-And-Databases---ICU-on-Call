@@ -15,6 +15,7 @@ import java.util.UUID;
 public class Patient implements User {
 
     private String Patient_ID;
+    private String employee_id;
     private String Name;
     private String Lastname;
     private String Phone;
@@ -26,15 +27,15 @@ public class Patient implements User {
     private String Email;
 
     public Patient() {
-        this.Name = name;
-        this.Lastname = lastname;
-        this.Phone = phone;
-        this.Address = address;
-        this.Insurance = insurance;
-        this.Amka = amka;
-        this.Username = username;
-        this.Password = password;
-        this.Email = email;
+        this.Name = "";
+        this.Lastname = "";
+        this.Phone = "";
+        this.Address = "";
+        this.Insurance = "";
+        this.Amka = "";
+        this.Username = "";
+        this.Password = "";
+        this.Email = "";
     }
 
     public Patient(String name, String lastname, String phone, String address,
@@ -64,6 +65,14 @@ public class Patient implements User {
             return false;
         }
         return true;
+    }
+
+    public String getPatient_id() {
+        return Patient_ID;
+    }
+
+    public void setPatient_id(String patient_ID) {
+        Patient_ID = patient_ID;
     }
 
     @Override
@@ -145,4 +154,11 @@ public class Patient implements User {
         return this.Amka;
     }
 
+    public String getEmployee_id() {
+        return employee_id;
+    }
+
+    public void setEmployee_id(String employee_id) {
+        this.employee_id = employee_id;
+    }
 }

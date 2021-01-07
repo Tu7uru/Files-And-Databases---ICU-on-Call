@@ -5,10 +5,12 @@
  */
 package gr.csd.uoc.cs360.winter2020.project.CS360DB;
 
-import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
-
 import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -41,7 +43,7 @@ public class NurseDB {
 
             ResultSet res = stmt.getResultSet();
 
-            while(res.next() == true) {
+            while (res.next() == true) {
                 Nurse nurse = new Nurse();
                 nurse.setUsername(res.getString("username"));
                 nurse.setNurse_id(res.getString("nurse_id"));
@@ -55,7 +57,7 @@ public class NurseDB {
                 nurses.add(nurse);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -80,7 +82,7 @@ public class NurseDB {
             StringBuilder query = new StringBuilder();
 
             query.append("SELECT doc FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner"
-                    + "WHERE doctor_id = " + nurse_id);
+                    + "WHERE nurse_id = " + nurse_id);
 
             stmt.execute(query.toString());
 
@@ -96,7 +98,7 @@ public class NurseDB {
             nurse.setAddress(res.getString("address"));
             nurse.setSpec(Nurse.fromString(res.getString("spec")));
         } catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -109,7 +111,7 @@ public class NurseDB {
      */
     public static void addNurse(Nurse nurse) throws ClassNotFoundException {
 
-        switch(nurse.getSpec()) {
+        switch (nurse.getSpec()) {
             case CARDIOLOGIST:
                 insertCardiologist(nurse);
                 break;
@@ -139,7 +141,7 @@ public class NurseDB {
 
 
             query.append("INSERT INTO")
-                    .append(" nurse_surgeon (doctor_id, name, lastname, phone, "
+                    .append(" nurse_surgeon (nurse_id, name, lastname, phone, "
                             + "address, username, password, email, employee_id ")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
@@ -156,8 +158,8 @@ public class NurseDB {
             ResultSet res = stmt.getResultSet();
 
 
-        } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -174,7 +176,7 @@ public class NurseDB {
 
 
             query.append("INSERT INTO")
-                    .append(" nurse_general_practitioner (doctor_id, name, lastname, phone, "
+                    .append(" nurse_general_practitioner (nurse_id, name, lastname, phone, "
                             + "address, username, password, email, employee_id ")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
@@ -191,9 +193,8 @@ public class NurseDB {
             stmtIns.executeUpdate();
 
 
-
-        } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -210,7 +211,7 @@ public class NurseDB {
 
 
             query.append("INSERT INTO")
-                    .append(" nurse_haematologist (doctor_id, name, lastname, phone, "
+                    .append(" nurse_haematologist (nurse_id, name, lastname, phone, "
                             + "address, username, password, email, employee_id ")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
@@ -227,9 +228,8 @@ public class NurseDB {
             stmtIns.executeUpdate();
 
 
-
-        } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -246,7 +246,7 @@ public class NurseDB {
 
 
             query.append("INSERT INTO")
-                    .append(" nurse_cardiologist (doctor_id, name, lastname, phone, "
+                    .append(" nurse_cardiologist (nurse_id, name, lastname, phone, "
                             + "address, username, password, email, employee_id ")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
@@ -263,9 +263,8 @@ public class NurseDB {
             stmtIns.executeUpdate();
 
 
-
-        } catch (SQLException  ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -276,7 +275,7 @@ public class NurseDB {
      */
     public static void updateNurse(Nurse nurse) throws ClassNotFoundException {
 
-        switch(nurse.getSpec()) {
+        switch (nurse.getSpec()) {
             case CARDIOLOGIST:
                 updateCardiologist(nurse);
                 break;
@@ -316,7 +315,7 @@ public class NurseDB {
 
             insQuery.append("UPDATE nurse_surgeon ")
                     .append(" SET ")
-                    .append(" doctor_id = ").append("'").append(nurse.getNurse_id()).append("',")
+                    .append(" nurse_id = ").append("'").append(nurse.getNurse_id()).append("',")
                     .append(" name = ").append("'").append(nurse.getName()).append("',")
                     .append(" lastname = ").append("'").append(nurse.getLastname()).append("',")
                     .append(" phone = ").append("'").append(nurse.getPhone()).append("',")
@@ -325,7 +324,7 @@ public class NurseDB {
                     .append(" password = ").append("'").append(nurse.getPassword()).append("',")
                     .append(" email = ").append("'").append(nurse.getEmail()).append("',")
                     .append(" employee_id = ").append("'").append(nurse.getEmployee_id()).append("',")
-                    .append(" WHERE doctor_id= ").append("'").append(nurse.getNurse_id()).append("';");
+                    .append(" WHERE nurse_id= ").append("'").append(nurse.getNurse_id()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
             System.out.println("#DB: The member was successfully updated in the database.");
@@ -360,7 +359,7 @@ public class NurseDB {
 
             insQuery.append("UPDATE nurse_general_practitioner ")
                     .append(" SET ")
-                    .append(" doctor_id = ").append("'").append(nurse.getNurse_id()).append("',")
+                    .append(" nurse_id = ").append("'").append(nurse.getNurse_id()).append("',")
                     .append(" name = ").append("'").append(nurse.getName()).append("',")
                     .append(" lastname = ").append("'").append(nurse.getLastname()).append("',")
                     .append(" phone = ").append("'").append(nurse.getPhone()).append("',")
@@ -369,7 +368,7 @@ public class NurseDB {
                     .append(" password = ").append("'").append(nurse.getPassword()).append("',")
                     .append(" email = ").append("'").append(nurse.getEmail()).append("',")
                     .append(" employee_id = ").append("'").append(nurse.getEmployee_id()).append("',")
-                    .append(" WHERE doctor_id= ").append("'").append(nurse.getNurse_id()).append("';");
+                    .append(" WHERE nurse_id= ").append("'").append(nurse.getNurse_id()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
             System.out.println("#DB: The member was successfully updated in the database.");
@@ -404,7 +403,7 @@ public class NurseDB {
 
             insQuery.append("UPDATE nurse_haematologist ")
                     .append(" SET ")
-                    .append(" doctor_id = ").append("'").append(nurse.getNurse_id()).append("',")
+                    .append(" nurse_id = ").append("'").append(nurse.getNurse_id()).append("',")
                     .append(" name = ").append("'").append(nurse.getName()).append("',")
                     .append(" lastname = ").append("'").append(nurse.getLastname()).append("',")
                     .append(" phone = ").append("'").append(nurse.getPhone()).append("',")
@@ -413,7 +412,7 @@ public class NurseDB {
                     .append(" password = ").append("'").append(nurse.getPassword()).append("',")
                     .append(" email = ").append("'").append(nurse.getEmail()).append("',")
                     .append(" employee_id = ").append("'").append(nurse.getEmployee_id()).append("',")
-                    .append(" WHERE doctor_id= ").append("'").append(nurse.getNurse_id()).append("';");
+                    .append(" WHERE nurse_id= ").append("'").append(nurse.getNurse_id()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
             System.out.println("#DB: The member was successfully updated in the database.");
@@ -448,7 +447,7 @@ public class NurseDB {
 
             insQuery.append("UPDATE nurse_cardiologist ")
                     .append(" SET ")
-                    .append(" doctor_id = ").append("'").append(nurse.getNurse_id()).append("',")
+                    .append(" nurse_id = ").append("'").append(nurse.getNurse_id()).append("',")
                     .append(" name = ").append("'").append(nurse.getName()).append("',")
                     .append(" lastname = ").append("'").append(nurse.getLastname()).append("',")
                     .append(" phone = ").append("'").append(nurse.getPhone()).append("',")
@@ -457,7 +456,7 @@ public class NurseDB {
                     .append(" password = ").append("'").append(nurse.getPassword()).append("',")
                     .append(" email = ").append("'").append(nurse.getEmail()).append("',")
                     .append(" employee_id = ").append("'").append(nurse.getEmployee_id()).append("',")
-                    .append(" WHERE doctor_id= ").append("'").append(nurse.getNurse_id()).append("';");
+                    .append(" WHERE nurse_id= ").append("'").append(nurse.getNurse_id()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
             System.out.println("#DB: The member was successfully updated in the database.");
@@ -483,14 +482,14 @@ public class NurseDB {
             try {
                 stmt.close();
             } catch (SQLException ex) {
-                Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (con != null) {
             try {
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
