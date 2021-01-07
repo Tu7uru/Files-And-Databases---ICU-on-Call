@@ -13,11 +13,12 @@ import java.util.UUID;
  */
 public class Examination {
 
-    private String Exam_ID;
-    private String Exam_Room;
+    private String Exam_ID = null;
+    private String Exam_Room = null;
 
     public Examination() {
 
+        generateId();
     }
 
     public Examination(String Exam_room) {

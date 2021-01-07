@@ -40,6 +40,14 @@ public class MedicationDB {
 
             while (res.next() == true) {
                 Medication med = new Medication();
+                med.setDosage(res.getString("dosage"));
+                med.setExp_Date(res.getString("exp_date"));
+                med.setMed_ID(res.getString("med_id"));
+                med.setName(res.getString("name"));
+                med.setType(res.getString("type"));
+                med.setUse_for(res.getString("use_for"));
+
+                medications.add(med);
             }
         } catch (SQLException ex) {
             Logger.getLogger(MedicationDB.class.getName()).log(Level.SEVERE, null, ex);

@@ -13,15 +13,15 @@ import java.util.UUID;
  */
 public class Medication {
 
-    private String Med_ID;
-    private String Name;
-    private String Type;
-    private String Dosage;
-    private String Use_for;
-    private String Exp_Date;
+    private String Med_ID = null;
+    private String Name = null;
+    private String Type = null;
+    private String Dosage = null;
+    private String Use_for = null;
+    private String Exp_Date = null;
 
     public Medication() {
-
+        //generateId();
     }
 
     public Medication(String name, String type, String dosage, String use_for, String exp_date) {

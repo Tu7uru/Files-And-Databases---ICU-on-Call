@@ -40,6 +40,11 @@ public class ExamDB {
 
             while (res.next() == true) {
                 Examination exam = new Examination();
+                exam.setExam_ID(res.getString("exam_id"));
+                exam.setExam_Room(res.getString("exam_room"));
+
+                examinations.add(exam);
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(ExamDB.class.getName()).log(Level.SEVERE, null, ex);

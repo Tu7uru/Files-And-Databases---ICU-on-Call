@@ -14,19 +14,19 @@ import java.util.UUID;
  */
 public class Patient implements User {
 
-    private String Patient_ID;
-    private String Name;
-    private String Lastname;
-    private String Phone;
-    private String Address;
-    private String Insurance;
-    private String Amka;
-    private String Username;
-    private String Password;
-    private String Email;
+    private String Patient_ID = null;
+    private String Name = null;
+    private String Lastname = null;
+    private String Phone = null;
+    private String Address = null;
+    private String Insurance = null;
+    private String Amka = null;
+    private String Username = null;
+    private String Password = null;
+    private String Email = null;
 
     public Patient() {
-
+        //generateId();
     }
 
     public Patient(String name, String lastname, String phone, String address,

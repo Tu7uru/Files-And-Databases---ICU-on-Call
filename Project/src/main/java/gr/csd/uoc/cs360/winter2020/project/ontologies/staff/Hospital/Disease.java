@@ -13,11 +13,11 @@ import java.util.List;
  */
 public class Disease {
 
-    private String Name;
-    private List<String> Symptoms;
-    private String Transmissibility;
-    private String Incubation;
-    private String Therapy_Duration;
+    private String Name = null;
+    private List<String> Symptoms = null;
+    private String Transmissibility = null;
+    private String Incubation = null;
+    private String Therapy_Duration = null;
 
     public Disease() {
 

@@ -14,14 +14,15 @@ import java.util.UUID;
  */
 public class Diagnose {
 
-    private String Diagnose_id;
-    private String Exam_id;
-    private List<String> Symptoms;
-    private String Disease_Name;
-    private String Nurse_id;
+    private String Diagnose_id = null;
+    private String Exam_id = null;
+    private List<String> Symptoms = null;
+    private String Disease_Name = null;
+    private String Nurse_id = null;
 
     public Diagnose() {
 
+        //generateId();
     }
 
     public Diagnose(List<String> symptoms, String Disease_name, String exam_id, String nurse_id) {

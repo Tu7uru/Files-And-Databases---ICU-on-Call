@@ -14,17 +14,18 @@ import java.util.UUID;
  */
 public class Visit {
 
-    private String Patient_ID;
-    private String Date;
-    private String Cure;
-    private List<String> Symptoms;
-    private String Doctor_ID;
-    private String Nurse_ID;
-    private String Employee_ID;
-    private String State;
+    private String Patient_ID = null;
+    private String Date = null;
+    private String Cure = null;
+    private List<String> Symptoms = null;
+    private String Doctor_ID = null;
+    private String Nurse_ID = null;
+    private String Employee_ID = null;
+    private String State = null;
 
     public Visit() {
 
+        //generateId();
     }
 
     public Visit(String date, String cure, List<String> symptoms, String doctor_id, String nurse_id,             String employee_id, String state) {

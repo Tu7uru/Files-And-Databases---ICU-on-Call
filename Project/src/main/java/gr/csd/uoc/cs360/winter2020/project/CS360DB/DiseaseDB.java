@@ -23,6 +23,7 @@ public class DiseaseDB {
 
     public static List<Disease> getDiseases() throws ClassNotFoundException {
         List<Disease> diseases = new ArrayList<>();
+        List<String> symptoms = new ArrayList<>();
 
         Statement stmt = null;
         Connection con = null;
@@ -32,7 +33,7 @@ public class DiseaseDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM disease");
+            query.append("SELECT * FROM disease;");
 
             stmt.execute(query.toString());
 
@@ -40,6 +41,28 @@ public class DiseaseDB {
 
             while (res.next() == true) {
                 Disease dis = new Disease();
+                dis.setName(res.getString("name"));
+                dis.setIncubation(res.getString(("incubation")));
+                dis.setTransmissibility(res.getString(("transmissibility")));
+                dis.setTherapy_Duration(res.getString("therapy_duration"));
+
+                StringBuilder querySymp = new StringBuilder();
+
+                querySymp.append("SELECT * FROM disease_symptoms ")
+                        .append(" WHERE ")
+                        .append(" name = ").append("'").append(res.getString("name")).append("';");
+
+                stmt.execute(querySymp.toString());
+
+                ResultSet res2 = stmt.getResultSet();
+                symptoms.clear();
+                while (res2.next() == true) {
+                    symptoms.add(res2.getString("symptoms"));//this might have to become array because symptoms is an arraylist.
+                }
+
+                dis.setSymptoms(symptoms);
+
+                diseases.add(dis);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DiseaseDB.class.getName()).log(Level.SEVERE, null, ex);
