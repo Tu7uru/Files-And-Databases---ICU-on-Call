@@ -24,16 +24,34 @@ public class Employee implements User {
     String address;
     String department;
 
+    public Employee() {
+        this.name = "";
+        this.lastname = "";
+        this.phone = "";
+        this.address = "";
+        this.department = "";
+        this.username = "";
+        this.password = "";
+        this.email = "";
+    }
+
     public Employee(String name,
                     String lastname,
                     String phone,
                     String address,
-                    String department) {
+                    String department,
+                    String username,
+                    String password,
+                    String email
+                    ) {
         this.name = name;
         this.lastname = lastname;
         this.phone = phone;
         this.address = address;
         this.department = department;
+        this.username = username;
+        this.password = password;
+        this.email = email;
 
         generateId();
 
