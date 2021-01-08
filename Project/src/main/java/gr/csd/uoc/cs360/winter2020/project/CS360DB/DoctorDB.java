@@ -161,7 +161,7 @@ public class DoctorDB {
             stmt.execute(query.toString());
 
             ResultSet res = stmt.getResultSet();
-
+            System.out.println(res);
 
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
