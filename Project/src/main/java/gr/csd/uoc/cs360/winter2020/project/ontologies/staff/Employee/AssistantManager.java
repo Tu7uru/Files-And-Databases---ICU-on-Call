@@ -17,8 +17,11 @@ public class AssistantManager extends Employee {
                             String phone,
                             String address,
                             String department,
+                            String username,
+                            String password,
+                            String email,
                             String degree_title) {
-        super(name, lastname, phone, address, department);
+        super(name, lastname, phone, address, department, username, password, email);
         this.degree_title = degree_title;
 
         generateId();

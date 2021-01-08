@@ -13,12 +13,15 @@ public class Administrative extends Employee {
     String degree_title;
 
     public Administrative(String name,
-                            String lastname,
-                            String phone,
-                            String address,
-                            String department,
-                            String degree_title) {
-        super(name, lastname, phone, address, department);
+                          String lastname,
+                          String phone,
+                          String address,
+                          String department,
+                          String username,
+                          String password,
+                          String email,
+                          String degree_title) {
+        super(name, lastname, phone, address, department, username, password, email);
         this.degree_title = degree_title;
 
         generateId();
