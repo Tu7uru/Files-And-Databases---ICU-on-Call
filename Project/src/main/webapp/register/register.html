@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+
+        <title>BEST HOSPITAL EUNE</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="register.css">
+    </head>
+    <body>
+      <div class="container">
+          <h1><span>Register</span></h1><br><br>
+          <i class="fas fa-star-of-life"><input type="text" id="username" name="username" value="" placeholder="Username" required></i><br><br><br>
+          <input type="password" id="password" name="password" value="" placeholder="Password"> <br><br><br>
+          <input type="text" id="email" name="email" value="" placeholder="E-mail"> <br><br><br>
+          <input type="text" id="firstName" name="firstName" value="" placeholder="First Name"> <br><br><br>
+          <input type="text" id="lastName" name="lastName" value="" placeholder="Last Name"> <br><br><br>
+          <input type="text" id="address" name="address" value="" placeholder="Address"> <br><br><br>
+          <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{3}" placeholder="Phone"><br><br><br>
+          <select name="type" id="type" >
+            <option value="empty"></option>
+            <option value="pat">Patient</option>
+            <option value="doc">Doctor</option>
+            <option value="nurse">Nurse</option>
+            <option value="empl">Employee</option>
+
+          </select><br><br><br><br><br>
+          <div class="patient-fields" id="patient-fields">
+            <input type="text" id="insurance" name="insurance" value="" placeholder="Insurance"> <br><br><br>
+            <input type="text" id="AMKA" name="AMKA" value="" placeholder="AMKA" pattern="[0-9]{11}"> <br><br><br>
+          </div>
+          <select name="empl-spec" id="empl-spec">
+            <option value="simple">Simple</option>
+            <option value="assistant">Assistant Manager</option>
+            <option value="admin">Administrative</option>
+          </select><br>
+          <select name="doc-spec" id="doc-spec">
+            <option value="cardio">Cardiologist</option>
+            <option value="haema">Haematologist</option>
+            <option value="gp">General Practioner</option>
+            <option value="surgeon">Surgeon</option>
+            <option value="neuro">Neurologist</option>
+          </select><br>
+          <select name="nurse-spec" id="nurse-spec">
+            <option value="cardio">Cardiologist</option>
+            <option value="haema">Haematologist</option>
+            <option value="gp">General Practioner</option>
+            <option value="surgeon">Surgeon</option>
+          </select><br>
+          <button type="button" id="submit" name="sumbit">Create account</button>
+      </div>
+
+
+    </body>
+    <script src="register.js"></script>
+</html>

@@ -1,0 +1,105 @@
+
+* {
+	box-sizing: border-box;
+	transition: all ease-in-out 250ms;
+}
+
+/*
+  Font & Font-Families
+*/
+
+@font-face {
+  font-family: oswald-light;
+  src: url("../fonts/Oswald-Light.ttf");
+}
+
+@font-face {
+  font-family: caligraphy;
+  src: url("../fonts/Nathalia.ttf");
+}
+
+@font-face {
+  font-family: quote-font;
+  src: url("../fonts/Montserrat-LightItalic.ttf");
+}
+
+@font-face {
+  font-family: oswald-regular;
+  src: url("../fonts/Oswald-Regular.ttf");
+}
+
+@font-face {
+  font-family: open-sans-li;
+  src: url("../fonts/OpenSans-LightItalic.ttf");
+}
+
+
+body{
+  margin: 0;
+  font-family: sans-serif;
+  text-align: center;
+  background-color: #FFF;
+  background-image: url("../images/login.jpg");
+  background-size: cover;
+}
+
+header{
+  position: absolute;
+  left: 0;
+	right: 0;
+	margin: 1em;
+  text-align: center;
+}
+
+span {
+  font-family: caligraphy;
+  font-size: 100px;
+}
+
+
+.container {
+  top: 15%;
+  transform: translateX(-50%);
+  left: 50%;
+  position: absolute;
+  width: 600px;
+  height: 700px;
+  background-color: white;
+  border: 5px solid #81d4fa;
+  border-radius: 25px;
+}
+
+input {
+  width: 250px;
+  height: 30px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 2px solid black;
+}
+
+input:focus {
+      outline: none;
+      border-bottom: 2px solid #81d4fa;
+}
+
+
+button {
+  border: none;
+  width: 200px;
+  height: 50px;
+  background-color: #81d4fa;
+  color: white;
+  font-family: sans-serif;
+	font-size: 20px;
+}
+
+button:focus {
+  outline: none;
+  background-color: #b3e5fc;
+}
+
+small {
+	font-family: caligraphy;
+	font-size:36px;
+}
