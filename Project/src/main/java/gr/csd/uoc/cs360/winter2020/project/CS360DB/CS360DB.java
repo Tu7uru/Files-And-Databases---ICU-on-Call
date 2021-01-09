@@ -29,4 +29,8 @@ public class CS360DB {
         Class.forName("org.postgresql.Driver");
         return DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE, UNAME, PASSWD);
     }
+
+    public static String getUserName() {
+        return UNAME;
+    }
 }

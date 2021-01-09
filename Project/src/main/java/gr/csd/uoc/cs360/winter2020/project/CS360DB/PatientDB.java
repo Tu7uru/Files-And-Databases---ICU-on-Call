@@ -68,45 +68,48 @@ public class PatientDB {
     /**
      * Get patient by id
      *
+     * @param patient_id
      * @return Patient
      */
-    public static Patient getPatients(String patient_id) throws ClassNotFoundException {
+    public static Patient getPatient(String patient_id) throws ClassNotFoundException {
 
         Statement stmt = null;
         Connection con = null;
+        Patient pat = null;
         try {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT p FROM patient" +
-                    "WHERE p.patient_id=" + patient_id);
+            query.append("SELECT * FROM patient")
+                    .append(" WHERE ")
+                    .append(" patient_id = ").append("'").append(patient_id).append("';");
 
             stmt.execute(query.toString());
 
             ResultSet res = stmt.getResultSet();
 
-            Patient pat = new Patient();
-            pat.setUsername(res.getString("username"));
-            pat.setPatient_id(res.getString("doctor_id"));
-            pat.setEmail(res.getString("email"));
-            pat.setPassword(res.getString("password"));
-            pat.setName(res.getString("name"));
-            pat.setLastname(res.getString("lastname"));
-            pat.setPhone(res.getString("phone"));
-            pat.setAddress(res.getString("address"));
-            pat.setAmka(res.getString("amka"));
-            pat.setInsurance(res.getString("insurance"));
-
-            return pat;
+            if (res.next() == true) {
+                pat = new Patient();
+                pat.setUsername(res.getString("username"));
+                pat.setPatient_id(res.getString("doctor_id"));
+                pat.setEmail(res.getString("email"));
+                pat.setPassword(res.getString("password"));
+                pat.setName(res.getString("name"));
+                pat.setLastname(res.getString("lastname"));
+                pat.setPhone(res.getString("phone"));
+                pat.setAddress(res.getString("address"));
+                pat.setAmka(res.getString("amka"));
+                pat.setInsurance(res.getString("insurance"));
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
 
-        return null;
+        return pat;
     }
 
     /**
@@ -142,7 +145,7 @@ public class PatientDB {
             ResultSet res = stmt.getResultSet();
 
         } catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -175,7 +178,7 @@ public class PatientDB {
                     .append(" employee_id = ").append("'").append(pat.getEmployee_id()).append("',")
                     .append(" WHERE patient_id= ").append("'").append(pat.getPatient_id()).append("';");
         }  catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PatientDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }

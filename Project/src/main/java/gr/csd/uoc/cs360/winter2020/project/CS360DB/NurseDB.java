@@ -301,7 +301,7 @@ public class NurseDB {
 
         } catch (Exception ex) {
             // Log exception
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Statement stmt = null;
@@ -331,7 +331,7 @@ public class NurseDB {
 
         } catch (SQLException | ClassNotFoundException ex) {
             // Log exception
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // close connection
             closeDBConnection(stmt, con);
@@ -345,7 +345,7 @@ public class NurseDB {
 
         } catch (Exception ex) {
             // Log exception
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Statement stmt = null;
@@ -375,7 +375,7 @@ public class NurseDB {
 
         } catch (SQLException | ClassNotFoundException ex) {
             // Log exception
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // close connection
             closeDBConnection(stmt, con);
@@ -389,7 +389,7 @@ public class NurseDB {
 
         } catch (Exception ex) {
             // Log exception
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Statement stmt = null;
@@ -419,7 +419,7 @@ public class NurseDB {
 
         } catch (SQLException | ClassNotFoundException ex) {
             // Log exception
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // close connection
             closeDBConnection(stmt, con);
@@ -433,7 +433,7 @@ public class NurseDB {
 
         } catch (Exception ex) {
             // Log exception
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Statement stmt = null;
@@ -463,7 +463,7 @@ public class NurseDB {
 
         } catch (SQLException | ClassNotFoundException ex) {
             // Log exception
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // close connection
             closeDBConnection(stmt, con);

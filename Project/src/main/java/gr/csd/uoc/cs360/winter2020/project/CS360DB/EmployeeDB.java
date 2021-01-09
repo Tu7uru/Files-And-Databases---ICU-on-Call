@@ -39,7 +39,7 @@ public class EmployeeDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM employee");
+            query.append("SELECT * FROM employee;");
 
             stmt.execute(query.toString());
 
@@ -140,7 +140,7 @@ public class EmployeeDB {
             System.out.println("#DB: The member " + e.getUsername() + "  was successfully added in the database.");
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -187,7 +187,7 @@ public class EmployeeDB {
             System.out.println("#DB: The member " + a.getUsername() + "  was successfully added in the database.");
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -234,7 +234,7 @@ public class EmployeeDB {
             System.out.println("#DB: The member " + a.getUsername() + "  was successfully added in the database.");
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -270,7 +270,7 @@ public class EmployeeDB {
                     .append("password=").append("'").append(e.getPassword()).append("',")
                     .append("email=").append("'").append(e.getEmail()).append("');");
         } catch (SQLException ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // close connection
             closeDBConnection(stmt, con);

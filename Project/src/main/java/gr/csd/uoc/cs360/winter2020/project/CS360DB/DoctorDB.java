@@ -36,7 +36,7 @@ public class DoctorDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner");
+            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner;");
 
             stmt.execute(query.toString());
 
@@ -80,8 +80,8 @@ public class DoctorDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT doc FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner"
-                            + "WHERE doctor_id = " + doc_id);
+            query.append("SELECT doc FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner")
+                    .append(" WHERE doctor_id = ").append("'").append(doc_id).append("';");
 
             stmt.execute(query.toString());
 
