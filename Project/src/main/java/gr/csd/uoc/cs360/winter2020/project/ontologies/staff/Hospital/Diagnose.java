@@ -14,11 +14,11 @@ import java.util.UUID;
  */
 public class Diagnose {
 
-    private String Diagnose_id = null;
-    private String Exam_id = null;
-    private List<String> Symptoms = null;
-    private String Disease_Name = null;
-    private String Nurse_id = null;
+    private String diagnose_id = null;
+    private String exam_id = null;
+    private List<String> symptoms = null;
+    private String disease_Name = null;
+    private String nurse_id = null;
 
     public Diagnose() {
 
@@ -27,62 +27,62 @@ public class Diagnose {
 
     public Diagnose(List<String> symptoms, String Disease_name, String exam_id, String nurse_id) {
 
-        this.Symptoms = symptoms;
-        this.Disease_Name = Disease_name;
-        this.Exam_id = exam_id;
-        this.Nurse_id = nurse_id;
+        this.symptoms = symptoms;
+        this.disease_Name = Disease_name;
+        this.exam_id = exam_id;
+        this.nurse_id = nurse_id;
         generateId();
     }
 
     private void generateId() {
-        this.Diagnose_id = UUID.randomUUID().toString();
+        this.diagnose_id = UUID.randomUUID().toString();
     }
 
     public boolean checkFields() {
-        if (this.Diagnose_id == null || this.Diagnose_id.trim().isEmpty() || this.Exam_id == null || this.Exam_id.trim().isEmpty()) {
+        if (this.diagnose_id == null || this.diagnose_id.trim().isEmpty() || this.exam_id == null || this.exam_id.trim().isEmpty()) {
             return false;
         }
         return true;
     }
 
     public void setDiagnoseID(String param) {
-        this.Diagnose_id = param;
+        this.diagnose_id = param;
     }
 
     public String getDiagnoseID() {
-        return this.Diagnose_id;
+        return this.diagnose_id;
     }
 
     public void setExamID(String param) {
-        this.Exam_id = param;
+        this.exam_id = param;
     }
 
     public String getExamID() {
-        return this.Exam_id;
+        return this.exam_id;
     }
 
     public void setSymptoms(List<String> param) {
-        this.Symptoms = param;
+        this.symptoms = param;
     }
 
     public List<String> getSymptoms() {
-        return this.Symptoms;
+        return this.symptoms;
     }
 
     public void setDisease_Name(String param) {
-        this.Disease_Name = param;
+        this.disease_Name = param;
     }
 
     public String getDisease_Name() {
-        return this.Disease_Name;
+        return this.disease_Name;
     }
 
     public void setNurseID(String param) {
-        this.Nurse_id = param;
+        this.nurse_id = param;
     }
 
     public String getNurseID() {
-        return this.Nurse_id;
+        return this.nurse_id;
     }
 
 }

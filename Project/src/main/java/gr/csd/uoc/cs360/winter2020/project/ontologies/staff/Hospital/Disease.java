@@ -13,69 +13,69 @@ import java.util.List;
  */
 public class Disease {
 
-    private String Name = null;
-    private List<String> Symptoms = null;
-    private String Transmissibility = null;
-    private String Incubation = null;
-    private String Therapy_Duration = null;
+    private String name = null;
+    private List<String> symptoms = null;
+    private String transmissibility = null;
+    private String incubation = null;
+    private String therapy_duration = null;
 
     public Disease() {
 
     }
 
     public Disease(String name, List<String> symptoms, String Transmiss, String incub, String Therapy_Dur) {
-        this.Name = name;
-        this.Symptoms = symptoms;
-        this.Transmissibility = Transmiss;
-        this.Incubation = incub;
-        this.Therapy_Duration = Therapy_Dur;
+        this.name = name;
+        this.symptoms = symptoms;
+        this.transmissibility = Transmiss;
+        this.incubation = incub;
+        this.therapy_duration = Therapy_Dur;
     }
 
     public boolean checkFields() {
-        if (Name == null || Name.trim().isEmpty()) {
+        if (name == null || name.trim().isEmpty()) {
             return false;
         }
         return true;
     }
 
     public void setName(String param) {
-        this.Name = param;
+        this.name = param;
     }
 
     public String getName() {
-        return this.Name;
+        return this.name;
     }
 
     public void setSymptoms(List<String> param) {
-        this.Symptoms = param;
+        this.symptoms = param;
     }
 
     public List<String> getSymptoms() {
-        return this.Symptoms;
+        return this.symptoms;
     }
 
     public void setTransmissibility(String param) {
-        this.Transmissibility = param;
+        this.transmissibility = param;
     }
 
     public String getTransmissibility() {
-        return this.Transmissibility;
+        return this.transmissibility;
     }
 
     public void setIncubation(String param) {
-        this.Incubation = param;
+        this.incubation = param;
     }
 
     public String getIncubation() {
-        return this.Incubation;
+        return this.incubation;
     }
 
     public void setTherapy_Duration(String param) {
-        this.Therapy_Duration = param;
+        this.therapy_duration = param;
     }
 
     public String getTherapy_Duration() {
-        return this.Therapy_Duration;
+        return this.therapy_duration;
     }
 
 

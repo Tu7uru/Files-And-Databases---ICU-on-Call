@@ -6,7 +6,6 @@
 package gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  *
@@ -14,107 +13,111 @@ import java.util.UUID;
  */
 public class Visit {
 
-    private String Patient_ID = null;
-    private String Date = null;
-    private String Cure = null;
-    private List<String> Symptoms = null;
-    private String Doctor_ID = null;
-    private String Nurse_ID = null;
-    private String Employee_ID = null;
-    private String State = null;
+    private String patient_id = null;
+    private String date = null;
+    private String cure = null;
+    private List<String> symptoms = null;
+    private List<String> diseases = null;
+    private String doctor_id = null;
+    private String nurse_id = null;
+    private String employee_id = null;
+    private String state = null;
 
     public Visit() {
 
-        //generateId();
     }
 
-    public Visit(String date, String cure, List<String> symptoms, String doctor_id, String nurse_id,             String employee_id, String state) {
+    public Visit(String patient_id, String date, String cure, List<String> symptoms, List<String> diseases, String doctor_id, String nurse_id, String employee_id, String state) {
 
-        this.Cure = cure;
-        this.Date = date;
-        this.Symptoms = symptoms;
-        this.Date = date;
-        this.Doctor_ID = doctor_id;
-        this.Nurse_ID = nurse_id;
-        this.Employee_ID = employee_id;
-
-        generateId();
-    }
-
-    private void generateId() {
-        this.Patient_ID = UUID.randomUUID().toString();
-
+        this.patient_id = patient_id;
+        this.cure = cure;
+        this.date = date;
+        this.symptoms = symptoms;
+        this.diseases = diseases;
+        this.doctor_id = doctor_id;
+        this.nurse_id = nurse_id;
+        this.employee_id = employee_id;
+        this.state = state;
     }
 
     //not sure but might have to add d_id,n_id,e_id.
     public boolean checkFields() {
-        if (Patient_ID == null || Patient_ID.trim().isEmpty()) {
+        if (patient_id == null || patient_id.trim().isEmpty() || date == null || date.trim().isEmpty()) {
+            return false;
         }
         return true;
     }
 
     public void setPatientID(String param) {
-        this.Patient_ID = param;
+        this.patient_id = param;
     }
 
     public String getPatientID() {
-        return this.Patient_ID;
+        return this.patient_id;
     }
 
     public void setDate(String param) {
-        this.Date = param;
+        this.date = param;
     }
 
     public String getDate() {
-        return this.Date;
+        return this.date;
     }
 
     public void setCure(String param) {
-        this.Cure = param;
+        this.cure = param;
     }
 
     public String getCure() {
-        return this.Cure;
+        return this.cure;
     }
 
-    public void set(List<String> param) {
-        this.Symptoms = param;
+    public void setSymptoms(List<String> param) {
+        this.symptoms = param;
     }
 
-    public List<String> get() {
-        return this.Symptoms;
+    public List<String> getSymptoms() {
+        return this.symptoms;
+    }
+
+    public void setDiseasesHistory(List<String> param) {
+        this.diseases = param;
+    }
+
+    public List<String> getDiseasesHistory() {
+        return this.diseases;
     }
 
     public void setDoctorID(String param) {
-        this.Doctor_ID = param;
+        this.doctor_id = param;
     }
 
     public String getDoctorID() {
-        return this.Doctor_ID;
+        return this.doctor_id;
     }
 
     public void setNurseID(String param) {
-        this.Nurse_ID = param;
+        this.nurse_id = param;
     }
 
     public String getNurseID() {
-        return this.Nurse_ID;
+        return this.nurse_id;
     }
 
     public void setEmployeeID(String param) {
-        this.Employee_ID = param;
+        this.employee_id = param;
     }
 
     public String getEmployeeID() {
-        return this.Employee_ID;
+        return this.employee_id;
     }
 
     public void setState(String param) {
-        this.State = param;
+        this.state = param;
     }
 
     public String getState() {
-        return this.State;
+        return this.state;
     }
 
 }

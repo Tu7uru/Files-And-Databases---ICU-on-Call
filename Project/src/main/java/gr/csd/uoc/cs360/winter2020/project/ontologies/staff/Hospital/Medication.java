@@ -13,12 +13,12 @@ import java.util.UUID;
  */
 public class Medication {
 
-    private String Med_ID = null;
-    private String Name = null;
-    private String Type = null;
-    private String Dosage = null;
-    private String Use_for = null;
-    private String Exp_Date = null;
+    private String med_id = null;
+    private String name = null;
+    private String type = null;
+    private String dosage = null;
+    private String use_for = null;
+    private String exp_date = null;
 
     public Medication() {
         //generateId();
@@ -26,74 +26,74 @@ public class Medication {
 
     public Medication(String name, String type, String dosage, String use_for, String exp_date) {
 
-        this.Name = name;
-        this.Type = type;
-        this.Dosage = dosage;
-        this.Use_for = use_for;
-        this.Exp_Date = exp_date;
+        this.name = name;
+        this.type = type;
+        this.dosage = dosage;
+        this.use_for = use_for;
+        this.exp_date = exp_date;
 
         generateId();
     }
 
     private void generateId() {
-        this.Med_ID = UUID.randomUUID().toString();
+        this.med_id = UUID.randomUUID().toString();
 
     }
 
     public boolean checkFields() {
 
-        if (Med_ID == null || Med_ID.trim().isEmpty()) {
+        if (med_id == null || med_id.trim().isEmpty()) {
             return false;
         }
         return true;
     }
 
     public void setMed_ID(String param) {
-        this.Med_ID = param;
+        this.med_id = param;
     }
 
     public String getMed_ID() {
-        return this.Med_ID;
+        return this.med_id;
     }
 
     public void setName(String param) {
-        this.Name = param;
+        this.name = param;
     }
 
     public String getName() {
-        return this.Name;
+        return this.name;
     }
 
     public void setType(String param) {
-        this.Type = param;
+        this.type = param;
     }
 
     public String getType() {
-        return this.Type;
+        return this.type;
     }
 
     public void setDosage(String param) {
-        this.Dosage = param;
+        this.dosage = param;
     }
 
     public String getDosage() {
-        return this.Dosage;
+        return this.dosage;
     }
 
     public void setUse_for(String param) {
-        this.Use_for = param;
+        this.use_for = param;
     }
 
     public String getUse_for() {
-        return this.Use_for;
+        return this.use_for;
     }
 
     public void setExp_Date(String param) {
-        this.Exp_Date = param;
+        this.exp_date = param;
     }
 
     public String getExp_Date() {
-        return this.Exp_Date;
+        return this.exp_date;
     }
 
 }
