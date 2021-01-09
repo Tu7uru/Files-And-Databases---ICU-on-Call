@@ -36,7 +36,7 @@ public class PatientDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM patient");
+            query.append("SELECT * FROM patient;");
 
             stmt.execute(query.toString());
 
@@ -86,6 +86,7 @@ public class PatientDB {
                     .append(" WHERE ")
                     .append(" patient_id = ").append("'").append(patient_id).append("';");
 
+
             stmt.execute(query.toString());
 
             ResultSet res = stmt.getResultSet();
@@ -127,7 +128,7 @@ public class PatientDB {
 
             query.append("INSERT INTO")
                     .append(" patient (patient_id, name, lastname, phone, "
-                            + "address, insurance, amka, username, password, email, employee_id")
+                            + "address, insurance, amka, username, password, email, employee_id )")
                     .append(" VALUES (")
                     .append("'").append(pat.getPatient_id()).append("',")
                     .append("'").append(pat.getName()).append("',")
