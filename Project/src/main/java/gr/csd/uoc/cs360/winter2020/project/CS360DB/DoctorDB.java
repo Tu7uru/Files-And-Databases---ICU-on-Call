@@ -36,7 +36,7 @@ public class DoctorDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner");
+            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner;");
 
             stmt.execute(query.toString());
 
@@ -81,7 +81,7 @@ public class DoctorDB {
             StringBuilder query = new StringBuilder();
 
             query.append("SELECT doc FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner"
-                            + "WHERE doctor_id = " + doc_id);
+                            + "WHERE doctor_id = " + doc_id+";");
 
             stmt.execute(query.toString());
 
@@ -147,7 +147,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO")
                     .append(" neurologist (doctor_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id) ")
                     .append(" VALUES (")
                     .append("'").append(doc.getDoctor_id()).append("',")
                     .append("'").append(doc.getName()).append("',")
@@ -182,7 +182,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO")
                     .append(" surgeon (doctor_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id) ")
                     .append(" VALUES (")
                     .append("'").append(doc.getDoctor_id()).append("',")
                     .append("'").append(doc.getName()).append("',")
@@ -217,7 +217,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO")
                     .append(" general_practitioner (doctor_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id )")
                     .append(" VALUES (")
                     .append("'").append(doc.getDoctor_id()).append("',")
                     .append("'").append(doc.getName()).append("',")
@@ -252,7 +252,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO")
                     .append(" haematologist (doctor_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id) ")
                     .append(" VALUES (")
                     .append("'").append(doc.getDoctor_id()).append("',")
                     .append("'").append(doc.getName()).append("',")
@@ -287,7 +287,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO")
                     .append(" cardiologist (doctor_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id )")
                     .append(" VALUES (")
                     .append("'").append(doc.getDoctor_id()).append("',")
                     .append("'").append(doc.getName()).append("',")

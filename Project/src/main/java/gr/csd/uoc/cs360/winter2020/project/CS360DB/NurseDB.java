@@ -37,7 +37,7 @@ public class NurseDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner");
+            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner;");
 
             stmt.execute(query.toString());
 
@@ -82,7 +82,7 @@ public class NurseDB {
             StringBuilder query = new StringBuilder();
 
             query.append("SELECT doc FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner"
-                    + "WHERE nurse_id = " + nurse_id);
+                    + "WHERE nurse_id = " + nurse_id +";");
 
             stmt.execute(query.toString());
 
@@ -142,7 +142,7 @@ public class NurseDB {
 
             query.append("INSERT INTO")
                     .append(" nurse_surgeon (nurse_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id) ")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
                     .append("'").append(nurse.getName()).append("',")
@@ -177,7 +177,7 @@ public class NurseDB {
 
             query.append("INSERT INTO")
                     .append(" nurse_general_practitioner (nurse_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id) ")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
                     .append("'").append(nurse.getName()).append("',")
@@ -212,7 +212,7 @@ public class NurseDB {
 
             query.append("INSERT INTO")
                     .append(" nurse_haematologist (nurse_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id )")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
                     .append("'").append(nurse.getName()).append("',")
@@ -247,7 +247,7 @@ public class NurseDB {
 
             query.append("INSERT INTO")
                     .append(" nurse_cardiologist (nurse_id, name, lastname, phone, "
-                            + "address, username, password, email, employee_id ")
+                            + "address, username, password, email, employee_id) ")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
                     .append("'").append(nurse.getName()).append("',")

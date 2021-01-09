@@ -39,7 +39,7 @@ public class EmployeeDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM employee");
+            query.append("SELECT * FROM employee;");
 
             stmt.execute(query.toString());
 
@@ -86,7 +86,7 @@ public class EmployeeDB {
             StringBuilder query = new StringBuilder();
 
             query.append("SELECT e FROM employee " +
-                    "WHERE employee_id = " + empl_id);
+                    "WHERE employee_id = " + empl_id+";");
 
             stmt.execute(query.toString());
 
@@ -124,7 +124,7 @@ public class EmployeeDB {
 
             query.append("INSERT INTO")
                     .append(" employee (employee_id, name, lastname, phone, "
-                            + "address, department, username, password, email ")
+                            + "address, department, username, password, email) ")
                     .append(" VALUES (")
                     .append("'").append(e.getEmployee_id()).append("',")
                     .append("'").append(e.getName()).append("',")
@@ -160,7 +160,7 @@ public class EmployeeDB {
 
             query.append("INSERT INTO")
                     .append(" employee (employee_id, name, lastname, phone, "
-                            + "address, department, username, password, email")
+                            + "address, department, username, password, email) ")
                     .append(" VALUES (")
                     .append("'").append(a.getEmployee_id()).append("',")
                     .append("'").append(a.getName()).append("',")
@@ -207,7 +207,7 @@ public class EmployeeDB {
 
             query.append("INSERT INTO")
                     .append(" employee (employee_id, name, lastname, phone, "
-                            + "address, department, username, password, email")
+                            + "address, department, username, password, email)")
                     .append(" VALUES (")
                     .append("'").append(a.getEmployee_id()).append("',")
                     .append("'").append(a.getName()).append("',")
