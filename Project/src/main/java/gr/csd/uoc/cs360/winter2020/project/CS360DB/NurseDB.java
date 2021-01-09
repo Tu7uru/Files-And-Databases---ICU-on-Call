@@ -83,7 +83,7 @@ public class NurseDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT doc FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner ")
+            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner ")
                     .append(" WHERE nurse_id = ").append("'").append(nurse_id).append("';");
 
             stmt.execute(query.toString());
