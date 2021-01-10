@@ -10,7 +10,14 @@
         <div class="container">
           <h1><span>Log In</span> </h1><br><br><br>
           <input type="text" id="username" name="username" value="" placeholder="Username"> <br><br><br><br><br><br>
-          <input type="password" id="password" name="password" value="" placeholder="Password"><br><br><br><br><br><br>
+          <input type="password" id="password" name="password" value="" placeholder="Password"><br><br><br>
+          <select name="type" id="type" required>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+            <option value="nurse">Nurse</option>
+            <option value="employee">Employee</option>
+          </select>
+          <br><br><br>
           <button type="button" id="submit" name="button"><small>Log</small> In</button>
         </div>
 

@@ -25,6 +25,7 @@ public class Administrative extends Employee {
         this.degree_title = degree_title;
 
         generateId();
+        System.out.println("ADMIN ID" + getEmployee_id());
     }
 
     public String getDegree_title() {

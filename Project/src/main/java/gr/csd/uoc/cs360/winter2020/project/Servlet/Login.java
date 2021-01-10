@@ -5,8 +5,20 @@
  */
 package gr.csd.uoc.cs360.winter2020.project.Servlet;
 
+import com.google.gson.Gson;
+import gr.csd.uoc.cs360.winter2020.project.CS360DB.DoctorDB;
+import gr.csd.uoc.cs360.winter2020.project.CS360DB.EmployeeDB;
+import gr.csd.uoc.cs360.winter2020.project.CS360DB.NurseDB;
+import gr.csd.uoc.cs360.winter2020.project.CS360DB.PatientDB;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Employee;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,6 +45,105 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            System.out.println("IN DO GET");
+            String type = request.getParameter("type");
+
+            switch (type) {
+                case "employee":
+                    searchEmployee(request, response);
+                    break;
+                case "doctor":
+                    searchDoctor(request, response);
+                    break;
+                case "nurse":
+                    searchNurse(request, response);
+                    break;
+                case "patient":
+                    searchPatient(request, response);
+                    break;
+                default:
+                    sendError(response);
+            }
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void searchPatient(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException {
+        Patient p = PatientDB.getPatientsByUsername(request.getParameter("username"));
+        PrintWriter out = response.getWriter();
+        if(p == null ) {
+            sendError(response);
+        } else {
+            sendSuccess(p,response);
+        }
+    }
+
+    private void searchNurse(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException {
+        Nurse p = NurseDB.getNurseByUsername(request.getParameter("username"));
+        PrintWriter out = response.getWriter();
+        if(p == null ) {
+            sendError(response);
+        } else {
+            sendSuccess(p,response);
+        }
+    }
+
+    private void searchDoctor(HttpServletRequest request, HttpServletResponse response) throws IOException, ClassNotFoundException {
+        Doctor p = DoctorDB.getDoctorByUsername(request.getParameter("username"));
+        PrintWriter out = response.getWriter();
+        if(p == null ) {
+            sendError(response);
+        } else {
+            sendSuccess(p,response);
+        }
+    }
+
+    private void searchEmployee(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException {
+        Employee p = EmployeeDB.getEmployeeByUsername(request.getParameter("username"));
+
+        if(p == null ) {
+            sendError(response);
+
+        } else {
+            sendSuccess(p,response);
+
+        }
+    }
+
+    private void sendSuccess(Object p, HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        response.setStatus(200);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        HashMap<String, Object> h = new HashMap<>();
+        h.put("status", 200);
+        h.put("responseText", "User found");
+        h.put("user",p);
+
+        String json = new Gson().toJson(h);
+        out.println(json);
+        out.flush();
+        out.close();
+    }
+
+    private void sendError(HttpServletResponse response) throws IOException {
+        PrintWriter out = response.getWriter();
+        response.setStatus(404);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        HashMap<String, Object> h = new HashMap<>();
+        h.put("status", 404);
+        h.put("responseText", "User not found");
+
+        String json = new Gson().toJson(h);
+        out.println(json);
+        out.flush();
+        out.close();
     }
 
     /**

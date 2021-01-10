@@ -137,7 +137,7 @@ public class Nurse implements User {
     }
 
     public enum Spec {
-        CARDIOLOGIST,
+        NEUROLOGIST,
         HAEMATOLOGIST,
         GP,
         SURGEON
@@ -154,8 +154,8 @@ public class Nurse implements User {
 
     public static Spec fromString(String sp) {
         sp = sp.toLowerCase();
-        if(sp.equals("cardiologist")) {
-            return Spec.CARDIOLOGIST;
+        if(sp.equals("neurologist")) {
+            return Spec.NEUROLOGIST;
         } else if(sp.equals("gp")) {
             return Spec.GP;
         } else if (sp.equals("haematologist")) {

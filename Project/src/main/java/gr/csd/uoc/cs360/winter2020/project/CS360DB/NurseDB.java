@@ -70,7 +70,7 @@ public class NurseDB {
      *
      * @return Requested doctor
      */
-    public static Nurse getNurse(String nurse_id) throws ClassNotFoundException {
+    public static Nurse getNurseByUsername(String username) throws ClassNotFoundException {
         Nurse nurse = new Nurse();
 
         Statement stmt = null;
@@ -81,8 +81,8 @@ public class NurseDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT doc FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner"
-                    + "WHERE nurse_id = " + nurse_id +";");
+            query.append("SELECT nurse FROM nurse"
+                    + "WHERE nurse.username = " + username +";");
 
             stmt.execute(query.toString());
 
@@ -107,13 +107,55 @@ public class NurseDB {
     }
 
     /**
-     * Add doctor
+     * Get doctor by id
+     *
+     * @return Requested doctor
+     */
+    public static Nurse getNurse(String nurse_id) throws ClassNotFoundException {
+        Nurse nurse = new Nurse();
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder query = new StringBuilder();
+
+            query.append("SELECT * FROM nurse_haematologist h, nurse_surgeon s,nurse_neurologist n,nurse_general_pracitioner g"
+                    + "WHERE s.nurse_id = " + nurse_id + "OR h.nurse_id = " + nurse_id +"OR n.nurse_id = " + nurse_id + "OR g.nurse_id = " + nurse_id +
+                    ";");
+
+            stmt.execute(query.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            nurse.setUsername(res.getString("username"));
+            nurse.setNurse_id(res.getString("nurse_id"));
+            nurse.setEmail(res.getString("email"));
+            nurse.setPassword(res.getString("password"));
+            nurse.setName(res.getString("name"));
+            nurse.setLastname(res.getString("lastname"));
+            nurse.setPhone(res.getString("phone"));
+            nurse.setAddress(res.getString("address"));
+            nurse.setSpec(Nurse.fromString(res.getString("spec")));
+        } catch (SQLException ex) {
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeDBConnection(stmt, con);
+        }
+
+        return nurse;
+    }
+
+    /**
+     * Add nurse
      */
     public static void addNurse(Nurse nurse) throws ClassNotFoundException {
 
         switch (nurse.getSpec()) {
-            case CARDIOLOGIST:
-                insertCardiologist(nurse);
+            case NEUROLOGIST:
+                insertNeurologist(nurse);
                 break;
             case HAEMATOLOGIST:
                 insertHaematologist(nurse);
@@ -131,12 +173,10 @@ public class NurseDB {
     }
 
     private static void insertSurgeon(Nurse nurse) throws ClassNotFoundException {
-        Statement stmt = null;
         Connection con = null;
+        PreparedStatement stmtIns = null;
         try {
             con = CS360DB.getConnection();
-            stmt = con.createStatement();
-
             StringBuilder query = new StringBuilder();
 
 
@@ -153,15 +193,24 @@ public class NurseDB {
                     .append("'").append(nurse.getPassword()).append("',")
                     .append("'").append(nurse.getEmail()).append("',")
                     .append("'").append(nurse.getEmployee_id()).append("');");
-            stmt.execute(query.toString());
+            stmtIns = con.prepareStatement(query.toString());
+            stmtIns.executeUpdate(query.toString());
 
-            ResultSet res = stmt.getResultSet();
+            ResultSet res = stmtIns.getResultSet();
+            
+            query.setLength(0);
+            query.append("INSERT INTO nurse (username, type)" +
+                    "VALUES ('" + nurse.getUsername() +"','surgeon');");
 
+            stmtIns = con.prepareStatement(query.toString());
+            stmtIns.executeUpdate(query.toString());
+            
+            res = stmtIns.getResultSet();
 
         } catch (SQLException ex) {
             Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeDBConnection(stmt, con);
+            closeDBConnection(stmtIns, con);
         }
     }
 
@@ -192,6 +241,12 @@ public class NurseDB {
             PreparedStatement stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate();
 
+            query.setLength(0);
+            query.append("INSERT INTO nurse (username, type)" +
+                    "VALUES ('" + nurse.getUsername() +"','general_practitioner');");
+
+            stmtIns = con.prepareStatement(query.toString());
+            stmtIns.executeUpdate(query.toString());
 
         } catch (SQLException ex) {
             Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -227,6 +282,13 @@ public class NurseDB {
             PreparedStatement stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate();
 
+            query.setLength(0);
+            query.append("INSERT INTO nurse (username, type)" +
+                    "VALUES ('" + nurse.getUsername() +"','haematologist');");
+
+            stmtIns = con.prepareStatement(query.toString());
+            stmtIns.executeUpdate(query.toString());
+
 
         } catch (SQLException ex) {
             Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -235,7 +297,7 @@ public class NurseDB {
         }
     }
 
-    private static void insertCardiologist(Nurse nurse) throws ClassNotFoundException {
+    private static void insertNeurologist(Nurse nurse) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
         try {
@@ -246,7 +308,7 @@ public class NurseDB {
 
 
             query.append("INSERT INTO")
-                    .append(" nurse_cardiologist (nurse_id, name, lastname, phone, "
+                    .append(" nurse_neurologist (nurse_id, name, lastname, phone, "
                             + "address, username, password, email, employee_id) ")
                     .append(" VALUES (")
                     .append("'").append(nurse.getNurse_id()).append("',")
@@ -262,6 +324,12 @@ public class NurseDB {
             PreparedStatement stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate();
 
+            query.setLength(0);
+            query.append("INSERT INTO nurse (username, type)" +
+                    "VALUES ('" + nurse.getUsername() +"','neurologist');");
+
+            stmtIns = con.prepareStatement(query.toString());
+            stmtIns.executeUpdate(query.toString());
 
         } catch (SQLException ex) {
             Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -276,8 +344,8 @@ public class NurseDB {
     public static void updateNurse(Nurse nurse) throws ClassNotFoundException {
 
         switch (nurse.getSpec()) {
-            case CARDIOLOGIST:
-                updateCardiologist(nurse);
+            case NEUROLOGIST:
+                updateNeurologist(nurse);
                 break;
             case HAEMATOLOGIST:
                 updateHaematologist(nurse);
@@ -426,7 +494,7 @@ public class NurseDB {
         }
     }
 
-    private static void updateCardiologist(Nurse nurse) throws ClassNotFoundException {
+    private static void updateNeurologist(Nurse nurse) throws ClassNotFoundException {
         // Check that we have all we need
         try {
             nurse.checkFields();
@@ -445,7 +513,7 @@ public class NurseDB {
 
             StringBuilder insQuery = new StringBuilder();
 
-            insQuery.append("UPDATE nurse_cardiologist ")
+            insQuery.append("UPDATE nurse_neurologist ")
                     .append(" SET ")
                     .append(" nurse_id = ").append("'").append(nurse.getNurse_id()).append("',")
                     .append(" name = ").append("'").append(nurse.getName()).append("',")

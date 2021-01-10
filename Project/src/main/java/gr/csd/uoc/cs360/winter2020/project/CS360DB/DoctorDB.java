@@ -65,6 +65,56 @@ public class DoctorDB {
     }
 
     /**
+     * Get doctor by username
+     *
+     * @return Requested doctor
+     */
+    public static Doctor getDoctorByUsername(String username) throws ClassNotFoundException {
+        Doctor doc = new Doctor();
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder query = new StringBuilder();
+
+            query.append("SELECT * FROM doctor WHERE username = '" + username + "';");
+
+            stmt.execute(query.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if(res.next() == true) {
+                String type = res.getString("type");
+                switch(type) {
+                    case "cardiologist":
+
+                }
+            }
+
+            if(res.next()==false) return null;
+            while(res.next() == true) {
+                doc.setUsername(res.getString("username"));
+                doc.setDoctor_id(res.getString("doctor_id"));
+                doc.setEmail(res.getString("email"));
+                doc.setPassword(res.getString("password"));
+                doc.setName(res.getString("name"));
+                doc.setLastname(res.getString("lastname"));
+                doc.setPhone(res.getString("phone"));
+                doc.setAddress(res.getString("address"));
+                doc.setSpec(Doctor.fromString(res.getString("spec")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeDBConnection(stmt, con);
+        }
+
+        return doc;
+    }
+
+    /**
      * Get doctor by id
      *
      * @return Requested doctor
@@ -80,8 +130,10 @@ public class DoctorDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT doc FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner"
-                            + "WHERE doctor_id = " + doc_id+";");
+            query.append("SELECT * FROM cardiologist c,haematologist h,surgeon s,neurologist n,general_pracitioner g"
+                            + "WHERE " + "g.doctor_id = " + doc_id+ "h.doctor_id = " + doc_id+ "n.doctor_id = " + doc_id+
+                    "s.doctor_id = " + doc_id+"c.doctor_id = " + doc_id+
+                    ";");
 
             stmt.execute(query.toString());
 
@@ -161,7 +213,14 @@ public class DoctorDB {
             stmt.execute(query.toString());
 
             ResultSet res = stmt.getResultSet();
-            System.out.println(res);
+
+            query.setLength(0);
+
+            query.append("INSERT INTO " +
+                    "doctor (username, type) " +
+                    " VALUES ('" + doc.getUsername() +"','neurologist');");
+
+            stmt.execute(query.toString());
 
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -197,6 +256,13 @@ public class DoctorDB {
 
             ResultSet res = stmt.getResultSet();
 
+            query.setLength(0);
+
+            query.append("INSERT INTO " +
+                    "doctor (username, type) " +
+                    " VALUES ('" + doc.getUsername() +"','surgeon');");
+
+            stmt.execute(query.toString());
 
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -231,7 +297,13 @@ public class DoctorDB {
             stmt.execute(query.toString());
 
             ResultSet res = stmt.getResultSet();
+            query.setLength(0);
 
+            query.append("INSERT INTO " +
+                    "doctor (username, type) " +
+                    " VALUES ('" + doc.getUsername() +"','general_practitioner');");
+
+            stmt.execute(query.toString());
 
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -267,6 +339,13 @@ public class DoctorDB {
 
             ResultSet res = stmt.getResultSet();
 
+            query.setLength(0);
+
+            query.append("INSERT INTO " +
+                    "doctor (username, type) " +
+                    " VALUES ('" + doc.getUsername() +"','haematologist');");
+
+            stmt.execute(query.toString());
 
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -302,6 +381,13 @@ public class DoctorDB {
             PreparedStatement stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate();
 
+            query.setLength(0);
+
+            query.append("INSERT INTO " +
+                    "doctor (username, type) " +
+                    " VALUES ('" + doc.getUsername() +"','cardiologist');");
+
+            stmt.execute(query.toString());
 
 
         } catch (SQLException  ex) {

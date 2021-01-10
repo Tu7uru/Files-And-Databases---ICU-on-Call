@@ -38,8 +38,16 @@ public class Patient implements User {
         this.Email = "";
     }
 
-    public Patient(String name, String lastname, String phone, String address,
-            String insurance, String amka, String username, String password, String email) {
+    public Patient(String name,
+                   String lastname,
+                   String phone,
+                   String address,
+                   String insurance,
+                   String amka,
+                   String username,
+                   String password,
+                   String email) {
+
 
         this.Name = name;
         this.Lastname = lastname;
