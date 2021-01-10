@@ -7,6 +7,7 @@ package gr.csd.uoc.cs360.winter2020.project.CS360DB;
 
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Medication;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -56,6 +57,88 @@ public class MedicationDB {
         }
 
         return medications;
+    }
+
+    public static Medication getMedication(String med_id) throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        Medication med = null;
+
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT * FROM medication ")
+                    .append(" WHERE ")
+                    .append(" med_id = ").append("'").append(med_id).append("';");
+
+            stmt.execute(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            if (res.next() == true) {
+                med = new Medication();
+                med.setDosage(res.getString("dosage"));
+                med.setExp_Date(res.getString("exp_date"));
+                med.setMed_ID(med_id);
+                med.setName(res.getString("name"));
+                med.setType(res.getString("type"));
+                med.setUse_for(res.getString("use_for"));
+            }
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(MedicationDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+
+        return med;
+    }
+
+    public static void addMedication(Medication med) throws ClassNotFoundException {
+
+        try {
+            med.checkFields();
+
+        } catch (Exception ex) {
+            // Log exception
+            Logger.getLogger(MedicationDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("INSERT INTO ")
+                    .append(" medication (med_id, name, type, dosage, use_for, exp_date) ")
+                    .append(" VALUES (")
+                    .append("'").append(med.getMed_ID()).append("',")
+                    .append("'").append(med.getName()).append("',")
+                    .append("'").append(med.getType()).append("',")
+                    .append("'").append(med.getDosage()).append("',")
+                    .append("'").append(med.getUse_for()).append("',")
+                    .append("'").append(med.getExp_Date()).append("');");
+
+            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(MedicationDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
     }
 
     /**

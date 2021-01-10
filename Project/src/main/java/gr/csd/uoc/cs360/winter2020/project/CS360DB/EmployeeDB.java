@@ -133,6 +133,7 @@ public class EmployeeDB {
             query.append("SELECT * FROM employee " +
                     "WHERE employee_id = " + empl_id+";");
 
+
             stmt.execute(query.toString());
 
             ResultSet res = stmt.getResultSet();
@@ -155,6 +156,48 @@ public class EmployeeDB {
         }
 
         return empl;
+    }
+
+    public static Employee getEmployeebyUsername(String username) throws ClassNotFoundException {
+        Employee empl = null;
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder query = new StringBuilder();
+
+            query.append("SELECT * FROM employee ")
+                    .append(" WHERE username = ").append("'").append(username).append("';");
+
+            stmt.execute(query.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            if (res.next() == true) {
+
+                empl = new Employee();
+
+                empl.setEmployee_id(res.getString("employee_id"));
+                empl.setName(res.getString("name"));
+                empl.setLastname(res.getString("lastname"));
+                empl.setPhone(res.getString("phone"));
+                empl.setAddress(res.getString("address"));
+                empl.setDepartment(res.getString("department"));
+                empl.setUsername(username);
+                empl.setPassword(res.getString("password"));
+                empl.setEmail(res.getString("email"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeDBConnection(stmt, con);
+        }
+
+        return empl;
+
     }
 
     public static void addEmployee(Employee e) throws ClassNotFoundException {
@@ -185,7 +228,7 @@ public class EmployeeDB {
             System.out.println("#DB: The member " + e.getUsername() + "  was successfully added in the database.");
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -232,7 +275,7 @@ public class EmployeeDB {
             System.out.println("#DB: The member " + a.getUsername() + "  was successfully added in the database.");
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -279,7 +322,7 @@ public class EmployeeDB {
             System.out.println("#DB: The member " + a.getUsername() + "  was successfully added in the database.");
 
         } catch (SQLException  ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeDBConnection(stmt, con);
         }
@@ -315,7 +358,7 @@ public class EmployeeDB {
                     .append("password=").append("'").append(e.getPassword()).append("',")
                     .append("email=").append("'").append(e.getEmail()).append("');");
         } catch (SQLException ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // close connection
             closeDBConnection(stmt, con);

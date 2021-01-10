@@ -149,7 +149,51 @@ public class DoctorDB {
                 doc.setPhone(res.getString("phone"));
                 doc.setAddress(res.getString("address"));
                 doc.setSpec(Doctor.fromString(res.getString("spec")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeDBConnection(stmt, con);
+        }
 
+        return doc;
+    }
+
+
+    public static Doctor getDoctorbyUsername(String username) throws ClassNotFoundException
+    {
+        Doctor doc = null;
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder query = new StringBuilder();
+
+            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner ")
+                    .append(" WHERE username = ").append("'").append(username).append("';");
+
+            stmt.execute(query.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            if (res.next() == true) {
+
+                doc = new Doctor();
+
+                doc.setAddress(res.getString("address"));
+                doc.setDoctor_id(res.getString("doctor_id"));
+                doc.setEmail(res.getString("email"));
+                doc.setEmployee_id(res.getString("employee_id"));
+                doc.setLastname(res.getString("lastname"));
+                doc.setName(res.getString("name"));
+                doc.setPassword(res.getString("password"));
+                doc.setPhone(res.getString("phone"));
+                doc.setSpec(Doctor.fromString(res.getString("spec")));
+            } else {
+                System.out.println("Doctor with user name " + username + "was not found");
             }
         } catch (SQLException ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -222,6 +266,8 @@ public class DoctorDB {
 
             stmt.execute(query.toString());
 
+            System.out.println("#DB: The member " + doc.getUsername() + "  was successfully added in the database.");
+
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -264,6 +310,8 @@ public class DoctorDB {
 
             stmt.execute(query.toString());
 
+            System.out.println("#DB: The member " + doc.getUsername() + "  was successfully added in the database.");
+
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -304,6 +352,9 @@ public class DoctorDB {
                     " VALUES ('" + doc.getUsername() +"','general_practitioner');");
 
             stmt.execute(query.toString());
+
+
+            System.out.println("#DB: The member " + doc.getUsername() + "  was successfully added in the database.");
 
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -347,6 +398,8 @@ public class DoctorDB {
 
             stmt.execute(query.toString());
 
+            System.out.println("#DB: The member " + doc.getUsername() + "  was successfully added in the database.");
+
         } catch (SQLException  ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -388,6 +441,8 @@ public class DoctorDB {
                     " VALUES ('" + doc.getUsername() +"','cardiologist');");
 
             stmt.execute(query.toString());
+
+            System.out.println("#DB: The member " + doc.getUsername() + "  was successfully added in the database.");
 
 
         } catch (SQLException  ex) {

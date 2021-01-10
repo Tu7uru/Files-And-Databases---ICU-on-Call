@@ -44,27 +44,26 @@ public class CS360DB {
     }
 
 
-
     private static void __init__() throws ClassNotFoundException {
-        for(int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             Doctor d = new Doctor(
                     "doc" + i,
                     "docdoc",
-                    "doc"+i+"@example.com",
+                    "doc" + i + "@example.com",
                     "doc",
                     "doc",
                     "1234567890",
                     "address z " + i,
                     "",
                     Doctor.Spec.CARDIOLOGIST
-                    );
+            );
 
             DoctorDB.addDoctor(d);
 
             Doctor d2 = new Doctor(
                     "doc" + (i + 10),
                     "docdoc",
-                    "doc"+ (i + 10)+"@example.com",
+                    "doc" + (i + 10) + "@example.com",
                     "doc",
                     "doc",
                     "1234567890",
@@ -78,7 +77,7 @@ public class CS360DB {
             Doctor d3 = new Doctor(
                     "doc" + (i + 20),
                     "docdoc",
-                    "doc"+ (i + 20)+"@example.com",
+                    "doc" + (i + 20) + "@example.com",
                     "doc",
                     "doc",
                     "1234567890",
@@ -92,7 +91,7 @@ public class CS360DB {
             Doctor d4 = new Doctor(
                     "doc" + (i + 30),
                     "docdoc",
-                    "doc"+ (i + 30)+"@example.com",
+                    "doc" + (i + 30) + "@example.com",
                     "doc",
                     "doc",
                     "1234567890",
@@ -106,7 +105,7 @@ public class CS360DB {
             Doctor d5 = new Doctor(
                     "doc" + (i + 40),
                     "docdoc",
-                    "doc"+ (i + 40)+"@example.com",
+                    "doc" + (i + 40) + "@example.com",
                     "doc",
                     "doc",
                     "1234567890",
@@ -119,7 +118,7 @@ public class CS360DB {
 
             //----------------------
             Nurse n = new Nurse(
-                      "nurse" + i,
+                    "nurse" + i,
                     "nursenurse",
                     "nurse" + i + "@example.com",
                     "nurse",
@@ -133,13 +132,13 @@ public class CS360DB {
             NurseDB.addNurse(n);
 
             Nurse n1 = new Nurse(
-                    "nurse" + (i+10),
+                    "nurse" + (i + 10),
                     "nursenurse",
-                    "nurse" + (i+10) + "@example.com",
+                    "nurse" + (i + 10) + "@example.com",
                     "nurse",
                     "nurse",
                     "1234567980",
-                    "address y" + (i+10),
+                    "address y" + (i + 10),
                     "",
                     Nurse.Spec.GP
             );
@@ -147,13 +146,13 @@ public class CS360DB {
             NurseDB.addNurse(n1);
 
             Nurse n2 = new Nurse(
-                    "nurse" + (i+20),
+                    "nurse" + (i + 20),
                     "nursenurse",
-                    "nurse" + (i+20) + "@example.com",
+                    "nurse" + (i + 20) + "@example.com",
                     "nurse",
                     "nurse",
                     "1234567980",
-                    "address y" + (i+20),
+                    "address y" + (i + 20),
                     "",
                     Nurse.Spec.HAEMATOLOGIST
             );
@@ -161,13 +160,13 @@ public class CS360DB {
             NurseDB.addNurse(n2);
 
             Nurse n3 = new Nurse(
-                    "nurse" + (i+30),
+                    "nurse" + (i + 30),
                     "nursenurse",
-                    "nurse" + (i+30) + "@example.com",
+                    "nurse" + (i + 30) + "@example.com",
                     "nurse",
                     "nurse",
                     "1234567980",
-                    "address y" + (i+30),
+                    "address y" + (i + 30),
                     "",
                     Nurse.Spec.SURGEON
             );
@@ -179,7 +178,7 @@ public class CS360DB {
                     "empl",
                     "empl",
                     "1234123411",
-                    "address x" +i,
+                    "address x" + i,
                     "dep " + i,
                     "empl" + i,
                     "emplempl",
@@ -192,7 +191,7 @@ public class CS360DB {
                     "empl",
                     "empl",
                     "1234123411",
-                    "address x" +(i + 10),
+                    "address x" + (i + 10),
                     "dep " + (i + 10),
                     "empl" + (i + 10),
                     "emplempl",
@@ -205,7 +204,7 @@ public class CS360DB {
                     "empl",
                     "empl",
                     "1234123411",
-                    "address x" +(i + 20),
+                    "address x" + (i + 20),
                     "dep " + (i + 20),
                     "empl" + (i + 20),
                     "emplempl",
@@ -218,7 +217,7 @@ public class CS360DB {
                     "empl",
                     "empl",
                     "1234123411",
-                    "address x" +(i + 30),
+                    "address x" + (i + 30),
                     "dep " + (i + 30),
                     "empl" + (i + 30),
                     "emplempl",
@@ -231,11 +230,11 @@ public class CS360DB {
                     "empl",
                     "empl",
                     "1234123411",
-                    "address x" +(i + 40),
+                    "address x" + (i + 40),
                     "dep " + (i + 40),
                     "empl" + (i + 40),
                     "emplempl",
-                    "empl" + (i + 40)+ "@example.com"
+                    "empl" + (i + 40) + "@example.com"
             );
 
             EmployeeDB.addEmployee(e4);
@@ -260,7 +259,7 @@ public class CS360DB {
                     "0011111111",
                     "address w",
                     "depr1",
-                    "as"+i,
+                    "as" + i,
                     "admin",
                     "as@example.com",
                     "degree"
@@ -274,7 +273,7 @@ public class CS360DB {
                     "0011111111",
                     "address w",
                     "depr1",
-                    "as"+(i+40),
+                    "as" + (i + 40),
                     "admin",
                     "as@example.com",
                     "degree"
@@ -288,7 +287,7 @@ public class CS360DB {
                     "0011111111",
                     "address w",
                     "depr1",
-                    "as"+(i+30),
+                    "as" + (i + 30),
                     "admin",
                     "as@example.com",
                     "degree"
@@ -302,7 +301,7 @@ public class CS360DB {
                     "0011111111",
                     "address w",
                     "depr1",
-                    "as"+(i+20),
+                    "as" + (i + 20),
                     "admin",
                     "as@example.com",
                     "degree"
@@ -316,7 +315,7 @@ public class CS360DB {
                     "0011111111",
                     "address w",
                     "depr1",
-                    "as"+(i+10),
+                    "as" + (i + 10),
                     "admin",
                     "as@example.com",
                     "degree"
@@ -331,7 +330,7 @@ public class CS360DB {
                     "address",
                     "1insurance1",
                     "11111111111",
-                    "pat"+i,
+                    "pat" + i,
                     "pat",
                     "pat@example.com"
 
@@ -346,7 +345,7 @@ public class CS360DB {
                     "address",
                     "1insurance1",
                     "11111111111",
-                    "pat"+(i+40),
+                    "pat" + (i + 40),
                     "pat",
                     "pat@example.com"
 
@@ -361,7 +360,7 @@ public class CS360DB {
                     "address",
                     "1insurance1",
                     "11111111111",
-                    "pat"+(i+30),
+                    "pat" + (i + 30),
                     "pat",
                     "pat@example.com"
 
@@ -376,7 +375,7 @@ public class CS360DB {
                     "address",
                     "1insurance1",
                     "11111111111",
-                    "pat"+(i+20),
+                    "pat" + (i + 20),
                     "pat",
                     "pat@example.com"
 
@@ -384,14 +383,14 @@ public class CS360DB {
 
             PatientDB.addPatient(p4);
 
-            Patient p5= new Patient(
+            Patient p5 = new Patient(
                     "pat",
                     "pat",
                     "1234123443",
                     "address",
                     "1insurance1",
                     "11111111111",
-                    "pat"+(i+10),
+                    "pat" + (i + 10),
                     "pat",
                     "pat@example.com"
 
@@ -403,9 +402,9 @@ public class CS360DB {
 
     private static void __clear__() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection con = DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE + "?characterEncoding=UTF-8", UNAME,PASSWD);
+        Connection con = DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE + "?characterEncoding=UTF-8", UNAME, PASSWD);
 
-       Statement stmt = con.createStatement();
+        Statement stmt = con.createStatement();
         stmt.executeUpdate("DELETE FROM doctor;");
         stmt.executeUpdate("DELETE FROM nurse;");
         stmt.executeUpdate("DELETE FROM cardiologist;");
@@ -439,9 +438,9 @@ public class CS360DB {
         stmt.executeUpdate("DELETE FROM disease_symptoms;");
     }
 
-    public static void creatingTables () throws ClassNotFoundException, SQLException {
+    public static void creatingTables() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection con = DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE + "?characterEncoding=UTF-8", UNAME,PASSWD);
+        Connection con = DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE + "?characterEncoding=UTF-8", UNAME, PASSWD);
 
         StringBuilder createTable = new StringBuilder();
 
@@ -453,7 +452,7 @@ public class CS360DB {
                 "username varchar(15) NOT NULL," +
                 "password varchar(15), email varchar(26), employee_id varchar(50)," +
                 "PRIMARY KEY(doctor_id, username)" +
-                        ");");
+                ");");
 
         Statement stmt = con.createStatement();
 
@@ -534,7 +533,6 @@ public class CS360DB {
                 "password varchar(15), email varchar(26), employee_id varchar(50),PRIMARY KEY(nurse_id, username));"));
 
         stmt.executeUpdate(createTable.toString());
-
 
 
         //---------------------------------------------------------//
@@ -753,5 +751,10 @@ public class CS360DB {
                 ");"));
 
         stmt.executeUpdate(createTable.toString());
+
+    }
+
+    public static String getUserName() {
+        return UNAME;
     }
 }

@@ -14,28 +14,28 @@ import java.util.UUID;
  */
 public class Patient implements User {
 
-    private String Patient_ID;
+    private String patient_id;
     private String employee_id;
-    private String Name;
-    private String Lastname;
-    private String Phone;
-    private String Address;
-    private String Insurance;
-    private String Amka;
-    private String Username;
-    private String Password;
-    private String Email;
+    private String name;
+    private String lastname;
+    private String phone;
+    private String address;
+    private String insurance;
+    private String amka;
+    private String username;
+    private String password;
+    private String email;
 
     public Patient() {
-        this.Name = "";
-        this.Lastname = "";
-        this.Phone = "";
-        this.Address = "";
-        this.Insurance = "";
-        this.Amka = "";
-        this.Username = "";
-        this.Password = "";
-        this.Email = "";
+        this.name = "";
+        this.lastname = "";
+        this.phone = "";
+        this.address = "";
+        this.insurance = "";
+        this.amka = "";
+        this.username = "";
+        this.password = "";
+        this.email = "";
     }
 
     public Patient(String name,
@@ -49,117 +49,117 @@ public class Patient implements User {
                    String email) {
 
 
-        this.Name = name;
-        this.Lastname = lastname;
-        this.Phone = phone;
-        this.Address = address;
-        this.Insurance = insurance;
-        this.Amka = amka;
-        this.Username = username;
-        this.Password = password;
-        this.Email = email;
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.address = address;
+        this.insurance = insurance;
+        this.amka = amka;
+        this.username = username;
+        this.password = password;
+        this.email = email;
 
         generateId();
     }
 
     private void generateId() {
-        this.Patient_ID = UUID.randomUUID().toString();
+        this.patient_id = UUID.randomUUID().toString();
 
     }
 
     @Override
     public boolean checkFields() {
-        if (Username == null || Username.trim().isEmpty() || Patient_ID == null || Patient_ID.trim().isEmpty()) {
+        if (username == null || username.trim().isEmpty() || patient_id == null || patient_id.trim().isEmpty()) {
             return false;
         }
         return true;
     }
 
     public String getPatient_id() {
-        return Patient_ID;
+        return patient_id;
     }
 
     public void setPatient_id(String patient_ID) {
-        Patient_ID = patient_ID;
+        patient_id = patient_ID;
     }
 
     @Override
     public String getUsername() {
-        return this.Username;
+        return this.username;
     }
 
     @Override
     public String getPassword() {
-        return this.Password;
+        return this.password;
     }
 
     @Override
     public String getEmail() {
-        return this.Email;
+        return this.email;
     }
 
     @Override
     public void setUsername(String arg0) {
-        this.Username = arg0;
+        this.username = arg0;
     }
 
     @Override
     public void setPassword(String arg0) {
-        this.Password = arg0;
+        this.password = arg0;
     }
 
     @Override
     public void setEmail(String arg0) {
-        this.Email = arg0;
+        this.email = arg0;
     }
 
     public void setName(String param) {
-        this.Name = param;
+        this.name = param;
     }
 
     public String getName() {
-        return this.Name;
+        return this.name;
     }
 
     public void setLastname(String param) {
-        this.Lastname = param;
+        this.lastname = param;
     }
 
     public String getLastname() {
-        return this.Lastname;
+        return this.lastname;
     }
 
     public void setPhone(String param) {
 
-        this.Phone = param;
+        this.phone = param;
     }
 
     public String getPhone() {
-        return this.Phone;
+        return this.phone;
     }
 
     public void setAddress(String param) {
-        this.Address = param;
+        this.address = param;
     }
 
     public String getAddress() {
-        return this.Address;
+        return this.address;
     }
 
     public void setInsurance(String param) {
-        this.Insurance = param;
+        this.insurance = param;
     }
 
     public String getInsurance() {
-        return this.Insurance;
+        return this.insurance;
     }
 
     public void setAmka(String param) {
-        this.Amka = param;
+        this.amka = param;
     }
 
     public String getAmka() {
-        return this.Amka;
+        return this.amka;
     }
 
     public String getEmployee_id() {
