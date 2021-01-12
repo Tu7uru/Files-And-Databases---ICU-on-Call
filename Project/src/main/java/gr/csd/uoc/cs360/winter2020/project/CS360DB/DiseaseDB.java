@@ -74,7 +74,7 @@ public class DiseaseDB {
         return diseases;
     }
 
-    public static Disease getDisease(String name) throws ClassNotFoundException {
+    public static Disease getDiseaseByName(String name) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
         List<String> symptoms = new ArrayList<>();
@@ -133,6 +133,46 @@ public class DiseaseDB {
         return dis;
     }
 
+    public static Disease getDiseaseBySymptoms(List<String> Symptoms) throws ClassNotFoundException {
+
+        Statement stmt = null;
+        Connection con = null;
+        List<String> symptoms = new ArrayList<>();
+        Disease dis = null;
+
+        if (symptoms.isEmpty()) {
+            return null;
+        }
+
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT name FROM disease_symptoms ")
+                    .append(" WHERE ");
+
+            for (String symptom : Symptoms) {
+
+                insQuery.append(" systoms = ").append("'").append(name).append("';");
+            }
+
+//notfinitopatsyptom
+            stmt.execute(insQuery.toString());
+
+            ResultSet res2 = stmt.getResultSet();
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(DiseaseDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+    }
     public static void addDisease(Disease dis) throws ClassNotFoundException {
         try {
             dis.checkFields();

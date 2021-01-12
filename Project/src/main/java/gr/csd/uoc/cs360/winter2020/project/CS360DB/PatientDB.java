@@ -5,6 +5,7 @@
  */
 package gr.csd.uoc.cs360.winter2020.project.CS360DB;
 
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Diagnose;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -65,57 +66,14 @@ public class PatientDB {
         return patients;
     }
 
-    /**
-     * Get patient by username
-     *
-     * @param username
-     * @return Patient
-     */
-    public static Patient getPatientsByUsername(String username) throws ClassNotFoundException {
-
-        Statement stmt = null;
-        Connection con = null;
-        try {
-            con = CS360DB.getConnection();
-            stmt = con.createStatement();
-
-            StringBuilder query = new StringBuilder();
-
-            query.append("SELECT * FROM patient" +
-                    "WHERE username=" + username +";");
-
-            stmt.execute(query.toString());
-
-            ResultSet res = stmt.getResultSet();
-
-            Patient pat = new Patient();
-            pat.setUsername(res.getString("username"));
-            pat.setPatient_id(res.getString("patient_id"));
-            pat.setEmail(res.getString("email"));
-            pat.setPassword(res.getString("password"));
-            pat.setName(res.getString("name"));
-            pat.setLastname(res.getString("lastname"));
-            pat.setPhone(res.getString("phone"));
-            pat.setAddress(res.getString("address"));
-            pat.setAmka(res.getString("amka"));
-            pat.setInsurance(res.getString("insurance"));
-
-            return pat;
-        } catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeDBConnection(stmt, con);
-        }
-
-        return null;
-    }
 
     /**
      * Get patient by id
      *
+     * @param patient_id
      * @return Patient
      */
-    public static Patient getPatients(String patient_id) throws ClassNotFoundException {
+    public static Patient getPatient(String patient_id) throws ClassNotFoundException {
 
         Statement stmt = null;
         Connection con = null;
@@ -260,11 +218,51 @@ public class PatientDB {
                     .append(" username = ").append("'").append(pat.getUsername()).append("',")
                     .append(" password = ").append("'").append(pat.getPassword()).append("',")
                     .append(" email = ").append("'").append(pat.getEmail()).append("',")
-                    .append(" employee_id = ").append("'").append(pat.getEmployee_id()).append("',")
+                    .append(" employee_id = ").append("'").append(pat.getEmployee_id()).append("'")
                     .append(" WHERE patient_id= ").append("'").append(pat.getPatient_id()).append("';");
         }  catch (SQLException ex) {
             Logger.getLogger(PatientDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            closeDBConnection(stmt, con);
+        }
+    }
+
+    /*
+        From here and later on we will implement the relations of the DB.Which are the combination of one or more DB's.
+     */
+    /**
+     * The function below is for procedure of patient being examinated by
+     * doctor.
+     *
+     * In our diagram,this is (diag,meds,exams) SUPERVISED_BY doctor and patient
+     * receives     * examination.
+     *
+     *
+     *
+     * doctor Assigns Exam is in Doctor.DB
+     */
+    public static void PatientReceivesExaminationByDoctor(String patient_id, String doc_id, String exam_id, String date, List<String> symptoms) throws ClassNotFoundException {
+        if (patient_id == null || patient_id.trim().isEmpty() || exam_id == null || exam_id.trim().isEmpty()
+                || date == null || date.trim().isEmpty() || symptoms.isEmpty()) {
+            return;
+        }
+
+        Statement stmt = null;
+        Connection con = null;
+
+        try {
+
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam_id, null, doc_id);
+            DiagnoseDB.addDiagnose(diag);
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
             closeDBConnection(stmt, con);
         }
     }

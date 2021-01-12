@@ -7,10 +7,13 @@ package gr.csd.uoc.cs360.winter2020.project.CS360DB;
 
 
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Examination;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,7 +73,7 @@ public class DoctorDB {
      * @return Requested doctor
      */
     public static Doctor getDoctorByUsername(String username) throws ClassNotFoundException {
-        Doctor doc = new Doctor();
+        Doctor doc = null;
 
         Statement stmt = null;
         Connection con = null;
@@ -95,6 +98,8 @@ public class DoctorDB {
 
             if(res.next()==false) return null;
             while(res.next() == true) {
+                doc = new Doctor();
+
                 doc.setUsername(res.getString("username"));
                 doc.setDoctor_id(res.getString("doctor_id"));
                 doc.setEmail(res.getString("email"));
@@ -120,7 +125,7 @@ public class DoctorDB {
      * @return Requested doctor
      */
     public static Doctor getDoctor(String doc_id) throws ClassNotFoundException {
-        Doctor doc = new Doctor();
+        Doctor doc = null;
 
         Statement stmt = null;
         Connection con = null;
@@ -139,7 +144,10 @@ public class DoctorDB {
 
             ResultSet res = stmt.getResultSet();
 
-            while(res.next() == true) {
+            while (res.next() == true) {
+
+                doc = new Doctor();
+
                 doc.setUsername(res.getString("username"));
                 doc.setDoctor_id(res.getString("doctor_id"));
                 doc.setEmail(res.getString("email"));
@@ -508,7 +516,7 @@ public class DoctorDB {
                     .append(" username = ").append("'").append(doc.getUsername()).append("',")
                     .append(" password = ").append("'").append(doc.getPassword()).append("',")
                     .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                    .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("',")
+                    .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
                     .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
@@ -552,7 +560,7 @@ public class DoctorDB {
                     .append(" username = ").append("'").append(doc.getUsername()).append("',")
                     .append(" password = ").append("'").append(doc.getPassword()).append("',")
                     .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                    .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("',")
+                    .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
                     .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
@@ -596,7 +604,7 @@ public class DoctorDB {
                         .append(" username = ").append("'").append(doc.getUsername()).append("',")
                         .append(" password = ").append("'").append(doc.getPassword()).append("',")
                         .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("',")
+                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
                         .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
                 stmt.executeUpdate(insQuery.toString());
@@ -640,7 +648,7 @@ public class DoctorDB {
                         .append(" username = ").append("'").append(doc.getUsername()).append("',")
                         .append(" password = ").append("'").append(doc.getPassword()).append("',")
                         .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("',")
+                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
                         .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
                 stmt.executeUpdate(insQuery.toString());
@@ -684,7 +692,7 @@ public class DoctorDB {
                         .append(" username = ").append("'").append(doc.getUsername()).append("',")
                         .append(" password = ").append("'").append(doc.getPassword()).append("',")
                         .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("',")
+                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
                         .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
                 stmt.executeUpdate(insQuery.toString());
@@ -698,6 +706,76 @@ public class DoctorDB {
                 closeDBConnection(stmt, con);
             }
     }
+
+    /*
+        From here and later on we will implement the relations of the DB.Which are the combination of one or more DB's.
+    */
+
+
+    public static void Orders(String exam_id,String nurse_id,String doctor_id,String exam_room,String exam_name)
+    {
+        try {
+            if (doctor_id == null || doctor_id.trim().isEmpty()) {
+                return;
+            }
+        } catch (Exception ex) {
+            // Log exception
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Statement stmt = null;
+        Connection con = null;
+        String nurseid = null;
+        try {
+
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            Random rand = new Random();
+
+            String doc_spec = DoctorDB.getDoctor(doctor_id).getSpec().toString();
+            List<Nurse> nurses = NurseDB.getNursesBySpecialty(doc_spec);
+            if (nurses.size() > 0) {
+                nurseid = nurses.get(rand.nextInt(nurses.size() + 1)).getNurse_id();
+
+                Examination exam = new Examination(nurseid, doctor_id, exam_room, exam_name);
+                ExamDB.addExam(exam);
+            }
+
+        } catch (Exception ex) {
+            // Log exception
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void Prescribe(String exam_id,String med_id,String date,String doctor_id)
+    {
+
+        try {
+            if (doctor_id == null || doctor_id.trim().isEmpty() || exam_id==null || exam_id.trim().isEmpty()
+                    || med_id==null || med_id.trim().isEmpty()) {
+                return;
+            }
+        } catch (Exception ex) {
+            // Log exception
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+
+            
+
+
+        } catch (Exception ex) {
+            // Log exception
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+
 
     /**
      * Close db connection

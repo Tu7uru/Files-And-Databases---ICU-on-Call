@@ -345,7 +345,7 @@ public class EmployeeDB {
             stmt2 = con.createStatement();
 
             StringBuilder query = new StringBuilder();
-
+            //ΚΕΚΕΚΕΚΕΚΕΕΚΕΚΚΣΚΩΚΚΣΚ
             query.append("UPDATE employee")
                     .append(" SET ")
                     .append("employee_id=").append("'").append(e.getEmployee_id()).append("',")

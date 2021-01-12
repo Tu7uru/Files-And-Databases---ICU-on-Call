@@ -59,9 +59,10 @@ public class ShiftDB {
         return shifts;
     }
 
-    public static Shift getShift(String date) throws ClassNotFoundException {
+    public static List<Shift> getShift(String date) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
+        List<Shift> shifts = null;
         Shift shift = null;
 
         try {
@@ -80,7 +81,8 @@ public class ShiftDB {
 
             ResultSet res = stmt.getResultSet();
 
-            if (res.next() == true) {
+            shifts = new ArrayList<>();
+            while (res.next() == true) {
                 shift = new Shift();
                 shift.setDate(date);
                 shift.setDepartment(res.getString("department"));
@@ -88,6 +90,8 @@ public class ShiftDB {
                 shift.setEmployee_ID(res.getString("employee_id"));
                 shift.setNurse_ID(res.getString("nurse_id"));
                 shift.setType(res.getString("type"));
+
+                shifts.add(shift);
             }
         } catch (SQLException ex) {
             // Log exception
@@ -97,7 +101,7 @@ public class ShiftDB {
             closeDBConnection(stmt, con);
         }
 
-        return shift;
+        return shifts;
     }
 
     public static void addShift(Shift shift) throws ClassNotFoundException {
