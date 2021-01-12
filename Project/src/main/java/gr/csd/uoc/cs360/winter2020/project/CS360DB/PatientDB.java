@@ -66,7 +66,6 @@ public class PatientDB {
         return patients;
     }
 
-
     /**
      * Get patient by id
      *

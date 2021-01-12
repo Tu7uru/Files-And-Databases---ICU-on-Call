@@ -28,24 +28,27 @@
           </select><br><br><br><br><br>
           <div class="patient-fields" id="patient-fields">
             <input type="text" id="insurance" name="insurance" value="" placeholder="Insurance"> <br><br><br>
-            <input type="text" id="AMKA" name="AMKA" value="" placeholder="AMKA" pattern="[0-9]{11}"> <br><br><br>
+            <input type="text" id="amka" name="AMKA" value="" placeholder="AMKA" pattern="[0-9]{11}"> <br>
           </div>
+
           <select name="empl-spec" id="empl-spec">
             <option value="simple">Simple</option>
             <option value="assistant">Assistant Manager</option>
             <option value="admin">Administrative</option>
           </select><br>
+          <input type="text" id="department" name="department" value="" placeholder="Department"><br><br>
+          <input type="text" id="degree" name="degree" value="" placeholder="Degree">
           <select name="doc-spec" id="doc-spec">
-            <option value="cardio">Cardiologist</option>
-            <option value="haema">Haematologist</option>
-            <option value="gp">General Practioner</option>
+            <option value="cardiologist">Cardiologist</option>
+            <option value="haematologist">Haematologist</option>
+            <option value="general_practitioner">General Practioner</option>
             <option value="surgeon">Surgeon</option>
-            <option value="neuro">Neurologist</option>
+            <option value="neurologist">Neurologist</option>
           </select><br>
           <select name="nurse-spec" id="nurse-spec">
-            <option value="cardio">Cardiologist</option>
-            <option value="haema">Haematologist</option>
-            <option value="gp">General Practioner</option>
+            <option value="cardiologist">Cardiologist</option>
+            <option value="haematologist">Haematologist</option>
+            <option value="general_practitioner">General Practioner</option>
             <option value="surgeon">Surgeon</option>
           </select><br>
           <button type="button" id="submit" name="sumbit">Create account</button>

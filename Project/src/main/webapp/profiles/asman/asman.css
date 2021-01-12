@@ -42,6 +42,7 @@ body{
 }
 
 nav {
+	float: right;
   background-color: #81d4fa;
   width:100vw;
   height:10vh;
@@ -125,6 +126,19 @@ button:focus {
   outline: none;
   background-color: #b3e5fc;
 }
+
 i {
 	padding-right: 10px;
+}
+
+span {
+	font-family: sans-serif;
+	color: white;
+	font-size:18px;
+}
+
+.info {
+	top: 3vh;
+	right: 0;
+	position:absolute;
 }

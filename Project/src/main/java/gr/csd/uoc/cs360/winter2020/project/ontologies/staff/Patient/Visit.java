@@ -5,6 +5,7 @@
  */
 package gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,20 +15,28 @@ import java.util.List;
 public class Visit {
 
     private String patient_id = null;
-    private String date = null;
-    private String cure = null;
-    private List<String> symptoms = null;
-    private List<String> diseases = null;
+    private String date = new String();
+    private String cure = new String();
+    private List<String> symptoms = new ArrayList<>();
+    private List<String> diseases = new ArrayList<>();
     private String doctor_id = null;
     private String nurse_id = null;
     private String employee_id = null;
-    private String state = null;
+    private String state = new String();
 
     public Visit() {
 
     }
 
-    public Visit(String patient_id, String date, String cure, List<String> symptoms, List<String> diseases, String doctor_id, String nurse_id, String employee_id, String state) {
+    public Visit(String patient_id,
+                 String date,
+                 String cure,
+                 List<String> symptoms,
+                 List<String> diseases,
+                 String doctor_id,
+                 String nurse_id,
+                 String employee_id,
+                 String state) {
 
         this.patient_id = patient_id;
         this.cure = cure;
@@ -46,6 +55,10 @@ public class Visit {
             return false;
         }
         return true;
+    }
+
+    public void addSymptom(String symptom) {
+        this.symptoms.add(symptom);
     }
 
     public void setPatientID(String param) {
@@ -116,8 +129,21 @@ public class Visit {
         this.state = param;
     }
 
-    public String getState() {
-        return this.state;
+    public String getState() {return this.state;
     }
 
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "patient_id='" + patient_id + '\'' +
+                ", date='" + date + '\'' +
+                ", cure='" + cure + '\'' +
+                ", symptoms=" + symptoms +
+                ", diseases=" + diseases +
+                ", doctor_id='" + doctor_id + '\'' +
+                ", nurse_id='" + nurse_id + '\'' +
+                ", employee_id='" + employee_id + '\'' +
+                ", state='" + state + '\'' +
+                '}';
+    }
 }

@@ -5,7 +5,8 @@ const submit = document.getElementById("submit");
 
 submit.addEventListener("click", e => {
   if(checkFields()) {
-    url = "/Project/Login?username=" +username.value + "&password=" + password.value + "&type=" + type.value;
+    console.log(username.value);
+    url = "/Project/Login?username=" + username.value + "&password=" + password.value + "&type=" + type.value;
     communicateWithServlet('GET', url);
   }
 });
@@ -29,8 +30,18 @@ function communicateWithServlet(method, url) {
     console.log(http.response);
     var response = JSON.parse(http.response);
     if(response.status == 200) {
-      var user = response.username;
-      //window.location.href = "../profile/profile.html?username=" + user;
+      var user = response.user.username;
+      var type = response.type;
+      if(type == "doctor") {
+        window.location.href = "../profiles/doctor/doctor.html?username=" + user;
+      } else if(type == "patient") {
+        window.location.href = "../profiles/patient/pat.html?username=" + user + "&id=" + response.user.patient_id;
+      } else if(type == "nurse") {
+        window.location.href = "../profiles/doctor/doctor.html?username=" + user;
+      } else if(type == "employee") {
+        //window.location.href = "../profiles/asman/asman.html?username=" + user;
+      }
+
     }
   };
 

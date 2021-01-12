@@ -102,8 +102,87 @@ public class VisitDB {
 
             return visits;
     }
+    public static List<Visit> getVisits(String patient_id) throws ClassNotFoundException {
+        List<Visit> visits = new ArrayList<>();
+
+        List<String> diseases = new ArrayList<>();
+        Statement stmt = null;
+        Connection con = null;
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder q = new StringBuilder();
+
+            q.append("SELECT * FROM visit ")
+                    .append("WHERE patient_id= ").append("'").append(patient_id).append("';");
+
+            stmt.executeQuery(q.toString());
+            ResultSet res = stmt.getResultSet();
+            while(res.next() == true) {
+
+                Visit v = new Visit();
+                System.out.println(v.getDate());
+                v.setPatientID(res.getString("patient_id"));
+                v.setDate(res.getString("date"));
+                v.setCure(res.getString("cure"));
+                v.setDoctorID(res.getString("doctor_id"));
+                v.setNurseID(res.getString("nurse_id"));
+                v.setState(res.getString("state"));
+                v.setEmployeeID(res.getString("employee_id"));
+                visits.add(v);
+
+                StringBuilder insQuery2 = new StringBuilder();
+
+                insQuery2.append("SELECT symptoms FROM visit_symptoms ")
+                        .append(" WHERE ")
+                        .append(" patient_id = ").append("'").append(patient_id).append("';");
+
+                Statement stmt2 = con.createStatement();
+
+                stmt2.execute(insQuery2.toString());
+
+                ResultSet res2 = stmt2.getResultSet();
+                while(res2.next() == true) {
+
+                    String s = res2.getString("symptoms");
+                    v.addSymptom(s);
+                }
+
+                /*insQuery2.setLength(0);
+
+                insQuery2.append("SELECT * FROM visit_diseases ")
+                        .append(" WHERE ")
+                        .append(" patient_id = ").append("'").append(patient_id).append("';");
+
+                stmt.execute(insQuery2.toString());
+
+                res2 = stmt.getResultSet();
+                while(res2.next() == true) {
+                    String s = new String();
+                    s = res2.getString("diseases");
+                    diseases.add(s);
+
+                }*/
+
+                //v.setDiseasesHistory(diseases);
+
+            }
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(VisitDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+
+        return visits;
+    }
 
     public static Visit getVisit(String patient_id, String date, String doctor_id) throws ClassNotFoundException {
+
         Statement stmt = null;
         Connection con = null;
         Visit visit = null;
@@ -214,7 +293,7 @@ public class VisitDB {
                     .append(" visit (patient_id, date, cure, doctor_id, nurse_id, employee_id, state) ")
                     .append(" VALUES (")
                     .append("'").append(visit.getPatientID()).append("',")
-                    .append("'").append(visit.getDate()).append("',")
+                    .append("DATE '").append(visit.getDate()).append("',")
                     .append("'").append(visit.getCure()).append("',")
                     .append("'").append(visit.getDoctorID()).append("',")
                     .append("'").append(visit.getNurseID()).append("',")
@@ -236,6 +315,7 @@ public class VisitDB {
                         .append("'").append(visit.getDate()).append("',")
                         .append("'").append(visit.getDoctorID()).append("',")
                         .append("'").append(visit.getPatientID()).append("',")
+                        .append("DATE '").append(visit.getDate()).append("',")
                         .append("'").append(dis).append("');");
 
                 PreparedStatement stmtIns2 = con.prepareStatement(insQuery2.toString());
@@ -252,10 +332,9 @@ public class VisitDB {
                         .append(" visit_symptoms (patient_id, date, symptoms, doctor_id) ")
                         .append(" VALUES (")
                         .append("'").append(visit.getPatientID()).append("',")
-                        .append("'").append(visit.getDate()).append("',")
+                        .append("DATE '").append(visit.getDate()).append("',")
                         .append("'").append(sympt).append("',")
                         .append("'").append(visit.getDoctorID()).append("');");
-
                 PreparedStatement stmtIns3 = con.prepareStatement(insQuery3.toString());
                 stmtIns3.executeUpdate();
             }
@@ -272,8 +351,6 @@ public class VisitDB {
         /**
          * Close db connection
          *
-         * @param stmt
-         * @param con
          */
     public static void addSymptom(String patient_id, String date, String symptom, String doctor_id) throws ClassNotFoundException {
 
@@ -295,7 +372,7 @@ public class VisitDB {
                     .append(" visit_symptoms (patient_id, date, symptoms, doctor_id) ")
                     .append(" VALUES (")
                     .append("'").append(patient_id).append("',")
-                    .append("'").append(date).append("',")
+                    .append("DATE '").append(date).append("',")
                     .append("'").append(symptom).append("',")
                     .append("'").append(doctor_id).append("');");
 
@@ -331,7 +408,7 @@ public class VisitDB {
             insQuery.append("INSERT INTO ")
                     .append(" visit_diseases (visit_date, doctor_id, patient_id, diseases) ")
                     .append(" VALUES (")
-                    .append("'").append(visit_date).append("',")
+                    .append("DATE '").append(visit_date).append("',")
                     .append("'").append(doctor_id).append("',")
                     .append("'").append(patient_id).append("',")
                     .append("'").append(disease).append("');");

@@ -156,7 +156,7 @@ public class Nurse implements User {
         sp = sp.toLowerCase();
         if(sp.equals("neurologist")) {
             return Spec.NEUROLOGIST;
-        } else if(sp.equals("gp")) {
+        } else if(sp.equals("general_practitioner") || sp.equals("gp")) {
             return Spec.GP;
         } else if (sp.equals("haematologist")) {
             return Spec.HAEMATOLOGIST;

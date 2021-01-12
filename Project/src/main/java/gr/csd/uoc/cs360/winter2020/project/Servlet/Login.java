@@ -72,12 +72,13 @@ public class Login extends HttpServlet {
     }
 
     private void searchPatient(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException {
-        Patient p = PatientDB.getPatientsByUsername(request.getParameter("username"));
+        Patient p = PatientDB.getPatientbyUsername(request.getParameter("username"));
+        System.out.println(p);
         PrintWriter out = response.getWriter();
         if(p == null ) {
             sendError(response);
         } else {
-            sendSuccess(p,response);
+            sendSuccess(p,response,"patient");
         }
     }
 
@@ -87,17 +88,19 @@ public class Login extends HttpServlet {
         if(p == null ) {
             sendError(response);
         } else {
-            sendSuccess(p,response);
+            sendSuccess(p,response,"nurse");
         }
     }
 
     private void searchDoctor(HttpServletRequest request, HttpServletResponse response) throws IOException, ClassNotFoundException {
+        System.out.println(request.getParameter("username"));
         Doctor p = DoctorDB.getDoctorByUsername(request.getParameter("username"));
+        System.out.println(p);
         PrintWriter out = response.getWriter();
         if(p == null ) {
             sendError(response);
         } else {
-            sendSuccess(p,response);
+            sendSuccess(p,response,"doctor");
         }
     }
 
@@ -108,12 +111,12 @@ public class Login extends HttpServlet {
             sendError(response);
 
         } else {
-            sendSuccess(p,response);
+            sendSuccess(p,response,"employee");
 
         }
     }
 
-    private void sendSuccess(Object p, HttpServletResponse response) throws IOException {
+    private void sendSuccess(Object p, HttpServletResponse response,String type) throws IOException {
         PrintWriter out = response.getWriter();
         response.setStatus(200);
         response.setContentType("application/json");
@@ -123,6 +126,7 @@ public class Login extends HttpServlet {
         h.put("status", 200);
         h.put("responseText", "User found");
         h.put("user",p);
+        h.put("type", type);
 
         String json = new Gson().toJson(h);
         out.println(json);
