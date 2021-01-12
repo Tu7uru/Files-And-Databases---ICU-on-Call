@@ -14,7 +14,9 @@ import java.util.UUID;
 public class Examination {
 
     private String exam_id = null;
+    private String nurse_id = null;
     private String exam_room = null;
+    private String doctor_id = null;
     private String name;
 
     public Examination() {
@@ -22,14 +24,17 @@ public class Examination {
         //generateId();
     }
 
-    public Examination(String Exam_room, String name) {
+    public Examination(String nurse_id, String doctor_id, String Exam_room, String name) {
         this.exam_room = Exam_room;
+        this.nurse_id = nurse_id;
+        this.doctor_id = doctor_id;
         this.name = name;
+
         generateId();
     }
 
     public boolean checkFields() {
-        if (exam_id == null || exam_id.trim().isEmpty()) {
+        if (exam_id == null || exam_id.trim().isEmpty() || doctor_id == null || doctor_id.trim().isEmpty()) {
             return false;
         }
         return true;
@@ -48,6 +53,22 @@ public class Examination {
         return this.exam_id;
     }
 
+    public void setNurse_ID(String param) {
+        this.nurse_id = param;
+    }
+
+    public String getNurse_ID() {
+        return this.nurse_id;
+    }
+
+    public void setDoctorID(String param) {
+        this.doctor_id = param;
+    }
+
+    public String getDoctorID() {
+        return this.doctor_id;
+    }
+
     public void setExam_Room(String param) {
         this.exam_room = param;
     }
@@ -57,7 +78,7 @@ public class Examination {
     }
 
     public void setName(String param) {
-        this.name = name;
+        this.name = param;
     }
 
     public String getName() {
