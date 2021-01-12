@@ -125,6 +125,38 @@ button:focus {
   outline: none;
   background-color: #b3e5fc;
 }
+
 i {
 	padding-right: 10px;
+}
+
+span {
+	font-family: sans-serif;
+	color: white;
+	font-size:18px;
+}
+
+.info {
+	top: 3vh;
+	right: 0;
+	position:absolute;
+}
+
+.visit table{
+	margin: 0 auto;
+	border-collapse: collapse;
+}
+table, td {
+	border: 1px solid #81d4fa;
+}
+
+table th {
+	color:white;
+	border:1px solid white;
+	background-color: #81d4fa;
+	padding: 5px 50px;
+}
+
+.pat-info {
+	text-align:center;
 }

@@ -11,8 +11,12 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.AssistantMa
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Employee;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -41,6 +45,24 @@ public class CS360DB {
         //creatingTables();
         __init__();
         //__clear__();
+//        List<String> symptoms = new ArrayList<>();
+//        symptoms.add("eye pain");
+//        List<String> diseases = new ArrayList<>();
+//        diseases.add("cancer");
+//
+//        Visit v = new Visit(
+//                "846e6c37-1943-4ea4-859b-8a65e25fd91e",
+//                "2020-01-13",
+//                "medicine",
+//                symptoms,
+//                diseases,
+//                "819f6ddc-9689-4f9c-a139-df160ba05de2",
+//                "",
+//                "",
+//                "DANGEROUS"
+//        );
+//
+//        VisitDB.addVisit(v);
     }
 
 
@@ -338,65 +360,23 @@ public class CS360DB {
 
             PatientDB.addPatient(p);
 
-            Patient p2 = new Patient(
-                    "pat",
-                    "pat",
-                    "1234123443",
-                    "address",
-                    "1insurance1",
-                    "11111111111",
-                    "pat" + (i + 40),
-                    "pat",
-                    "pat@example.com"
+
+            List<String> symptoms = Arrays.asList(new String[] {"heart pain"});
+            List<String> diseases = Arrays.asList(new String[] {"cancer"});
+            Visit v = new Visit(
+                    p.getPatient_id(),
+                    "2021-1-10",
+                    "",
+                    symptoms,
+                    diseases,
+                    d3.getDoctor_id(),
+                    "",
+                    "",
+                    "STABLE"
 
             );
 
-            PatientDB.addPatient(p2);
-
-            Patient p3 = new Patient(
-                    "pat",
-                    "pat",
-                    "1234123443",
-                    "address",
-                    "1insurance1",
-                    "11111111111",
-                    "pat" + (i + 30),
-                    "pat",
-                    "pat@example.com"
-
-            );
-
-            PatientDB.addPatient(p3);
-
-            Patient p4 = new Patient(
-                    "pat",
-                    "pat",
-                    "1234123443",
-                    "address",
-                    "1insurance1",
-                    "11111111111",
-                    "pat" + (i + 20),
-                    "pat",
-                    "pat@example.com"
-
-            );
-
-            PatientDB.addPatient(p4);
-
-            Patient p5 = new Patient(
-                    "pat",
-                    "pat",
-                    "1234123443",
-                    "address",
-                    "1insurance1",
-                    "11111111111",
-                    "pat" + (i + 10),
-                    "pat",
-                    "pat@example.com"
-
-            );
-
-            PatientDB.addPatient(p5);
+            VisitDB.addVisit(v);
         }
     }
 
@@ -405,6 +385,10 @@ public class CS360DB {
         Connection con = DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE + "?characterEncoding=UTF-8", UNAME, PASSWD);
 
         Statement stmt = con.createStatement();
+
+        stmt.executeUpdate("DELETE FROM visit;");
+        stmt.executeUpdate("DELETE FROM visit_diseases;");
+        stmt.executeUpdate("DELETE FROM visit_symptoms;");
         stmt.executeUpdate("DELETE FROM doctor;");
         stmt.executeUpdate("DELETE FROM nurse;");
         stmt.executeUpdate("DELETE FROM cardiologist;");
@@ -583,7 +567,7 @@ public class CS360DB {
         createTable.append(("CREATE TABLE IF NOT EXISTS visit (patient_id varchar(50), " +
                 "date DATE, cure varchar(40), doctor_id varchar(50), nurse_id varchar(50), employee_id varchar(50), " +
                 "state varchar(10)," +
-                "PRIMARY KEY(patient_id, date));"));
+                "PRIMARY KEY(patient_id, date, doctor_id));"));
 
         stmt.executeUpdate(createTable.toString());
 

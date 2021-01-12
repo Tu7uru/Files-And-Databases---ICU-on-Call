@@ -65,50 +65,7 @@ public class PatientDB {
         return patients;
     }
 
-    /**
-     * Get patient by username
-     *
-     * @param username
-     * @return Patient
-     */
-    public static Patient getPatientsByUsername(String username) throws ClassNotFoundException {
 
-        Statement stmt = null;
-        Connection con = null;
-        try {
-            con = CS360DB.getConnection();
-            stmt = con.createStatement();
-
-            StringBuilder query = new StringBuilder();
-
-            query.append("SELECT * FROM patient" +
-                    "WHERE username=" + username +";");
-
-            stmt.execute(query.toString());
-
-            ResultSet res = stmt.getResultSet();
-
-            Patient pat = new Patient();
-            pat.setUsername(res.getString("username"));
-            pat.setPatient_id(res.getString("patient_id"));
-            pat.setEmail(res.getString("email"));
-            pat.setPassword(res.getString("password"));
-            pat.setName(res.getString("name"));
-            pat.setLastname(res.getString("lastname"));
-            pat.setPhone(res.getString("phone"));
-            pat.setAddress(res.getString("address"));
-            pat.setAmka(res.getString("amka"));
-            pat.setInsurance(res.getString("insurance"));
-
-            return pat;
-        } catch (SQLException ex) {
-            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeDBConnection(stmt, con);
-        }
-
-        return null;
-    }
 
     /**
      * Get patient by id

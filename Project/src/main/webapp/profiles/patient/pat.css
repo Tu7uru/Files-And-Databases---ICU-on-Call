@@ -128,3 +128,15 @@ button:focus {
 i {
 	padding-right: 10px;
 }
+
+span {
+	font-family: sans-serif;
+	color: white;
+	font-size:18px;
+}
+
+.info {
+	top: 3vh;
+	right: 0;
+	position:absolute;
+}

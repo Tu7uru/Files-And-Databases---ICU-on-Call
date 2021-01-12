@@ -85,8 +85,8 @@ public class EmployeeDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT e FROM employee,administrative,assistant_manager " +
-                    "WHERE e.username = " + username+";");
+            query.append("SELECT * FROM employee,administrative,assistant_manager " +
+                    "WHERE username = " + username+";");
 
             stmt.execute(query.toString());
 

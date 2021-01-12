@@ -7,9 +7,11 @@ package gr.csd.uoc.cs360.winter2020.project.CS360DB;
 
 
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,33 +29,35 @@ public class DoctorDB {
      */
     public static List<Doctor> getDoctors() throws ClassNotFoundException {
         List<Doctor> doctors = new ArrayList<>();
-
+        List<String> tables = Arrays.asList(new String[] {"surgeon,neurologist,haematologist,general_practitioner,cardiologist"});
         Statement stmt = null;
         Connection con = null;
         try {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
-            StringBuilder query = new StringBuilder();
+            for(String table : tables) {
+                StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner;");
+                query.append("SELECT * FROM " + table + ";");
 
-            stmt.execute(query.toString());
+                stmt.execute(query.toString());
 
-            ResultSet res = stmt.getResultSet();
+                ResultSet res = stmt.getResultSet();
 
-            while(res.next() == true) {
-                Doctor doc = new Doctor();
-                doc.setUsername(res.getString("username"));
-                doc.setDoctor_id(res.getString("doctor_id"));
-                doc.setEmail(res.getString("email"));
-                doc.setPassword(res.getString("password"));
-                doc.setName(res.getString("name"));
-                doc.setLastname(res.getString("lastname"));
-                doc.setPhone(res.getString("phone"));
-                doc.setAddress(res.getString("address"));
-                doc.setSpec(Doctor.fromString(res.getString("spec")));
-                doctors.add(doc);
+                while (res.next() == true) {
+                    Doctor d = new Doctor();
+                    d.setUsername(res.getString("username"));
+                    d.setDoctor_id(res.getString("doctor_id"));
+                    d.setEmail(res.getString("email"));
+                    d.setPassword(res.getString("password"));
+                    d.setName(res.getString("name"));
+                    d.setLastname(res.getString("lastname"));
+                    d.setPhone(res.getString("phone"));
+                    d.setAddress(res.getString("address"));
+                    d.setSpec(Doctor.fromString(res.getString("spec")));
+                    doctors.add(d);
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,7 +74,7 @@ public class DoctorDB {
      * @return Requested doctor
      */
     public static Doctor getDoctorByUsername(String username) throws ClassNotFoundException {
-        Doctor doc = new Doctor();
+        Doctor doc = null;
 
         Statement stmt = null;
         Connection con = null;
@@ -82,28 +86,30 @@ public class DoctorDB {
 
             query.append("SELECT * FROM doctor WHERE username = '" + username + "';");
 
-            stmt.execute(query.toString());
+            stmt.executeQuery(query.toString());
 
             ResultSet res = stmt.getResultSet();
             if(res.next() == true) {
-                String type = res.getString("type");
-                switch(type) {
-                    case "cardiologist":
+                doc = new Doctor();
+                String s = res.getString("type");
+                StringBuilder q = new StringBuilder();
+                q.append("SELECT * FROM ")
+                        .append(s + " WHERE username='")
+                        .append(username + "';");
+                stmt.executeQuery(q.toString());
+                res = stmt.getResultSet();
+                if(res.next() == true) {
+                    doc.setUsername(res.getString("username"));
+                    doc.setDoctor_id(res.getString("doctor_id"));
+                    doc.setEmail(res.getString("email"));
+                    doc.setPassword(res.getString("password"));
+                    doc.setName(res.getString("name"));
+                    doc.setLastname(res.getString("lastname"));
+                    doc.setPhone(res.getString("phone"));
+                    doc.setAddress(res.getString("address"));
+                    doc.setSpec(Doctor.fromString(s));
 
                 }
-            }
-
-            if(res.next()==false) return null;
-            while(res.next() == true) {
-                doc.setUsername(res.getString("username"));
-                doc.setDoctor_id(res.getString("doctor_id"));
-                doc.setEmail(res.getString("email"));
-                doc.setPassword(res.getString("password"));
-                doc.setName(res.getString("name"));
-                doc.setLastname(res.getString("lastname"));
-                doc.setPhone(res.getString("phone"));
-                doc.setAddress(res.getString("address"));
-                doc.setSpec(Doctor.fromString(res.getString("spec")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -119,49 +125,7 @@ public class DoctorDB {
      *
      * @return Requested doctor
      */
-    public static Doctor getDoctor(String doc_id) throws ClassNotFoundException {
-        Doctor doc = new Doctor();
-
-        Statement stmt = null;
-        Connection con = null;
-        try {
-            con = CS360DB.getConnection();
-            stmt = con.createStatement();
-
-            StringBuilder query = new StringBuilder();
-
-            query.append("SELECT * FROM cardiologist c,haematologist h,surgeon s,neurologist n,general_pracitioner g"
-                            + "WHERE " + "g.doctor_id = " + doc_id+ "h.doctor_id = " + doc_id+ "n.doctor_id = " + doc_id+
-                    "s.doctor_id = " + doc_id+"c.doctor_id = " + doc_id+
-                    ";");
-
-            stmt.execute(query.toString());
-
-            ResultSet res = stmt.getResultSet();
-
-            while(res.next() == true) {
-                doc.setUsername(res.getString("username"));
-                doc.setDoctor_id(res.getString("doctor_id"));
-                doc.setEmail(res.getString("email"));
-                doc.setPassword(res.getString("password"));
-                doc.setName(res.getString("name"));
-                doc.setLastname(res.getString("lastname"));
-                doc.setPhone(res.getString("phone"));
-                doc.setAddress(res.getString("address"));
-                doc.setSpec(Doctor.fromString(res.getString("spec")));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeDBConnection(stmt, con);
-        }
-
-        return doc;
-    }
-
-
-    public static Doctor getDoctorbyUsername(String username) throws ClassNotFoundException
-    {
+    public static Doctor getDoctor(String doctor_id) throws ClassNotFoundException {
         Doctor doc = null;
 
         Statement stmt = null;
@@ -172,28 +136,32 @@ public class DoctorDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM cardiologist,haematologist,surgeon,neurologist,general_pracitioner ")
-                    .append(" WHERE username = ").append("'").append(username).append("';");
+            query.append("SELECT * FROM doctor WHERE doctor_id = '" + doctor_id + "';");
 
-            stmt.execute(query.toString());
+            stmt.executeQuery(query.toString());
 
             ResultSet res = stmt.getResultSet();
-
-            if (res.next() == true) {
-
+            if(res.next() == true) {
                 doc = new Doctor();
+                String s = res.getString("type");
+                StringBuilder q = new StringBuilder();
+                q.append("SELECT * FROM ")
+                        .append(s + " WHERE doctor_id='")
+                        .append(doctor_id + "';");
+                stmt.executeQuery(q.toString());
+                res = stmt.getResultSet();
+                if(res.next() == true) {
+                    doc.setUsername(res.getString("username"));
+                    doc.setDoctor_id(res.getString("doctor_id"));
+                    doc.setEmail(res.getString("email"));
+                    doc.setPassword(res.getString("password"));
+                    doc.setName(res.getString("name"));
+                    doc.setLastname(res.getString("lastname"));
+                    doc.setPhone(res.getString("phone"));
+                    doc.setAddress(res.getString("address"));
+                    doc.setSpec(Doctor.fromString(s));
 
-                doc.setAddress(res.getString("address"));
-                doc.setDoctor_id(res.getString("doctor_id"));
-                doc.setEmail(res.getString("email"));
-                doc.setEmployee_id(res.getString("employee_id"));
-                doc.setLastname(res.getString("lastname"));
-                doc.setName(res.getString("name"));
-                doc.setPassword(res.getString("password"));
-                doc.setPhone(res.getString("phone"));
-                doc.setSpec(Doctor.fromString(res.getString("spec")));
-            } else {
-                System.out.println("Doctor with user name " + username + "was not found");
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);

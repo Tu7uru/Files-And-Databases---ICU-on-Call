@@ -12,6 +12,13 @@ package gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee;
 public class AssistantManager extends Employee {
     String degree_title;
 
+    public AssistantManager() {
+        super();
+        this.degree_title = "";
+
+        generateId();
+    }
+
     public AssistantManager(String name,
                             String lastname,
                             String phone,

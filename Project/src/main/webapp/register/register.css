@@ -148,3 +148,21 @@ i {
   font-size: 8px;
 
 }
+
+#department {
+	margin: 0 auto;
+	display: none;
+}
+
+#department.success {
+	display: block;
+}
+
+#degree {
+	margin: 0 auto;
+	display: none;
+}
+
+#degree.success {
+	display: block;
+}

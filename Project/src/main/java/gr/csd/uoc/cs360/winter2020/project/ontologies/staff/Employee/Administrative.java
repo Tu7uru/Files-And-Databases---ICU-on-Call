@@ -12,6 +12,13 @@ package gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee;
 public class Administrative extends Employee {
     String degree_title;
 
+    public Administrative() {
+        super();
+        this.degree_title = "";
+
+        generateId();
+    }
+
     public Administrative(String name,
                           String lastname,
                           String phone,
@@ -25,7 +32,6 @@ public class Administrative extends Employee {
         this.degree_title = degree_title;
 
         generateId();
-        System.out.println("ADMIN ID" + getEmployee_id());
     }
 
     public String getDegree_title() {
