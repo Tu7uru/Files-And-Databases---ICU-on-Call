@@ -33,11 +33,11 @@ function communicateWithServlet(method, url) {
       var user = response.user.username;
       var type = response.type;
       if(type == "doctor") {
-        window.location.href = "../profiles/doctor/doctor.html?username=" + user;
+        window.location.href = "../profiles/doctor/doctor.html?username=" + user + "&type=doctor";
       } else if(type == "patient") {
         window.location.href = "../profiles/patient/pat.html?username=" + user + "&id=" + response.user.patient_id;
       } else if(type == "nurse") {
-        window.location.href = "../profiles/doctor/doctor.html?username=" + user;
+        window.location.href = "../profiles/doctor/doctor.html?username=" + user + "&type=nurse";
       } else if(type == "employee") {
         //window.location.href = "../profiles/asman/asman.html?username=" + user;
       }

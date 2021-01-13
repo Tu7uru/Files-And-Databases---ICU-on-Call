@@ -67,50 +67,7 @@ public class EmployeeDB {
         return employees;
     }
 
-    /**
-     * Get employee
-     *
-     * @param username requested employee's usernaem
-     * @return employee
-     * @throws ClassNotFoundException
-     */
-    public static Employee getEmployeeByUsername(String username) throws ClassNotFoundException {
-        Employee empl = new Employee();
 
-        Statement stmt = null;
-        Connection con = null;
-        try {
-            con = CS360DB.getConnection();
-            stmt = con.createStatement();
-
-            StringBuilder query = new StringBuilder();
-
-            query.append("SELECT * FROM employee,administrative,assistant_manager " +
-                    "WHERE username = " + username+";");
-
-            stmt.execute(query.toString());
-
-            ResultSet res = stmt.getResultSet();
-
-            while (res.next() == true) {
-                empl.setEmployee_id(res.getString("employee_id"));
-                empl.setName(res.getString("name"));
-                empl.setLastname(res.getString("lastname"));
-                empl.setPhone(res.getString("phone"));
-                empl.setAddress(res.getString("address"));
-                empl.setDepartment(res.getString("department"));
-                empl.setUsername(res.getString("username"));
-                empl.setPassword(res.getString("password"));
-                empl.setEmail(res.getString("email"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeDBConnection(stmt, con);
-        }
-
-        return empl;
-    }
 
     /**
      * Get employee

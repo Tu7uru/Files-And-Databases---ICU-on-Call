@@ -9,15 +9,25 @@
         <link rel="stylesheet" href="./pat.css">
     </head>
     <nav id="nav">
-
+        <button type='button' id='logout' name='button'>Log out</button></div>
+        <div class="nav-info" id="nav-info">
+        </div>
     </nav>
     <br><br><br>
     <body>
         <div class="container">
           <h2>My Info</h2>
 
-          <div class="my-info">
+          <div class="pat-info" id="pat-info">
+            <div id="unchangeable-info">
 
+            </div>
+            <div class="my-info" id="changeable-info">
+                  <input type="password" id="password" name="password" value="" placeholder="Type New Password"><br><br><br><br>
+                  <input type="text" id="phone" name="phone" value="" placeholder="Phone"><br><br><br><br>
+                  <input type="text" id="address" name="address" value="" placeholder="Address"><br><br><br>
+                  <button type="button" id="submit-info" name="button">Update My Info</button>
+            </div>
           </div>
         </div><br><br><br><br><br><br>
           <h2>Make a visit</h2><br>

@@ -17,7 +17,6 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -105,7 +104,7 @@ public class Login extends HttpServlet {
     }
 
     private void searchEmployee(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IOException {
-        Employee p = EmployeeDB.getEmployeeByUsername(request.getParameter("username"));
+        Employee p = EmployeeDB.getEmployeebyUsername(request.getParameter("username"));
 
         if(p == null ) {
             sendError(response);
