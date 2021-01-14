@@ -103,7 +103,6 @@ public class VisitDB {
     public static List<Visit> getVisits(String patient_id) throws ClassNotFoundException {
         List<Visit> visits = new ArrayList<>();
 
-        List<String> diseases = new ArrayList<>();
         Statement stmt = null;
         Connection con = null;
         try {
@@ -115,14 +114,13 @@ public class VisitDB {
             StringBuilder q = new StringBuilder();
 
             q.append("SELECT * FROM visit ")
-                    .append("WHERE patient_id= ").append("'").append(patient_id).append("';");
+                    .append("WHERE patient_id= ").append("'").append(patient_id).append("' ORDER BY date DESC;");
 
             stmt.executeQuery(q.toString());
             ResultSet res = stmt.getResultSet();
             while(res.next() == true) {
 
                 Visit v = new Visit();
-                System.out.println(v.getDate());
                 v.setPatientID(res.getString("patient_id"));
                 v.setDate(res.getString("date"));
                 v.setCure(res.getString("cure"));
@@ -131,43 +129,9 @@ public class VisitDB {
                 v.setState(res.getString("state"));
                 v.setEmployeeID(res.getString("employee_id"));
                 visits.add(v);
-
-                StringBuilder insQuery2 = new StringBuilder();
-
-                insQuery2.append("SELECT symptoms FROM visit_symptoms ")
-                        .append(" WHERE ")
-                        .append(" patient_id = ").append("'").append(patient_id).append("';");
-
-                Statement stmt2 = con.createStatement();
-
-                stmt2.execute(insQuery2.toString());
-
-                ResultSet res2 = stmt2.getResultSet();
-                while(res2.next() == true) {
-
-                    String s = res2.getString("symptoms");
-                    v.addSymptom(s);
-                }
-
-                /*insQuery2.setLength(0);
-
-                insQuery2.append("SELECT * FROM visit_diseases ")
-                        .append(" WHERE ")
-                        .append(" patient_id = ").append("'").append(patient_id).append("';");
-
-                stmt.execute(insQuery2.toString());
-
-                res2 = stmt.getResultSet();
-                while(res2.next() == true) {
-                    String s = new String();
-                    s = res2.getString("diseases");
-                    diseases.add(s);
-
-                }*/
-
-                //v.setDiseasesHistory(diseases);
-
             }
+
+
         } catch (SQLException ex) {
             // Log exception
             Logger.getLogger(VisitDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -215,43 +179,6 @@ public class VisitDB {
                 visit.setPatientID(patient_id);
                 visit.setState(res.getString("state"));
 
-                StringBuilder insQuery2 = new StringBuilder();
-
-                insQuery2.append("SELECT symptoms FROM visit_symptoms ")
-                        .append(" WHERE ")
-                        .append(" patient_id = ").append("'").append(patient_id).append("'")
-                        .append(" AND date = ").append("DATETIME '").append(date).append("';");
-
-                stmt.execute(insQuery2.toString());
-
-                ResultSet res2 = stmt.getResultSet();
-
-                symptoms.clear();
-                while (res2.next() == true) {
-                    symptoms.add(res2.getString("symptoms"));
-                }
-
-                visit.setSymptoms(symptoms);
-
-                StringBuilder insQuery3 = new StringBuilder();
-
-                insQuery3.append("SELECT * FROM visit_diseases")
-                        .append(" WHERE ")
-                        .append(" patient_id = ").append("'").append(patient_id).append("'")
-                        .append(" AND date = ").append("DATETIME '").append(date).append("';");
-
-                stmt.execute(insQuery3.toString());
-
-                ResultSet res3 = stmt.getResultSet();
-
-                diseases.clear();
-                while (res3.next() == true) {
-                    diseases.add(res3.getString("diseases"));
-                }
-
-                visit.setDiseasesHistory(diseases);
-
-
             }
         } catch (SQLException ex) {
             // Log exception
@@ -263,6 +190,83 @@ public class VisitDB {
 
         return visit;
 
+    }
+
+    public static List<String> getVisitSymptoms(Visit v) throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        List<String> symptoms = new ArrayList<>();
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery2 = new StringBuilder();
+
+
+            insQuery2.append("SELECT symptoms FROM visit_symptoms ")
+                    .append(" WHERE ")
+                    .append(" patient_id = ").append("'").append(v.getPatientID()).append("'")
+                    .append(" AND date = ").append("DATETIME '").append(v.getDate()).append("';");
+
+            stmt.execute(insQuery2.toString());
+
+            ResultSet res2 = stmt.getResultSet();
+
+            symptoms.clear();
+            while (res2.next() == true) {
+                symptoms.add(res2.getString("symptoms"));
+            }
+        }  catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(VisitDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+
+        return symptoms;
+    }
+
+    public static List<String> getDiseasesHistory(Visit v) throws ClassNotFoundException {
+        Statement stmt = null;
+        Connection con = null;
+        List<String> diseases = new ArrayList<>();
+
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery3 = new StringBuilder();
+
+            System.out.println("#VISITDB: PATIENT_ID: " + v.getPatientID() + " DATE: "+ v.getDate());
+            insQuery3.append("SELECT * FROM visit_diseases")
+                    .append(" WHERE ")
+                    .append(" patient_id = ").append("'").append(v.getPatientID()).append("'")
+                    .append(" AND date = ").append("DATETIME '").append(v.getDate()).append("';");
+
+            stmt.execute(insQuery3.toString());
+
+            ResultSet res3 = stmt.getResultSet();
+
+            while (res3.next() == true) {
+                System.out.println(res3.getString("diseases"));
+                diseases.add(res3.getString("diseases"));
+            }
+
+
+        }  catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(VisitDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+
+        return diseases;
     }
 
     public static void addVisit(Visit visit) throws ClassNotFoundException {

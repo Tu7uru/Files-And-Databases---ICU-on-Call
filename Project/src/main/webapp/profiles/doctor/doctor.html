@@ -9,14 +9,17 @@
         <link rel="stylesheet" href="./doctor.css">
     </head>
     <nav id="nav">
+      <button type='button' id='log-out' name='button'>Log out</button>
+      <div class='nav-info' id="nav-info">
 
+      </div>
     </nav>
     <body>
         <h1> Find a patient </h1>
         <input type="text" id="patient" name="patient" value="" placeholder="Patient's Username">
-        <button type="button" id="submit" name="button"><i class="fas fa-user-injured"></i>Find Patient</button>
+        <button type="button" id="submitpat" name="button"><i class="fas fa-user-injured"></i>Find Patient</button>
         <br><br><br>
-        <div class="container">
+        <div class="special-container">
             <h2>Patient's Info</h2><br>
             <div class="pat-info" id="pat-info">
 
@@ -27,7 +30,6 @@
             <input type="text" name="doctor_id" value="" placeholder="Doctor"><br><br>
             <input type="text" name="nurse_id" value="" placeholder="Nurse"> <br><br>-->
 
-
         </div><br><br><br>
         <div class="container">
             <h2>Update Patient's Info</h2><br>
@@ -36,7 +38,7 @@
               <input type="text" name="date" value="" placeholder="YYYY-MM-DD"><br><br><br><br><br>
               <input type="text" name="cure" value="" placeholder="Cure"><br><br><br><br><br>
               <input type="text" name="state" value="" placeholder="State"><br><br><br><br><br>
-              <button type="button" id="sumbit" name="button">Update Visit</button>
+              <button type="button" id="sumbit-visit" name="button">Update Visit</button>
             </div>
             <!--<input type="text" name="date" value="" placeholder="Date"> <br><br>
             <input type="text" name="State" value="" placeholder="State"><br><br>
@@ -49,10 +51,16 @@
 
         <div class="container">
           <h2>My Info</h2>
-
-          <div class="my-info">
+          <div id="unchangeable-info">
 
           </div>
+          <div class="my-info" id="changeable-info">
+                <input type="password" id="password" name="password" value="" placeholder="Type New Password"><br><br><br><br>
+                <input type="text" id="phone" name="phone" value="" placeholder="Phone"><br><br><br><br>
+                <input type="text" id="address" name="address" value="" placeholder="Address"><br><br><br>
+                <button type="button" id="submit-info" name="button">Update My Info</button>
+          </div>
+
         </div>
     </body>
     <script src="./doctor.js"></script>

@@ -20,6 +20,7 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.Buffer;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException;
@@ -281,6 +282,81 @@ public class Register extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         out.println("Error: Cannot register user.");
+        out.flush();
+        out.close();
+
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("#REGISTER: IN UPDATE");
+        BufferedReader body = request.getReader();
+        String line;
+        HashMap<String, String> params = new HashMap<>();
+
+        while((line = body.readLine()) != null) {
+            StringTokenizer tk = new StringTokenizer(line, "=");
+            params.put(tk.nextToken(),tk.nextToken());
+        }
+        try {
+            switch(params.get("type")) {
+                case "patient":
+
+                    Patient p = PatientDB.getPatientbyUsername(params.get("username"));
+                    p.setPassword(params.get("password"));
+                    p.setAddress(params.get("address"));
+                    p.setPhone(params.get("phone"));
+
+                    PatientDB.updatePatient(p);
+
+                    sendSuccess(response, p);
+                    break;
+                case "nurse":
+                    Nurse n = NurseDB.getNurseByUsername(params.get("username"));
+                    n.setPassword(params.get("password"));
+                    n.setAddress(params.get("address"));
+                    n.setPhone(params.get("phone"));
+
+                    NurseDB.updateNurse(n);
+                    sendSuccess(response, n);
+                    break;
+                case "doctor":
+                    Doctor d = DoctorDB.getDoctorByUsername(params.get("username"));
+
+                    d.setPassword(params.get("password"));
+                    d.setAddress(params.get("address"));
+                    d.setPhone(params.get("phone"));
+
+                    DoctorDB.updateDoctor(d);
+                    sendSuccess(response, d);
+                    break;
+                case "employee":
+                    Employee e = EmployeeDB.getEmployee(params.get("username"));
+
+                    e.setPassword(params.get("password"));
+                    e.setAddress(params.get("address"));
+                    e.setPhone(params.get("phone"));
+
+                    EmployeeDB.updateEmployee(e);
+                    sendSuccess(response, e);
+                    break;
+                default:
+                        sendError(response);
+                }
+        }catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendSuccess(HttpServletResponse response, Object o) throws IOException {
+        response.setStatus(201);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+
+        String json = new Gson().toJson(o);
+        out.println(json);
         out.flush();
         out.close();
 

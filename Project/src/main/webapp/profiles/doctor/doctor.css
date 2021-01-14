@@ -80,7 +80,7 @@ h2 {
 
 .container {
   margin: 0 auto;
-  width: 600px;
+  width: 800px;
 	min-height: 700px;
 	border-top: 10px solid #81d4fa;
 	border-left: 5px solid #81d4fa;
@@ -89,6 +89,19 @@ h2 {
   border-radius: 25px;
 	box-shadow: 15px 20px #8888;
 }
+
+.special-container {
+  margin: 0 auto;
+  width: 1200px;
+	min-height: 700px;
+	border-top: 10px solid #81d4fa;
+	border-left: 5px solid #81d4fa;
+	border-right: 5px solid #81d4fa;
+	border-bottom: 10px solid #81d4fa;
+  border-radius: 25px;
+	box-shadow: 15px 20px #8888;
+}
+
 textarea {
 	outline:none;
 	text-decoration: none;
@@ -119,11 +132,18 @@ button {
   font-family: sans-serif;
   font-size: 18px;
 	margin-left: 20px;
+	border-radius: 5px ;
 }
 
 button:focus {
   outline: none;
-  background-color: #b3e5fc;
+	color: #0C479D;
+}
+
+button:hover {
+
+	color: #0C479D;
+	text-decoration: underline;
 }
 
 i {
@@ -136,13 +156,14 @@ span {
 	font-size:18px;
 }
 
-.info {
+.nav-info {
 	top: 3vh;
 	right: 0;
 	position:absolute;
 }
 
 .visit table{
+	width: 1000px;
 	margin: 0 auto;
 	border-collapse: collapse;
 }
@@ -157,6 +178,69 @@ table th {
 	padding: 5px 50px;
 }
 
-.pat-info {
+#pat-info {
 	text-align:center;
+}
+
+.nav-info {
+	right: 5vw;
+}
+
+.visit {
+	margin: 0 auto;
+	width:1100px;
+	border-top: 10px solid #81d4fa;
+	border-left: 5px solid #81d4fa;
+	border-right: 5px solid #81d4fa;
+	border-bottom: 10px solid #81d4fa;
+  border-radius: 25px;
+	box-shadow: 10px 15px #8888;
+}
+
+small {
+	font-size: 18px;
+	font-family: sans-serif;
+	color: #81d4fa;
+}
+
+#log-out {
+	top: 6vh;
+}
+
+#make-exam {
+	background-color: white;
+	color: #81d4fa;
+	margin: 0 auto;
+	width: 100px;
+  height: 25px;
+	font-size: 14px;
+}
+
+#assign-exam {
+	background-color: white;
+	color: #81d4fa;
+	margin: 0 auto;
+	width: 100px;
+  height: 25px;
+	font-size: 14px;
+}
+
+#prescribe {
+	background-color: white;
+	color: #81d4fa;
+	margin: 0 auto;
+	width: 100px;
+  height: 25px;
+	font-size: 14px;
+}
+
+#prescribe:hover, #assign-exam:hover, #make-exam:hover {
+  text-decoration: underline;
+	color: #0C479D;
+}
+
+
+#prescribe:focus, #assign-exam:focus, #make-exam:focus {
+  outline: none;
+	color: #0C479D;
 }

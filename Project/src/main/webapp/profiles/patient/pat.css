@@ -119,6 +119,7 @@ button {
   font-family: sans-serif;
   font-size: 18px;
 	margin-left: 20px;
+	border-radius: 5px;
 }
 
 button:focus {
@@ -135,8 +136,38 @@ span {
 	font-size:18px;
 }
 
-.info {
-	top: 3vh;
-	right: 0;
+
+#logout {
+	font-size: 18px;
+	top:2vh;
+	right: 2.5vw;
 	position:absolute;
+	border-radius:5px;
+}
+
+.nav-info{
+	right: 12vw;
+	top:3.5vh;
+	position:absolute;
+}
+
+table{
+	margin: 0 auto;
+	border-collapse: collapse;
+}
+table, td {
+	border: 1px solid #81d4fa;
+}
+
+table th {
+	color:white;
+	border:1px solid white;
+	background-color: #81d4fa;
+	padding: 5px 50px;
+}
+
+small {
+	font-size: 18px;
+	font-family: sans-serif;
+	color: #81d4fa;
 }

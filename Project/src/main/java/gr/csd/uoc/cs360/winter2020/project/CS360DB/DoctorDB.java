@@ -276,8 +276,8 @@ public class DoctorDB {
             query.setLength(0);
 
             query.append("INSERT INTO " +
-                    "doctor (username, type) " +
-                    " VALUES ('" + doc.getUsername() +"','neurologist');");
+                    "doctor (username,doctor_id, type) " +
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
 
             stmt.execute(query.toString());
 
@@ -320,8 +320,8 @@ public class DoctorDB {
             query.setLength(0);
 
             query.append("INSERT INTO " +
-                    "doctor (username, type) " +
-                    " VALUES ('" + doc.getUsername() +"','surgeon');");
+                    "doctor (username,doctor_id, type) " +
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
 
             stmt.execute(query.toString());
 
@@ -363,8 +363,8 @@ public class DoctorDB {
             query.setLength(0);
 
             query.append("INSERT INTO " +
-                    "doctor (username, type) " +
-                    " VALUES ('" + doc.getUsername() +"','general_practitioner');");
+                    "doctor (username,doctor_id, type) " +
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
 
             stmt.execute(query.toString());
 
@@ -408,8 +408,8 @@ public class DoctorDB {
             query.setLength(0);
 
             query.append("INSERT INTO " +
-                    "doctor (username, type) " +
-                    " VALUES ('" + doc.getUsername() +"','haematologist');");
+                    "doctor (username,doctor_id, type) " +
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
 
             stmt.execute(query.toString());
 
@@ -452,8 +452,8 @@ public class DoctorDB {
             query.setLength(0);
 
             query.append("INSERT INTO " +
-                    "doctor (username, type) " +
-                    " VALUES ('" + doc.getUsername() +"','cardiologist');");
+                    "doctor (username,doctor_id, type) " +
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
 
             stmt.execute(query.toString());
 
@@ -523,7 +523,7 @@ public class DoctorDB {
                     .append(" username = ").append("'").append(doc.getUsername()).append("',")
                     .append(" password = ").append("'").append(doc.getPassword()).append("',")
                     .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                    .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
+                    .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("' ")
                     .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
@@ -567,7 +567,7 @@ public class DoctorDB {
                     .append(" username = ").append("'").append(doc.getUsername()).append("',")
                     .append(" password = ").append("'").append(doc.getPassword()).append("',")
                     .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                    .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
+                    .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("' ")
                     .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
@@ -611,7 +611,7 @@ public class DoctorDB {
                         .append(" username = ").append("'").append(doc.getUsername()).append("',")
                         .append(" password = ").append("'").append(doc.getPassword()).append("',")
                         .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
+                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("' ")
                         .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
                 stmt.executeUpdate(insQuery.toString());
@@ -655,7 +655,7 @@ public class DoctorDB {
                         .append(" username = ").append("'").append(doc.getUsername()).append("',")
                         .append(" password = ").append("'").append(doc.getPassword()).append("',")
                         .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
+                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("' ")
                         .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
                 stmt.executeUpdate(insQuery.toString());
@@ -699,7 +699,7 @@ public class DoctorDB {
                         .append(" username = ").append("'").append(doc.getUsername()).append("',")
                         .append(" password = ").append("'").append(doc.getPassword()).append("',")
                         .append(" email = ").append("'").append(doc.getEmail()).append("',")
-                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("'")
+                        .append(" employee_id = ").append("'").append(doc.getEmployee_id()).append("' ")
                         .append(" WHERE doctor_id= ").append("'").append(doc.getDoctor_id()).append("';");
 
                 stmt.executeUpdate(insQuery.toString());

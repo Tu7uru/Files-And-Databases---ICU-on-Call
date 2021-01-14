@@ -43,26 +43,26 @@ public class CS360DB {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
         //creatingTables();
-        __init__();
+        //__init__();
         //__clear__();
-//        List<String> symptoms = new ArrayList<>();
-//        symptoms.add("eye pain");
-//        List<String> diseases = new ArrayList<>();
-//        diseases.add("cancer");
-//
-//        Visit v = new Visit(
-//                "846e6c37-1943-4ea4-859b-8a65e25fd91e",
-//                "2020-01-13",
-//                "medicine",
-//                symptoms,
-//                diseases,
-//                "819f6ddc-9689-4f9c-a139-df160ba05de2",
-//                "",
-//                "",
-//                "DANGEROUS"
-//        );
-//
-//        VisitDB.addVisit(v);
+        List<String> symptoms = new ArrayList<>();
+        symptoms.add("eye pain");
+        List<String> diseases = new ArrayList<>();
+        diseases.add("cancer");
+
+        Visit v = new Visit(
+                "62c2ab31-aa9a-4cb7-ba25-a0be77850303",
+                "2020-01-14",
+                "medicine",
+                symptoms,
+                diseases,
+                "819f6ddc-9689-4f9c-a139-df160ba05de2",
+                "",
+                "",
+                "DANGEROUS"
+        );
+
+        VisitDB.addVisit(v);
     }
 
 
@@ -416,7 +416,6 @@ public class CS360DB {
         stmt.executeUpdate("DELETE FROM visit_symptoms;");
         stmt.executeUpdate("DELETE FROM diagnose_symptoms;");
         stmt.executeUpdate("DELETE FROM disease;");
-        stmt.executeUpdate("DELETE FROM visit_diseases;");
         stmt.executeUpdate("DELETE FROM administrative;");
         stmt.executeUpdate("DELETE FROM assistant_manager;");
         stmt.executeUpdate("DELETE FROM disease_symptoms;");
@@ -455,7 +454,7 @@ public class CS360DB {
 
         createTable.setLength(0);
 
-        createTable.append(("CREATE TABLE IF NOT EXISTS doctor (username varchar(50), type varchar(20), PRIMARY KEY(username));"));
+        createTable.append(("CREATE TABLE IF NOT EXISTS doctor (username varchar(50), doctor_id varchar(50),type varchar(20), PRIMARY KEY(username,doctor_id));"));
 
         stmt.executeUpdate(createTable.toString());
 
@@ -486,7 +485,7 @@ public class CS360DB {
 
         createTable.setLength(0);
 
-        createTable.append(("CREATE TABLE IF NOT EXISTS nurse (username varchar(50), type varchar(20), PRIMARY KEY(username));"));
+        createTable.append(("CREATE TABLE IF NOT EXISTS nurse (username varchar(50), nurse_id varchar(50) , type varchar(20), PRIMARY KEY(username,nurse_id));"));
 
         stmt.executeUpdate(createTable.toString());
 
@@ -567,16 +566,19 @@ public class CS360DB {
         createTable.append(("CREATE TABLE IF NOT EXISTS visit (patient_id varchar(50), " +
                 "date DATE, cure varchar(40), doctor_id varchar(50), nurse_id varchar(50), employee_id varchar(50), " +
                 "state varchar(10)," +
-                "PRIMARY KEY(patient_id, date, doctor_id));"));
+                "CONSTRAINT 'doctor_id' FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id), " +
+                "CONSTRAINT 'nurse_id' FOREIGN KEY (nurse_id) REFERENCES nurse(nurse_id)," +
+                "CONSTRAINT 'employee_id' FOREIGN KEY (employee_id) REFERENCES employee(employee_id)," +
+                "PRIMARY KEY(patient_id, date));"));
 
         stmt.executeUpdate(createTable.toString());
 
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS visit_diseases (" +
-                "patient_id varchar(50), " +
-                "date DATE, diseases varchar(50)," +
-                "PRIMARY KEY(patient_id, date,diseases)" +
+                "date DATE, " +
+                "patient_id varchar(50), diseases varchar(50)," +
+                "PRIMARY KEY(patient_id, date,diseases,doctor_id)" +
                 ");"));
 
         stmt.executeUpdate(createTable.toString());
@@ -628,7 +630,9 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS examination (" +
-                "exam_id varchar(50),name varchar(50), exam_room varchar(50)," +
+                "exam_id varchar(50),name varchar(50), exam_room varchar(50), nurse_id varchar(50), doctor_id varchar(50)," +
+                "CONSTRAINT 'doctor_id' FOREIGN KEY(doctor_id) REFERENCES doctor(doctor_id)," +
+                "CONSTRAINT 'nurse_id' FOREIGN KEY(nurse_id) REFERENCES nurse(nurse_id)," +
                 "PRIMARY KEY(exam_id)" +
                 ");"));
 
@@ -637,7 +641,7 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS diagnose(" +
-                "diagnose_id varchar(50),disease_name varchar(50), exam_id varchar(50)," +
+                "diagnose_id varchar(50),exam_id varchar(50),disease_name varchar(50), " +
                 "nurse_id varchar(50)," +
                 "PRIMARY KEY(diagnose_id,exam_id)" +
                 ");"));
@@ -684,7 +688,7 @@ public class CS360DB {
 
         createTable.setLength(0);
 
-        createTable.append(("CREATE TABLE IF NOT EXISTS did (" +
+        createTable.append(("CREATE TABLE IF NOT EXISTS undergo (" +
                 "patient_id varchar(50), exam_id varchar(50), date DATE, symptoms varchar(50)," +
                 "PRIMARY KEY(patient_id, exam_id)" +
                 ");"));
@@ -721,7 +725,7 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS orders (" +
-                "doctor_id varchar(50), exam_id varchar(50), nurse_id varchar(50)," +
+                "doctor_id varchar(50), exam_id varchar(50), nurse_id varchar(50),exam_name varchar(50),exam_room varchar(50)" +
                 "PRIMARY KEY(exam_id)" +
                 ");"));
 

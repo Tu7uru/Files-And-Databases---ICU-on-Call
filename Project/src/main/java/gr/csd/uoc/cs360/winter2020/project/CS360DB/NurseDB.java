@@ -274,8 +274,8 @@ public class NurseDB {
             ResultSet res = stmtIns.getResultSet();
             
             query.setLength(0);
-            query.append("INSERT INTO nurse (username, type)" +
-                    "VALUES ('" + nurse.getUsername() +"','surgeon');");
+            query.append("INSERT INTO nurse (username,nurse_id, type)" +
+                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','surgeon');");
 
             stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate(query.toString());
@@ -317,8 +317,8 @@ public class NurseDB {
             stmtIns.executeUpdate();
 
             query.setLength(0);
-            query.append("INSERT INTO nurse (username, type)" +
-                    "VALUES ('" + nurse.getUsername() +"','general_practitioner');");
+            query.append("INSERT INTO nurse (username,nurse_id, type)" +
+                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','surgeon');");
 
             stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate(query.toString());
@@ -358,8 +358,8 @@ public class NurseDB {
             stmtIns.executeUpdate();
 
             query.setLength(0);
-            query.append("INSERT INTO nurse (username, type)" +
-                    "VALUES ('" + nurse.getUsername() +"','haematologist');");
+            query.append("INSERT INTO nurse (username,nurse_id, type)" +
+                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','surgeon');");
 
             stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate(query.toString());
@@ -400,8 +400,8 @@ public class NurseDB {
             stmtIns.executeUpdate();
 
             query.setLength(0);
-            query.append("INSERT INTO nurse (username, type)" +
-                    "VALUES ('" + nurse.getUsername() +"','neurologist');");
+            query.append("INSERT INTO nurse (username,nurse_id, type)" +
+                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','surgeon');");
 
             stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate(query.toString());
