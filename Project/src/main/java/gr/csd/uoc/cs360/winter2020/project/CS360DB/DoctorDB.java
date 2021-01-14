@@ -718,7 +718,7 @@ public class DoctorDB {
         From here and later on we will implement the relations of the DB.Which are the combination of one or more DB's.
     */
 
-    public static void AddOrder(String doctor_id,String exam_id,String nurse_id,String exam_name) throws ClassNotFoundException
+    public static void AddOrder(String doctor_id,String exam_id,String nurse_id) throws ClassNotFoundException
     {
         if (doctor_id == null || doctor_id.trim().isEmpty() || nurse_id == null || nurse_id.trim().isEmpty()) {
             return;
@@ -734,12 +734,11 @@ public class DoctorDB {
             StringBuilder insQuery = new StringBuilder();
 
             insQuery.append("INSERT INTO ")
-                    .append(" orders (doctor_id, exam_id, nurse_id, exam_name, ")
+                    .append(" orders (doctor_id, exam_id, nurse_id) ")
                     .append(" VALUES (")
                     .append("'").append(doctor_id).append("',")
                     .append("'").append(exam_id).append("',")
-                    .append("'").append(nurse_id).append("',")
-                    .append("'").append(exam_name).append("');");
+                    .append("'").append(nurse_id).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
@@ -785,7 +784,7 @@ public class DoctorDB {
 
                 Examination exam = new Examination(nurse_id, doctor_id, exam_room, exam_name);
                 ExamDB.addExam(exam);//add new exam
-                AddOrder(doctor_id, exam.getExam_ID(), nurse_id, exam_name); //Add assignment to nurse
+                AddOrder(doctor_id, exam.getExam_ID(), nurse_id); //Add assignment to nurse
                 NurseDB.ConductsExam(exam.getExam_ID(), patient_id, visit_date);    //Nurse conducts the order and inserts in undergo
             }
 
