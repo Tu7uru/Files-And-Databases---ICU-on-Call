@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -139,6 +140,7 @@ public class DiseaseDB {
         Connection con = null;
         List<String> symptoms = new ArrayList<>();
         Disease dis = null;
+        HashMap<String, Integer> best_disease_match = new HashMap<>();
 
         if (symptoms.isEmpty()) {
             return null;
@@ -150,20 +152,50 @@ public class DiseaseDB {
 
             stmt = con.createStatement();
 
-            StringBuilder insQuery = new StringBuilder();
+            StringBuilder insQuery = null;
 
-            insQuery.append("SELECT name FROM disease_symptoms ")
-                    .append(" WHERE ");
+            String name = null;
+            Integer count = null;
 
+            /*
+                We do know that this is not optimal at all but it was the only solution
+                we found to find the best matching disease.
+             */
             for (String symptom : Symptoms) {
 
-                insQuery.append(" systoms = ").append("'").append(name).append("';");
+                insQuery = new StringBuilder();
+
+                insQuery.append("SELECT name FROM disease_symptoms ")
+                        .append(" WHERE ")
+                        .append(" systoms = ").append("'").append(symptoms).append("';");
+
+                stmt.execute(insQuery.toString());
+
+                ResultSet res = stmt.getResultSet();
+
+                if (res.next() == true) {
+                    name = res.getString("name");
+
+                    if (best_disease_match.containsKey(name)) {
+                        count = best_disease_match.get(name) + 1;
+                        best_disease_match.put(name, count);
+                    } else {
+                        best_disease_match.put(name, 1);
+                    }
+                }
+
             }
 
-//notfinitopatsyptom
-            stmt.execute(insQuery.toString());
+            name = "";
+            count = 0;
+            for (String key : best_disease_match.keySet()) {
+                if (best_disease_match.get(key) > count) {
+                    name = key;
+                    count = best_disease_match.get(key);
+                }
+            }
 
-            ResultSet res2 = stmt.getResultSet();
+            dis = DiseaseDB.getDiseaseByName(name);
 
         } catch (SQLException ex) {
             // Log exception
@@ -172,7 +204,10 @@ public class DiseaseDB {
             // close connection
             closeDBConnection(stmt, con);
         }
+
+        return dis;
     }
+
     public static void addDisease(Disease dis) throws ClassNotFoundException {
         try {
             dis.checkFields();

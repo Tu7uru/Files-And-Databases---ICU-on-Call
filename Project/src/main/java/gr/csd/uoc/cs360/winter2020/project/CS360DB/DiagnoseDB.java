@@ -50,15 +50,13 @@ public class DiagnoseDB {
                 diag.setDiagnoseID(res.getString("diagnose_id"));
                 diag.setDisease_Name(res.getString("disease_name"));
                 diag.setExamID(res.getString("exam_id"));
-                diag.setDoctorID(res.getString("doctor_id"));
 
                 StringBuilder querySymp = new StringBuilder();
 
                 querySymp.append("SELECT symptoms FROM diagnose_symptoms ")
                         .append(" WHERE ")
                         .append(" diagnose_id = ").append("'").append(res.getString("diagnose_id")).append("'")
-                        .append(" AND exam_id = ").append("'").append(res.getString("exam_id")).append("'")
-                        .append(" AND doctor_id = ").append("'").append(res.getString("doctor_id")).append("';");
+                        .append(" AND exam_id = ").append("'").append(res.getString("exam_id")).append("';");
 
                 stmt.execute(querySymp.toString());
 
@@ -100,8 +98,7 @@ public class DiagnoseDB {
             insQuery.append("SELECT * FROM diagnose ")
                     .append(" WHERE ")
                     .append(" diagnose_id = ").append("'").append(diagnose_id).append("'")
-                    .append(" AND exam_id = ").append("'").append(exam_id).append("'")
-                    .append(" AND doctor_id = ").append("'").append(doctor_id).append("';");
+                    .append(" AND exam_id = ").append("'").append(exam_id).append("';");
             stmt.execute(insQuery.toString());
 
             ResultSet res = stmt.getResultSet();
@@ -111,15 +108,13 @@ public class DiagnoseDB {
                 diag.setDiagnoseID(diagnose_id);
                 diag.setExamID(exam_id);
                 diag.setDisease_Name(res.getString("disease_name"));
-                diag.setDoctorID(res.getString("doctor_id"));
 
                 StringBuilder insQuery2 = new StringBuilder();
 
                 insQuery2.append("SELECT symptoms FROM diagnose_symptoms ")
                         .append(" WHERE ")
                         .append(" diagnose_id = ").append("'").append(diagnose_id).append("'")
-                        .append(" AND exam_id = ").append("'").append(exam_id).append("'")
-                        .append(" AND doctor_id = ").append("'").append(doctor_id).append("';");
+                        .append(" AND exam_id = ").append("'").append(exam_id).append("';");
 
                 stmt.execute(insQuery2.toString());
 
@@ -169,12 +164,11 @@ public class DiagnoseDB {
             StringBuilder insQuery = new StringBuilder();
 
             insQuery.append("INSERT INTO ")
-                    .append(" diagnose (diagnose_id , exam_id, disease_name, doctor_id) ")
+                    .append(" diagnose (diagnose_id , exam_id, disease_name) ")
                     .append(" VALUES (")
                     .append("'").append(diag.getDiagnoseID()).append("',")
                     .append("'").append(diag.getExamID()).append("',")
-                    .append("'").append(diag.getDisease_Name()).append("',")
-                    .append("'").append(diag.getDoctorID()).append("');");
+                    .append("'").append(diag.getDisease_Name()).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
@@ -187,12 +181,11 @@ public class DiagnoseDB {
                 insQuery2 = new StringBuilder();
 
                 insQuery2.append("INSERT INTO ")
-                        .append(" diagnose_symptoms (diagnose_id , exam_id, symptoms, doctor_id) ")
+                        .append(" diagnose_symptoms (diagnose_id , exam_id, symptoms) ")
                         .append(" VALUES (")
                         .append("'").append(diag.getDiagnoseID()).append("',")
                         .append("'").append(diag.getExamID()).append("',")
-                        .append("'").append(sympt).append("',")
-                        .append("'").append(diag.getDoctorID()).append("');");
+                        .append("'").append(sympt).append("');");
 
                 PreparedStatement stmtIns2 = con.prepareStatement(insQuery2.toString());
                 stmtIns2.executeUpdate();
@@ -208,9 +201,9 @@ public class DiagnoseDB {
     }
 
     //no update diagnose only add new symptom.
-    public void addSymptom(String doctor_id, String symptom, String exam_id, String diagnose_id) throws ClassNotFoundException {
+    public void addSymptom(String symptom, String exam_id, String diagnose_id) throws ClassNotFoundException {
         if (exam_id == null || exam_id.trim().isEmpty() || diagnose_id == null || diagnose_id.trim().isEmpty()
-                || symptom == null || symptom.trim().isEmpty() || doctor_id == null || doctor_id.trim().isEmpty()) {
+                || symptom == null || symptom.trim().isEmpty()) {
             return;
         }
 
@@ -224,12 +217,11 @@ public class DiagnoseDB {
             StringBuilder insQuery = new StringBuilder();
 
             insQuery.append("INSERT INTO ")
-                    .append(" diagnose_symptoms (diagnose_id , exam_id, symptoms, doctor_id) ")
+                    .append(" diagnose_symptoms (diagnose_id , exam_id, symptoms) ")
                     .append(" VALUES (")
                     .append("'").append(diagnose_id).append("',")
                     .append("'").append(exam_id).append("',")
-                    .append("'").append(symptom).append("',")
-                    .append("'").append(doctor_id).append("');");
+                    .append("'").append(symptom).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();

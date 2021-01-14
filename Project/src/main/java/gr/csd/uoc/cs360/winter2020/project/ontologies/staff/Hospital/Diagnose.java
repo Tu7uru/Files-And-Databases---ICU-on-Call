@@ -19,19 +19,17 @@ public class Diagnose {
     private List<String> symptoms = null;
     private String disease_Name = null;
     private String nurse_id = null;
-    private String doctor_id = null;
 
     public Diagnose() {
 
         //generateId();
     }
 
-    public Diagnose(List<String> symptoms, String Disease_name, String exam_id, String nurse_id, String doctor_id) {
+    public Diagnose(List<String> symptoms, String Disease_name, String exam_id, String nurse_id) {
 
         this.symptoms = symptoms;
         this.disease_Name = Disease_name;
         this.exam_id = exam_id;
-        this.doctor_id = doctor_id;
         generateId();
     }
 
@@ -40,8 +38,7 @@ public class Diagnose {
     }
 
     public boolean checkFields() {
-        if (this.diagnose_id == null || this.diagnose_id.trim().isEmpty() || this.exam_id == null || this.exam_id.trim().isEmpty()
-                || this.doctor_id == null || this.diagnose_id.trim().isEmpty()) {
+        if (this.diagnose_id == null || this.diagnose_id.trim().isEmpty() || this.exam_id == null || this.exam_id.trim().isEmpty()) {
             return false;
         }
         return true;
@@ -77,14 +74,6 @@ public class Diagnose {
 
     public String getDisease_Name() {
         return this.disease_Name;
-    }
-
-    public void setDoctorID(String param) {
-        this.doctor_id = param;
-    }
-
-    public String getDoctorID() {
-        return this.doctor_id;
     }
 
 }

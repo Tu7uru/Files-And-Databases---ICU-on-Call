@@ -616,10 +616,10 @@ public class NurseDB {
     /*
         From here and later on we will implement the relations of the DB.Which are the combination of one or more DB's.
      */
-    public static void ConductsExam()
+
+    public static void ConductsExam(String exam_id,String patient_id,String date) throws ClassNotFoundException
     {
-        //State/Cure?
-        //or result of visit?
+        VisitDB.AddUndergo(patient_id, exam_id, date);
     }
 
 

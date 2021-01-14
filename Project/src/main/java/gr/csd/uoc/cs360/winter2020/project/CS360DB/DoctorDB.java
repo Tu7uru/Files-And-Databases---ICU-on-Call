@@ -11,6 +11,7 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Examination;
 
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -70,6 +71,47 @@ public class DoctorDB {
         }
 
         return doctors;
+    }
+
+    public static List<Doctor> getDoctorsBySpec(String spec) throws ClassNotFoundException
+    {
+        List<Doctor> doctors = new ArrayList<>();
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder query = new StringBuilder();
+
+            query.append("SELECT * FROM " + spec + ";");
+
+            stmt.execute(query.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            while (res.next() == true) {
+                Doctor d = new Doctor();
+                d.setUsername(res.getString("username"));
+                d.setDoctor_id(res.getString("doctor_id"));
+                d.setEmail(res.getString("email"));
+                d.setPassword(res.getString("password"));
+                d.setName(res.getString("name"));
+                d.setLastname(res.getString("lastname"));
+                d.setPhone(res.getString("phone"));
+                d.setAddress(res.getString("address"));
+                d.setSpec(Doctor.fromString(res.getString("spec")));
+                doctors.add(d);
+            }
+
+         } catch (SQLException ex) {
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeDBConnection(stmt, con);
+        }
+
+        return doctors;
+
     }
 
     /**
@@ -676,8 +718,46 @@ public class DoctorDB {
         From here and later on we will implement the relations of the DB.Which are the combination of one or more DB's.
     */
 
+    public static void AddOrder(String doctor_id,String exam_id,String nurse_id,String exam_name) throws ClassNotFoundException
+    {
+        if (doctor_id == null || doctor_id.trim().isEmpty() || nurse_id == null || nurse_id.trim().isEmpty()) {
+            return;
+        }
 
-    public static void Orders(String exam_id,String nurse_id,String doctor_id,String exam_room,String exam_name)
+        Statement stmt = null;
+        Connection con = null;
+        try {
+
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("INSERT INTO ")
+                    .append(" orders (doctor_id, exam_id, nurse_id, exam_name, ")
+                    .append(" VALUES (")
+                    .append("'").append(doctor_id).append("',")
+                    .append("'").append(exam_id).append("',")
+                    .append("'").append(nurse_id).append("',")
+                    .append("'").append(exam_name).append("');");
+
+            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
+
+            System.out.println("#DB: The order of doctor" + doctor_id + " to  nurse" + nurse_id + "  was successfully added in the database.");
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+
+    }
+
+
+    public static void DoctorOrdersExamFromNurse(String patient_id,String visit_date,String doctor_id,String exam_room,String exam_name)
     {
         try {
             if (doctor_id == null || doctor_id.trim().isEmpty()) {
@@ -690,7 +770,7 @@ public class DoctorDB {
 
         Statement stmt = null;
         Connection con = null;
-        String nurseid = null;
+        String nurse_id = null;
         try {
 
             con = CS360DB.getConnection();
@@ -701,10 +781,12 @@ public class DoctorDB {
             String doc_spec = DoctorDB.getDoctor(doctor_id).getSpec().toString();
             List<Nurse> nurses = NurseDB.getNursesBySpecialty(doc_spec);
             if (nurses.size() > 0) {
-                nurseid = nurses.get(rand.nextInt(nurses.size() + 1)).getNurse_id();
+                nurse_id = nurses.get(rand.nextInt(nurses.size())).getNurse_id();
 
-                Examination exam = new Examination(nurseid, doctor_id, exam_room, exam_name);
-                ExamDB.addExam(exam);
+                Examination exam = new Examination(nurse_id, doctor_id, exam_room, exam_name);
+                ExamDB.addExam(exam);//add new exam
+                AddOrder(doctor_id, exam.getExam_ID(), nurse_id, exam_name); //Add assignment to nurse
+                NurseDB.ConductsExam(exam.getExam_ID(), patient_id, visit_date);    //Nurse conducts the order and inserts in undergo
             }
 
         } catch (Exception ex) {
@@ -728,10 +810,44 @@ public class DoctorDB {
 
         Statement stmt = null;
         Connection con = null;
+        String patient_id = null;
+        String medicine = null;
+
+        Visit visit = null;
+
         try {
 
-            
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
 
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("INSERT INTO ")
+                    .append(" prescribe (exam_id, med_id, date, doctor_id) ")
+                    .append(" VALUES (")
+                    .append("'").append(exam_id).append("',")
+                    .append("'").append(med_id).append("',")
+                    .append("DATETIME '").append(date).append("',")
+                    .append("'").append(doctor_id).append("');");
+
+            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
+
+            //here we have added the prescription,now we need to update cure of patient.
+            //need patient_id,we will take it from relation Undergo.
+            patient_id = VisitDB.getUndergoPatient_ID(date, exam_id);
+            medicine = MedicationDB.getMedication(med_id).getName();
+            visit = VisitDB.getVisit(patient_id, date, doctor_id);
+
+            visit.setCure(medicine);
+
+            //here we have set the cure as the medicine by name and
+            //now we will update visit cure.
+            VisitDB.updateVisit(visit);
+
+
+            System.out.println("#DB: The prescription of " + MedicationDB.getMedication(med_id)
+                    + " for exam id " + exam_id + " was successfully added and updated in the database.");
 
         } catch (Exception ex) {
             // Log exception

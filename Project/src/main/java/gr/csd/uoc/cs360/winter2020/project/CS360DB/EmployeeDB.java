@@ -200,6 +200,44 @@ public class EmployeeDB {
 
     }
 
+    public static List<Employee> getEmployeesBySpec(String spec) throws ClassNotFoundException {
+        List<Employee> employees = new ArrayList<>();
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder query = new StringBuilder();
+
+            query.append("SELECT * FROM " + spec + ";");
+
+            stmt.execute(query.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            while (res.next() == true) {
+                Employee emp = new Employee();
+                emp.setAddress(res.getString("address"));
+                emp.setDepartment(res.getString("department"));
+                emp.setEmail(res.getString("email"));
+                emp.setEmployee_id(res.getString("employee_id"));
+                emp.setLastname(res.getString("lastname"));
+                emp.setName(res.getString("name"));
+                emp.setPassword(res.getString("password"));
+                emp.setUsername(res.getString("username"));
+                employees.add(emp);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeDBConnection(stmt, con);
+        }
+
+        return employees;
+    }
+
     public static void addEmployee(Employee e) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
@@ -345,7 +383,6 @@ public class EmployeeDB {
             stmt2 = con.createStatement();
 
             StringBuilder query = new StringBuilder();
-            //ΚΕΚΕΚΕΚΕΚΕΕΚΕΚΚΣΚΩΚΚΣΚ
             query.append("UPDATE employee")
                     .append(" SET ")
                     .append("employee_id=").append("'").append(e.getEmployee_id()).append("',")

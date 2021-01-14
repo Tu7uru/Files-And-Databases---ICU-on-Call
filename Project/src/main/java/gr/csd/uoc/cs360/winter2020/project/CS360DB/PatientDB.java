@@ -6,6 +6,7 @@
 package gr.csd.uoc.cs360.winter2020.project.CS360DB;
 
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Diagnose;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Examination;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -240,8 +241,8 @@ public class PatientDB {
      *
      * doctor Assigns Exam is in Doctor.DB
      */
-    public static void PatientReceivesExaminationByDoctor(String patient_id, String doc_id, String exam_id, String date, List<String> symptoms) throws ClassNotFoundException {
-        if (patient_id == null || patient_id.trim().isEmpty() || exam_id == null || exam_id.trim().isEmpty()
+    public static void PatientReceivesExaminationByDoctor(String patient_id, String doc_id, String date, List<String> symptoms, String ex_room, String ex_name) throws ClassNotFoundException {
+        if (patient_id == null || patient_id.trim().isEmpty()
                 || date == null || date.trim().isEmpty() || symptoms.isEmpty()) {
             return;
         }
@@ -250,12 +251,16 @@ public class PatientDB {
         Connection con = null;
 
         try {
-
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
-            Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam_id, null, doc_id);
+            Examination exam = new Examination(null, doc_id, ex_room, ex_name);
+            ExamDB.addExam(exam);
+
+            Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam.getExam_ID(), null);
+            //need to implement the find disease!!
             DiagnoseDB.addDiagnose(diag);
+            VisitDB.AddUndergo(patient_id, exam.getExam_ID(), date);
 
         } catch (SQLException ex) {
             // Log exception

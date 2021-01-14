@@ -56,10 +56,9 @@ public class VisitDB {
 
                 StringBuilder insQuery2 = new StringBuilder();
 
-                insQuery2.append("SELECT * FROM visit_symptoms ")
+                insQuery2.append("SELECT symptoms FROM visit_symptoms ")
                         .append(" WHERE ")
-                        .append(" date = ").append("'").append(res.getString("date")).append("'")
-                        .append(" AND doctor_id = ").append("'").append(res.getString("doctor_id")).append("'")
+                        .append(" date = ").append("DATETIME '").append(res.getString("date")).append("'")
                         .append(" AND patient_id = ").append("'").append(res.getString("patient_id")).append("';");
 
                 stmt.execute(insQuery2.toString());
@@ -75,10 +74,9 @@ public class VisitDB {
 
                 StringBuilder insQuery3 = new StringBuilder();
 
-                insQuery3.append("SELECT * FROM visit_diseases ")
+                insQuery3.append("SELECT diseases FROM visit_diseases ")
                         .append(" WHERE ")
-                        .append(" visit_date = ").append("'").append(res.getString("date")).append("'")
-                        .append(" AND doctor_id = ").append("'").append(res.getString("doctor_id")).append("'")
+                        .append(" date = ").append("DATETIME '").append(res.getString("date")).append("'")
                         .append(" AND patient_id = ").append("'").append(res.getString("patient_id")).append("';");
 
                 stmt.execute(insQuery3.toString());
@@ -199,7 +197,7 @@ public class VisitDB {
 
             insQuery.append("SELECT * FROM visit ")
                     .append(" WHERE ")
-                    .append(" date = ").append("'").append(date).append("'")
+                    .append(" date = ").append("DATETIME '").append(date).append("'")
                     .append(" AND doctor_id = ").append("'").append(doctor_id).append("'")
                     .append(" AND patient_id = ").append("'").append(patient_id).append("';");
 
@@ -219,11 +217,10 @@ public class VisitDB {
 
                 StringBuilder insQuery2 = new StringBuilder();
 
-                insQuery2.append("SELECT * FROM visit_symptoms ")
+                insQuery2.append("SELECT symptoms FROM visit_symptoms ")
                         .append(" WHERE ")
                         .append(" patient_id = ").append("'").append(patient_id).append("'")
-                        .append(" AND doctor_id = ").append("'").append(doctor_id).append("'")
-                        .append(" AND date = ").append("'").append(date).append("';");
+                        .append(" AND date = ").append("DATETIME '").append(date).append("';");
 
                 stmt.execute(insQuery2.toString());
 
@@ -241,8 +238,7 @@ public class VisitDB {
                 insQuery3.append("SELECT * FROM visit_diseases")
                         .append(" WHERE ")
                         .append(" patient_id = ").append("'").append(patient_id).append("'")
-                        .append(" AND doctor_id = ").append("'").append(doctor_id).append("'")
-                        .append(" AND visit_date = ").append("'").append(date).append("';");
+                        .append(" AND date = ").append("DATETIME '").append(date).append("';");
 
                 stmt.execute(insQuery3.toString());
 
@@ -293,7 +289,7 @@ public class VisitDB {
                     .append(" visit (patient_id, date, cure, doctor_id, nurse_id, employee_id, state) ")
                     .append(" VALUES (")
                     .append("'").append(visit.getPatientID()).append("',")
-                    .append("DATE '").append(visit.getDate()).append("',")
+                    .append("DATETIME '").append(visit.getDate()).append("',")
                     .append("'").append(visit.getCure()).append("',")
                     .append("'").append(visit.getDoctorID()).append("',")
                     .append("'").append(visit.getNurseID()).append("',")
@@ -310,12 +306,12 @@ public class VisitDB {
                 insQuery2 = new StringBuilder();
 
                 insQuery2.append("INSERT INTO ")
-                        .append(" visit_diseases (visit_date, doctor_id, patient_id, diseases) ")
+                        .append(" visit_diseases (date, doctor_id, patient_id, diseases) ")
                         .append(" VALUES (")
                         .append("'").append(visit.getDate()).append("',")
                         .append("'").append(visit.getDoctorID()).append("',")
                         .append("'").append(visit.getPatientID()).append("',")
-                        .append("DATE '").append(visit.getDate()).append("',")
+                        .append("DATETIME '").append(visit.getDate()).append("',")
                         .append("'").append(dis).append("');");
 
                 PreparedStatement stmtIns2 = con.prepareStatement(insQuery2.toString());
@@ -332,7 +328,7 @@ public class VisitDB {
                         .append(" visit_symptoms (patient_id, date, symptoms, doctor_id) ")
                         .append(" VALUES (")
                         .append("'").append(visit.getPatientID()).append("',")
-                        .append("DATE '").append(visit.getDate()).append("',")
+                        .append("DATETIME '").append(visit.getDate()).append("',")
                         .append("'").append(sympt).append("',")
                         .append("'").append(visit.getDoctorID()).append("');");
                 PreparedStatement stmtIns3 = con.prepareStatement(insQuery3.toString());
@@ -372,7 +368,7 @@ public class VisitDB {
                     .append(" visit_symptoms (patient_id, date, symptoms, doctor_id) ")
                     .append(" VALUES (")
                     .append("'").append(patient_id).append("',")
-                    .append("DATE '").append(date).append("',")
+                    .append("DATERIME '").append(date).append("',")
                     .append("'").append(symptom).append("',")
                     .append("'").append(doctor_id).append("');");
 
@@ -406,9 +402,9 @@ public class VisitDB {
             StringBuilder insQuery = new StringBuilder();
 
             insQuery.append("INSERT INTO ")
-                    .append(" visit_diseases (visit_date, doctor_id, patient_id, diseases) ")
+                    .append(" visit_diseases (date, doctor_id, patient_id, diseases) ")
                     .append(" VALUES (")
-                    .append("DATE '").append(visit_date).append("',")
+                    .append("DATETIME '").append(visit_date).append("',")
                     .append("'").append(doctor_id).append("',")
                     .append("'").append(patient_id).append("',")
                     .append("'").append(disease).append("');");
@@ -447,10 +443,13 @@ public class VisitDB {
 
             insQuery.append("UPDATE visit ")
                     .append(" SET ")
+                    .append(" cure = ").append("'").append(visit.getCure()).append("'")
+                    .append(" nurse_id = ").append("'").append(visit.getNurseID()).append("'")
+                    .append(" employee_id = ").append("'").append(visit.getEmployeeID()).append("'")
                     .append(" state = ").append("'").append(visit.getState()).append("'")
                     .append(" WHERE patient_id = ").append("'").append(visit.getPatientID()).append("' ")
                     .append(" AND doctor_id = ").append("'").append(visit.getDoctorID()).append("' ")
-                    .append(" AND date = ").append("'").append(visit.getDate()).append("';");
+                    .append(" AND date = ").append("DATETIME '").append(visit.getDate()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
             System.out.println("#DB: The entry visit was successfully updated in the database.");
@@ -464,9 +463,148 @@ public class VisitDB {
         }
     }
 
+
+
     /*
         From here and later on we will implement the relations of the DB.Which are the combination of one or more DB's.
      */
+    public static void AddUndergo(String patient_id, String exam_id, String date) throws ClassNotFoundException {
+        if (patient_id == null || patient_id.trim().isEmpty() || exam_id == null || exam_id.trim().isEmpty()) {
+            return;
+        }
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("INSERT INTO ")
+                    .append(" undergo (patient_id, exam_id, date) ")
+                    .append(" VALUES (")
+                    .append("'").append(patient_id).append("',")
+                    .append("'").append(exam_id).append("',")
+                    .append("DATETIME '").append(date).append("');");
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(VisitDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+    }
+
+    public static String getUndergoPatient_ID(String date, String exam_id) throws ClassNotFoundException {
+
+        Statement stmt = null;
+        Connection con = null;
+        String patient_id = null;
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT patient_id FROM undergo ")
+                    .append(" WHERE ")
+                    .append(" exam_id = ").append("'").append(exam_id).append("' ")
+                    .append(" AND date = ").append("DATETIME '").append(date).append("';");
+
+            stmt.execute(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if (res.next() == true) {
+                patient_id = res.getString("patient_id");
+            }
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(VisitDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+        return patient_id;
+    }
+
+    public static String getUndergoExam_ID(String date, String patient_id) throws ClassNotFoundException {
+
+        Statement stmt = null;
+        Connection con = null;
+        String exam_id = null;
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT exam_id FROM undergo ")
+                    .append(" WHERE ")
+                    .append(" patient_id = ").append("'").append(patient_id).append("' ")
+                    .append(" AND date = ").append("DATETIME '").append(date).append("';");
+
+            stmt.execute(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if (res.next() == true) {
+                exam_id = res.getString("exam_id");
+            }
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(VisitDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+        return exam_id;
+
+    }
+
+    public static String getUndergoDate(String exam_id, String patient_id) throws ClassNotFoundException {
+
+        Statement stmt = null;
+        Connection con = null;
+        String date = null;
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT date FROM undergo ")
+                    .append(" WHERE ")
+                    .append(" patient_id = ").append("'").append(patient_id).append("' ")
+                    .append(" AND exam_id = ").append("'").append(exam_id).append("';");
+
+            stmt.execute(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if (res.next() == true) {
+                date = res.getString("date");
+            }
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(VisitDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+        return date;
+
+    }
+
     public static void VisitTEP(Patient pat, Visit visit) throws ClassNotFoundException {
 
         try {
