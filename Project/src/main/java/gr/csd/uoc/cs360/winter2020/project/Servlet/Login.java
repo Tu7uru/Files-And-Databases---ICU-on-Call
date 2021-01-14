@@ -115,7 +115,63 @@ public class Login extends HttpServlet {
         }
     }
 
-    private void sendSuccess(Object p, HttpServletResponse response,String type) throws IOException {
+    private void sendSuccess(Doctor p, HttpServletResponse response,String type) throws IOException {
+        PrintWriter out = response.getWriter();
+        response.setStatus(200);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        HashMap<String, Object> h = new HashMap<>();
+        h.put("status", 200);
+        h.put("responseText", "User found");
+        h.put("user",p);
+        h.put("type", type);
+
+        System.out.println("#LOGIN: " + p);
+
+        String json = new Gson().toJson(h);
+        out.println(json);
+        out.flush();
+        out.close();
+    }
+
+    private void sendSuccess(Employee p, HttpServletResponse response,String type) throws IOException {
+        PrintWriter out = response.getWriter();
+        response.setStatus(200);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        HashMap<String, Object> h = new HashMap<>();
+        h.put("status", 200);
+        h.put("responseText", "User found");
+        h.put("user",p);
+        h.put("type", type);
+
+        String json = new Gson().toJson(h);
+        out.println(json);
+        out.flush();
+        out.close();
+    }
+
+    private void sendSuccess(Patient p, HttpServletResponse response,String type) throws IOException {
+        PrintWriter out = response.getWriter();
+        response.setStatus(200);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        HashMap<String, Object> h = new HashMap<>();
+        h.put("status", 200);
+        h.put("responseText", "User found");
+        h.put("user",p);
+        h.put("type", type);
+
+        String json = new Gson().toJson(h);
+        out.println(json);
+        out.flush();
+        out.close();
+    }
+
+    private void sendSuccess(Nurse p, HttpServletResponse response,String type) throws IOException {
         PrintWriter out = response.getWriter();
         response.setStatus(200);
         response.setContentType("application/json");

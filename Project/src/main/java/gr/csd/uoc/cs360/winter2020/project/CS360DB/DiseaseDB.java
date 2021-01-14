@@ -155,10 +155,10 @@ public class DiseaseDB {
             insQuery.append("SELECT name FROM disease_symptoms ")
                     .append(" WHERE ");
 
-            for (String symptom : Symptoms) {
-
-                insQuery.append(" systoms = ").append("'").append(name).append("';");
-            }
+//            for (String symptom : Symptoms) {
+//
+//                insQuery.append(" symptoms = ").append("'").append(name).append("';");
+//            }
 
 //notfinitopatsyptom
             stmt.execute(insQuery.toString());
@@ -172,6 +172,7 @@ public class DiseaseDB {
             // close connection
             closeDBConnection(stmt, con);
         }
+        return dis;
     }
     public static void addDisease(Disease dis) throws ClassNotFoundException {
         try {

@@ -177,5 +177,21 @@ public class Doctor implements User{
             return Spec.NEUROLOGIST;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", doctor_id='" + doctor_id + '\'' +
+                ", employee_id='" + employee_id + '\'' +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", spec=" + spec +
+                '}';
+    }
 }
 

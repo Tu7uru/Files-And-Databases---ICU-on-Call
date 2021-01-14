@@ -31,6 +31,7 @@ function communicateWithServlet(method, url) {
     var response = JSON.parse(http.response);
     if(response.status == 200) {
       var user = response.user.username;
+      console.log(user);
       var type = response.type;
       if(type == "doctor") {
         window.location.href = "../profiles/doctor/doctor.html?username=" + user + "&type=doctor";

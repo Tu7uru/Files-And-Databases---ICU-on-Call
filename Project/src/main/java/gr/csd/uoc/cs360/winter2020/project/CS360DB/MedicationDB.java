@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Random;
 
 /**
  *
@@ -98,6 +99,41 @@ public class MedicationDB {
         }
 
         return med;
+    }
+
+    public static String getMedicationId(String type) {
+        Statement stmt = null;
+        Connection con = null;
+        String id = null;
+
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT med_id FROM medication ")
+                    .append(" WHERE ")
+                    .append(" use_for = ").append("'").append(type).append("' ORDER BY exp_date;");
+
+            stmt.execute(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            if(res.next() == true) {
+                id = res.getString("med_id");
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            // Log exception
+            Logger.getLogger(MedicationDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+
+        return id;
     }
 
     public static void addMedication(Medication med) throws ClassNotFoundException {
