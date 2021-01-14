@@ -45,6 +45,7 @@ public class ExamDB {
                 exam.setNurse_ID(res.getString("nurse_id"));
                 exam.setExam_Room(res.getString("exam_room"));
                 exam.setName(res.getString("name"));
+                exam.setDoctorID(res.getString("doctor_id"));
 
                 examinations.add(exam);
 
@@ -58,7 +59,7 @@ public class ExamDB {
         return examinations;
     }
 
-    public static Examination getExam(String exam_id, String nurse_id) throws ClassNotFoundException {
+    public static Examination getExam(String exam_id) throws ClassNotFoundException {
         Statement stmt = null;
         Connection con = null;
         Examination exam = null;
@@ -73,8 +74,7 @@ public class ExamDB {
 
             insQuery.append("SELECT * FROM disease ")
                     .append(" WHERE ")
-                    .append(" nurse_id = ").append("'").append(nurse_id).append("';")
-                    .append(" AND exam_id = ").append("'").append(exam_id).append("';");
+                    .append(" exam_id = ").append("'").append(exam_id).append("';");
 
             stmt.execute(insQuery.toString());
 
@@ -83,7 +83,7 @@ public class ExamDB {
             if (res.next() == true) {
                 exam = new Examination();
                 exam.setExam_ID(exam_id);
-                exam.setNurse_ID(nurse_id);
+                exam.setNurse_ID(res.getString("nurse_id"));
                 exam.setExam_Room(res.getString("exam_room"));
                 exam.setName(res.getString("name"));
             }
@@ -117,12 +117,13 @@ public class ExamDB {
             StringBuilder insQuery = new StringBuilder();
 
             insQuery.append("INSERT INTO ")
-                    .append(" examination (exam_id, name, exam_room, nurse_id) ")
+                    .append(" examination (exam_id, name, exam_room, nurse_id, doctor_id) ")
                     .append(" VALUES (")
                     .append("'").append(exam.getExam_ID()).append("',")
                     .append("'").append(exam.getName()).append("',")
                     .append("'").append(exam.getExam_Room()).append("',")
-                    .append("'").append(exam.getNurse_ID()).append("');");
+                    .append("'").append(exam.getNurse_ID()).append("',")
+                    .append("'").append(exam.getDoctorID()).append("');");
 
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());

@@ -241,9 +241,9 @@ public class PatientDB {
      *
      * doctor Assigns Exam is in Doctor.DB
      */
-    public static void PatientReceivesExaminationByDoctor(Examination exam, String patient_id,
-                                                          String doc_id,
-                                                          String date, List<String> symptoms) throws ClassNotFoundException {
+    public static void PatientReceivesExaminationByDoctor(String patient_id, String doc_id,
+            String date, List<String> symptoms,
+            String ex_room, String ex_name) throws ClassNotFoundException {
         if (patient_id == null || patient_id.trim().isEmpty()
                 || date == null || date.trim().isEmpty() || symptoms.isEmpty()) {
             return;
@@ -253,12 +253,16 @@ public class PatientDB {
         Connection con = null;
 
         try {
-
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
-            Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam.getExam_ID(), null, doc_id);
+            Examination exam = new Examination(null, doc_id, ex_room, ex_name);
+            ExamDB.addExam(exam);
+
+            Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam.getExam_ID(), null);
+            //need to implement the find disease!!
             DiagnoseDB.addDiagnose(diag);
+            VisitDB.AddUndergo(patient_id, exam.getExam_ID(), date);
 
         } catch (SQLException ex) {
             // Log exception

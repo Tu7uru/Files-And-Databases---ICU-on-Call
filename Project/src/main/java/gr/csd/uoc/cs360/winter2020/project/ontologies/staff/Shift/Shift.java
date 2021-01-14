@@ -33,8 +33,7 @@ public class Shift {
     }
 
     public boolean checkFields() {
-        if (date == null || date.trim().isEmpty() || doctor_id == null || doctor_id.trim().isEmpty()
-                || nurse_id == null || nurse_id.trim().isEmpty() || employee_id == null || employee_id.trim().isEmpty()) {
+        if (date == null || date.trim().isEmpty()) {
             return false;
         }
         return true;

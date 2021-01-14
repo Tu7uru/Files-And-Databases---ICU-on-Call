@@ -106,6 +106,7 @@ public class MedicationDB {
         Connection con = null;
         String id = null;
 
+
         try {
 
             con = CS360DB.getConnection();
@@ -118,11 +119,9 @@ public class MedicationDB {
                     .append(" WHERE ")
                     .append(" use_for = ").append("'").append(type).append("' ORDER BY exp_date;");
 
-            stmt.execute(insQuery.toString());
-
             ResultSet res = stmt.getResultSet();
 
-            if(res.next() == true) {
+            if (res.next() == true) {
                 id = res.getString("med_id");
             }
         } catch (SQLException | ClassNotFoundException ex) {
@@ -132,8 +131,46 @@ public class MedicationDB {
             // close connection
             closeDBConnection(stmt, con);
         }
-
         return id;
+    }
+
+    public static Medication getMedicationByName(String name) throws ClassNotFoundException {
+            Statement stmt = null;
+            Connection con = null;
+            Medication med = null;
+
+            try {
+                StringBuilder insQuery = new StringBuilder();
+
+                insQuery.append("SELECT * FROM medication ")
+                        .append(" WHERE ")
+                        .append(" name = ").append("'").append(name).append("';");
+
+
+                stmt.execute(insQuery.toString());
+
+                ResultSet res = stmt.getResultSet();
+
+
+
+                if (res.next() == true) {
+                    med = new Medication();
+                    med.setDosage(res.getString("dosage"));
+                    med.setExp_Date(res.getString("exp_date"));
+                    med.setMed_ID(res.getString("med_id"));
+                    med.setName(res.getString("name"));
+                    med.setType(res.getString("type"));
+                    med.setUse_for(res.getString("use_for"));
+                }
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(MedicationDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+
+        return med;
     }
 
     public static void addMedication(Medication med) throws ClassNotFoundException {
@@ -163,7 +200,7 @@ public class MedicationDB {
                     .append("'").append(med.getType()).append("',")
                     .append("'").append(med.getDosage()).append("',")
                     .append("'").append(med.getUse_for()).append("',")
-                    .append("'").append(med.getExp_Date()).append("');");
+                    .append("DATETIME '").append(med.getExp_Date()).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
