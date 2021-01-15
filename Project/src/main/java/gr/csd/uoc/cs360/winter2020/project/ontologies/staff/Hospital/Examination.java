@@ -24,7 +24,10 @@ public class Examination {
         //generateId();
     }
 
-    public Examination(String nurse_id, String doctor_id, String Exam_room, String name) {
+    public Examination(String nurse_id,
+                       String doctor_id,
+                       String Exam_room,
+                       String name) {
         this.exam_room = Exam_room;
         this.nurse_id = nurse_id;
         this.doctor_id = doctor_id;

@@ -275,7 +275,7 @@ public class NurseDB {
             
             query.setLength(0);
             query.append("INSERT INTO nurse (username,nurse_id, type)" +
-                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','surgeon');");
+                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','nurse_surgeon');");
 
             stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate(query.toString());
@@ -318,7 +318,7 @@ public class NurseDB {
 
             query.setLength(0);
             query.append("INSERT INTO nurse (username,nurse_id, type)" +
-                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','surgeon');");
+                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','nurse_general_practitioner');");
 
             stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate(query.toString());
@@ -359,7 +359,7 @@ public class NurseDB {
 
             query.setLength(0);
             query.append("INSERT INTO nurse (username,nurse_id, type)" +
-                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','surgeon');");
+                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','nurse_haematologist');");
 
             stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate(query.toString());
@@ -401,7 +401,7 @@ public class NurseDB {
 
             query.setLength(0);
             query.append("INSERT INTO nurse (username,nurse_id, type)" +
-                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','surgeon');");
+                    "VALUES ('" + nurse.getUsername() +"','"+nurse.getNurse_id()+"','nurse_neurologist');");
 
             stmtIns = con.prepareStatement(query.toString());
             stmtIns.executeUpdate(query.toString());

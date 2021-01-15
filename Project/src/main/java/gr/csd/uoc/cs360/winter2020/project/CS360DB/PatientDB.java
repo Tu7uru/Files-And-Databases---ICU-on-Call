@@ -315,7 +315,7 @@ public class PatientDB {
 
         String hospitalization = null;
 
-        Visit v = VisitDB.getVisit(patient_id, date, doctor_id);
+        Visit v = VisitDB.getVisit(patient_id, date);
         Disease patient_dis = PatientSuffersFrom(v.getSymptoms());
         hospitalization = decideHospitalizationByDisease(patient_dis.getName());
         v.setState(hospitalization);

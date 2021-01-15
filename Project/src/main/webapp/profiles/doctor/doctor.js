@@ -9,6 +9,7 @@ var mkexam = undefined;
 var mkexamdone = false;
 var asexam = undefined;
 var presc = undefined;
+var doneEvents = false;
 var type = undefined;
 var user = undefined;
 var id = undefined;
@@ -73,54 +74,145 @@ function communicateWithServlet(method, url) {
   var http = new XMLHttpRequest();
   http.onload = function() {
     if(http.status == 200 ) {
-
+      // PAT INFO
         var response = http.response;
         patinfo.innerHTML = patinfo.innerHTML + response;
         mkexam = document.getElementById("make-exam");
         asexam = document.getElementById("assign-exam");
         presc = document.getElementById("prescribe");
-
+        var row = mkexam.parentElement.parentElement.cells;
         mkexam.addEventListener("click", e => {
-          var data;
-          //communicateWithServlet('POST', '/Project/ExamServlet', data );
+          var data = 'date=' + row[1].innerHTML + "\n" +
+                        'doctor_id=' + id + "\n" +
+                        'patient_id=' + row[0].innerHTML+ "\n" +
+                        'type=make';
+
+          console.log(data);
+
           if(mkexamdone == false) {
-            mkexamdone = true;
-            mkexam.innerHTML = "<i class='fas fa-lock-open'></i>Re-Examine";
-            asexam.innerHTML = "<i class='fas fa-lock-open'></i>Assign Exam";
-            presc.innerHTML = "<i class='fas fa-lock-open'></i>Prescribe";
+                  mkexamdone = true;
+                  mkexam.innerHTML = "<i class='fas fa-lock-open'></i>Re-Examine";
+                  asexam.innerHTML = "<i class='fas fa-lock-open'></i>Assign Exam";
+                  presc.innerHTML = "<i class='fas fa-lock-open'></i>Prescribe";
           }
+
+          examinePatient('POST', '/Project/ExamServlet', data );
+
         });
 
     } else if(http.status == 207) {
-      console.log(http.response);
-      var response = JSON.parse(http.response);
+      // MY INFO
+        console.log(http.response);
+        var response = JSON.parse(http.response);
 
-      var user = response.user;
-      var password = document.getElementById("password");
-      var phone = document.getElementById("phone");
-      var address = document.getElementById("address");
-      var unchinfo = document.getElementById("unchangeable-info");
-      if(type == "doctor") {
-        id = response.user.doctor_id;
-      } else {
-        id = response.user.nurse_id;
-      }
+        var user = response.user;
+        var password = document.getElementById("password");
+        var phone = document.getElementById("phone");
+        var address = document.getElementById("address");
+        var unchinfo = document.getElementById("unchangeable-info");
+        if(type == "doctor") {
+          id = response.user.doctor_id;
+        } else {
+          id = response.user.nurse_id;
+        }
 
-      password.value =  user.password;
-      phone.value = user.phone;
-      address.value = user.address;
+        password.value =  user.password;
+        phone.value = user.phone;
+        address.value = user.address;
 
-      var unchdata = "<small>USERNAME:</small> " + user.username + "<br><br><br>" +
-                      "<small>NAME:</small> " + user.name + "<br><br><br>" +
-                      "<small>LASTNAME:</small> " + user.lastname + "<br><br><br>" +
-                      "<small>EMAIL:</small> " + user.email + "<br><br><br>";
+        var unchdata = "<small>USERNAME:</small> " + user.username + "<br><br><br>" +
+                        "<small>NAME:</small> " + user.name + "<br><br><br>" +
+                        "<small>LASTNAME:</small> " + user.lastname + "<br><br><br>" +
+                        "<small>EMAIL:</small> " + user.email + "<br><br><br>";
 
-      unchinfo.innerHTML = unchdata;
+        unchinfo.innerHTML = unchdata;
+
 
 
     }
-  };
+  }
 
   http.open(method, url);
   http.send();
+};
+
+function examinePatient(method,url,data) {
+  var http = new XMLHttpRequest();
+
+  http.onload = function () {
+    if(http.status == 200) {
+      var response = JSON.parse(http.response);
+      if (doneEvents == false) {
+        console.log("checkhere: \n"+response);
+        initEvents(response.exam_room, response.exam_name, response.exam_id);
+      }
+    }
+  }
+
+  console.log("sending to " + url);
+
+  http.open(method, url);
+  http.send(data);
+}
+
+function initEvents(examRoom, examName, examID) {
+  asexam.addEventListener("click", e => {
+    var row = asexam.parentElement.parentElement.cells;
+
+    var data = 'date=' + row[1].innerHTML + "\n" +
+                  'doctor_id=' + id + "\n" +
+                  'patient_id=' + row[0].innerHTML+ "\n" +
+                  'exam_room=' + examRoom+ "\n" +
+                  'exam_name=' + examName+ "\n" +
+                  'type=assign';
+
+    asexam.innerHTML = "<i class='fas fa-check'></i></i>Assign Exam";
+    console.log(data);
+
+    assignExam('POST','/Project/ExamServlet',data);
+
+  });
+
+  presc.addEventListener("click", e => {
+    var row = presc.parentElement.parentElement.cells;
+
+    var data = 'date=' + row[1].innerHTML + "\n" +
+                  'doctor_id=' + id + "\n" +
+                  'exam_id=' + examID + "\n" +
+                  'type=prescribe';
+
+    console.log(data);
+
+    presc.innerHTML = "<i class='fas fa-check'></i></i>Prescribe";
+    prescribeMed('POST','/Project/ExamServlet',data);
+
+  });
+
+  doneEvents = true;
+}
+
+function assignExam(method,url,data) {
+  var http = new XMLHttpRequest();
+
+  http.onload = function () {
+      console.log(http.response);
+
+  }
+
+  http.open(method,url);
+  http.send(data);
+}
+
+function prescribeMed(method,url,data) {
+  var http = new XMLHttpRequest();
+
+  http.onload = function () {
+      if(http.status == 200) {
+        console.log(http.response);
+
+      }
+  }
+
+  http.open(method,url);
+  http.send(data);
 }

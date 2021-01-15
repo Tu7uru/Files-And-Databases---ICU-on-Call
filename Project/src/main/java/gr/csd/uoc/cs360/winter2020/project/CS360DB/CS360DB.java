@@ -9,6 +9,7 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Administrative;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.AssistantManager;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Employee;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Disease;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
@@ -44,8 +45,9 @@ public class CS360DB {
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
         //creatingTables();
         //__init__();
+        __init_diseases__();
         //__clear__();
-        List<String> symptoms = new ArrayList<>();
+        /*List<String> symptoms = new ArrayList<>();
         symptoms.add("eye pain");
         List<String> diseases = new ArrayList<>();
         diseases.add("cancer");
@@ -56,15 +58,137 @@ public class CS360DB {
                 "medicine",
                 symptoms,
                 diseases,
-                "819f6ddc-9689-4f9c-a139-df160ba05de2",
+                "",
                 "",
                 "",
                 "DANGEROUS"
         );
 
-        VisitDB.addVisit(v);
+        VisitDB.addVisit(v);*/
     }
 
+    private static void __init_diseases__ () throws ClassNotFoundException{
+        List<String> symptoms = new ArrayList<>();
+        symptoms.add("nausea");
+        symptoms.add("headaches");
+
+        Disease d = new Disease(
+                "brain_tumor",
+                symptoms,
+                "unable",
+                "120_days",
+                ""
+        );
+
+        DiseaseDB.addDisease(d);
+
+        symptoms = new ArrayList<>();
+        symptoms.add("sneezing");
+
+        Disease d1 = new Disease(
+                "flu",
+                symptoms,
+                "droplets",
+                "",
+                ""
+        );
+
+        DiseaseDB.addDisease(d1);
+
+        symptoms = new ArrayList<>();
+        symptoms.add("fever");
+        symptoms.add("cough");
+
+        Disease d2 = new Disease(
+                "COVID",
+                symptoms,
+                "2_metres",
+                "",
+                ""
+        );
+
+        DiseaseDB.addDisease(d2);
+
+
+
+        Disease d3 = new Disease(
+                "broken_bone",
+                new ArrayList<String>(),
+                "unable",
+                "",
+                ""
+        );
+
+        DiseaseDB.addDisease(d3);
+
+        symptoms = new ArrayList<>();
+        symptoms.add("cough");
+
+        Disease d4 = new Disease(
+                "breathing_problems",
+                symptoms,
+                "unable",
+                "",
+                ""
+        );
+
+        DiseaseDB.addDisease(d4);
+
+        symptoms = new ArrayList<>();
+        symptoms.add("trouble_walking");
+        symptoms.add("trouble_speaking");
+        symptoms.add("numbness");
+
+        Disease d5 = new Disease(
+                "stroke",
+                symptoms,
+                "unable",
+                "",
+                ""
+        );
+
+        DiseaseDB.addDisease(d5);
+
+        symptoms = new ArrayList<>();
+        symptoms.add("thirst");
+        symptoms.add("weight_loss");
+
+        Disease d6 = new Disease(
+                "diabetes",
+                symptoms,
+                "unable",
+                "",
+                ""
+        );
+
+        DiseaseDB.addDisease(d6);
+
+        symptoms = new ArrayList<>();
+        symptoms.add("memory_loss");
+
+        Disease d7 = new Disease(
+                "alzheimer",
+                symptoms,
+                "unable",
+                "",
+                ""
+        );
+
+        DiseaseDB.addDisease(d7);
+
+        symptoms = new ArrayList<>();
+        symptoms.add("dry_mouth");
+
+        Disease d8 = new Disease(
+                "dehydration",
+                symptoms,
+                "unable",
+                "",
+                ""
+        );
+
+        DiseaseDB.addDisease(d8);
+    }
 
     private static void __init__() throws ClassNotFoundException {
         for (int i = 1; i <= 5; i++) {
@@ -369,8 +493,8 @@ public class CS360DB {
                     "",
                     symptoms,
                     diseases,
-                    d3.getDoctor_id(),
-                    "",
+                    null,
+                    null,
                     "",
                     "STABLE"
 
@@ -378,6 +502,9 @@ public class CS360DB {
 
             VisitDB.addVisit(v);
         }
+
+
+
     }
 
     private static void __clear__() throws ClassNotFoundException, SQLException {
@@ -409,8 +536,7 @@ public class CS360DB {
         stmt.executeUpdate("DELETE FROM examination;");
         stmt.executeUpdate("DELETE FROM supervised_by;");
         stmt.executeUpdate("DELETE FROM prescribe;");
-        stmt.executeUpdate("DELETE FROM results_in;");
-        stmt.executeUpdate("DELETE FROM did;");
+        stmt.executeUpdate("DELETE FROM undergo;");
         stmt.executeUpdate("DELETE FROM diagnose;");
         stmt.executeUpdate("DELETE FROM suffers_from;");
         stmt.executeUpdate("DELETE FROM visit_symptoms;");
@@ -485,7 +611,9 @@ public class CS360DB {
 
         createTable.setLength(0);
 
-        createTable.append(("CREATE TABLE IF NOT EXISTS nurse (username varchar(50), nurse_id varchar(50) , type varchar(20), PRIMARY KEY(username,nurse_id));"));
+        createTable.append(("CREATE TABLE IF NOT EXISTS nurse (username varchar(50), nurse_id varchar(50)" +
+                " , type varchar(50)," +
+                " PRIMARY KEY(username,nurse_id));"));
 
         stmt.executeUpdate(createTable.toString());
 
@@ -566,9 +694,6 @@ public class CS360DB {
         createTable.append(("CREATE TABLE IF NOT EXISTS visit (patient_id varchar(50), " +
                 "date DATE, cure varchar(40), doctor_id varchar(50), nurse_id varchar(50), employee_id varchar(50), " +
                 "state varchar(10)," +
-                "CONSTRAINT 'doctor_id' FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id), " +
-                "CONSTRAINT 'nurse_id' FOREIGN KEY (nurse_id) REFERENCES nurse(nurse_id)," +
-                "CONSTRAINT 'employee_id' FOREIGN KEY (employee_id) REFERENCES employee(employee_id)," +
                 "PRIMARY KEY(patient_id, date));"));
 
         stmt.executeUpdate(createTable.toString());
@@ -578,7 +703,7 @@ public class CS360DB {
         createTable.append(("CREATE TABLE IF NOT EXISTS visit_diseases (" +
                 "date DATE, " +
                 "patient_id varchar(50), diseases varchar(50)," +
-                "PRIMARY KEY(patient_id, date,diseases,doctor_id)" +
+                "PRIMARY KEY(patient_id, date,diseases)" +
                 ");"));
 
         stmt.executeUpdate(createTable.toString());
@@ -631,10 +756,8 @@ public class CS360DB {
 
         createTable.append(("CREATE TABLE IF NOT EXISTS examination (" +
                 "exam_id varchar(50),name varchar(50), exam_room varchar(50), nurse_id varchar(50), doctor_id varchar(50)," +
-                "CONSTRAINT 'doctor_id' FOREIGN KEY(doctor_id) REFERENCES doctor(doctor_id)," +
-                "CONSTRAINT 'nurse_id' FOREIGN KEY(nurse_id) REFERENCES nurse(nurse_id)," +
-                "PRIMARY KEY(exam_id)" +
-                ");"));
+                "PRIMARY KEY(exam_id)"+
+                ") ENGINE = InnoDB;"));
 
         stmt.executeUpdate(createTable.toString());
 
@@ -724,20 +847,9 @@ public class CS360DB {
 
         createTable.setLength(0);
 
-        createTable.append(("CREATE TABLE IF NOT EXISTS orders (" +
-                "doctor_id varchar(50), exam_id varchar(50), nurse_id varchar(50),exam_name varchar(50),exam_room varchar(50)" +
-                "PRIMARY KEY(exam_id)" +
-                ");"));
-
-        stmt.executeUpdate(createTable.toString());
-
-        createTable.setLength(0);
-
-        createTable.append(("CREATE TABLE IF NOT EXISTS results_in (" +
-                "patient_id varchar(50),disease_name varchar(50)," +
-                "PRIMARY KEY(patient_id, disease_name)" +
-                ");"));
-
+        createTable.append(("CREATE TABLE IF NOT EXISTS orders (exam_id varchar(50)," +
+                "doctor_id varchar(50), nurse_id varchar(50),exam_name varchar(50),exam_room varchar(50)," +
+                "PRIMARY KEY(exam_id));"));
         stmt.executeUpdate(createTable.toString());
 
     }

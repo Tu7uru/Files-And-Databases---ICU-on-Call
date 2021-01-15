@@ -129,7 +129,7 @@ public class DoctorDB {
             stmt = con.createStatement();
 
             StringBuilder query = new StringBuilder();
-
+            System.out.println("#DOCTORDB: RETURNING: " + username);
             query.append("SELECT * FROM doctor WHERE username = '" + username + "';");
 
             stmt.executeQuery(query.toString());
@@ -162,6 +162,7 @@ public class DoctorDB {
         } finally {
             closeDBConnection(stmt, con);
         }
+
 
         return doc;
     }
@@ -226,18 +227,23 @@ public class DoctorDB {
 
         switch(doc.getSpec()) {
             case CARDIOLOGIST:
+                System.out.println("#DOCTORDB: CARDIOLOGIST");
                 insertCardiologist(doc);
                 break;
             case HAEMATOLOGIST:
+                System.out.println("#DOCTORDB: HAEMATOLOGIST");
                 insertHaematologist(doc);
                 break;
             case GP:
+                System.out.println("#DOCTORDB: GP");
                 insertGP(doc);
                 break;
             case SURGEON:
+                System.out.println("#DOCTORDB: SURGEON");
                 insertSurgeon(doc);
                 break;
             case NEUROLOGIST:
+                System.out.println("#DOCTORDB: NEUROLOGIST");
                 insertNeurologist(doc);
                 break;
             default:
@@ -321,7 +327,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO " +
                     "doctor (username,doctor_id, type) " +
-                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','surgeon');");
 
             stmt.execute(query.toString());
 
@@ -364,7 +370,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO " +
                     "doctor (username,doctor_id, type) " +
-                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','general_practitioner');");
 
             stmt.execute(query.toString());
 
@@ -409,7 +415,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO " +
                     "doctor (username,doctor_id, type) " +
-                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','haematologist');");
 
             stmt.execute(query.toString());
 
@@ -453,7 +459,7 @@ public class DoctorDB {
 
             query.append("INSERT INTO " +
                     "doctor (username,doctor_id, type) " +
-                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','neurologist');");
+                    " VALUES ('" + doc.getUsername() +"','"+doc.getDoctor_id()+"','cardiologist');");
 
             stmt.execute(query.toString());
 
@@ -799,7 +805,7 @@ public class DoctorDB {
 
         try {
             if (doctor_id == null || doctor_id.trim().isEmpty() || exam_id==null || exam_id.trim().isEmpty()
-                    || med_id==null || med_id.trim().isEmpty()) {
+                    || med_id == null || med_id.trim().isEmpty() || date == null || date.trim().isEmpty()) {
                 return;
             }
         } catch (Exception ex) {
@@ -836,7 +842,7 @@ public class DoctorDB {
             //need patient_id,we will take it from relation Undergo.
             patient_id = VisitDB.getUndergoPatient_ID(date, exam_id);
             medicine = MedicationDB.getMedication(med_id).getName();
-            visit = VisitDB.getVisit(patient_id, date, doctor_id);
+            visit = VisitDB.getVisit(patient_id, date);
 
             visit.setCure(medicine);
 

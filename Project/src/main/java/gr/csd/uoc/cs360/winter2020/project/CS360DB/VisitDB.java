@@ -143,14 +143,11 @@ public class VisitDB {
         return visits;
     }
 
-    public static Visit getVisit(String patient_id, String date, String doctor_id) throws ClassNotFoundException {
+    public static Visit getVisit(String patient_id, String date) throws ClassNotFoundException {
 
         Statement stmt = null;
         Connection con = null;
         Visit visit = null;
-        List<String> symptoms = new ArrayList<>();
-        List<String> diseases = new ArrayList<>();
-
         try {
 
             con = CS360DB.getConnection();
@@ -162,7 +159,6 @@ public class VisitDB {
             insQuery.append("SELECT * FROM visit ")
                     .append(" WHERE ")
                     .append(" date = ").append("DATETIME '").append(date).append("'")
-                    .append(" AND doctor_id = ").append("'").append(doctor_id).append("'")
                     .append(" AND patient_id = ").append("'").append(patient_id).append("';");
 
             stmt.execute(insQuery.toString());
@@ -178,7 +174,8 @@ public class VisitDB {
                 visit.setNurseID(res.getString("nurse_id"));
                 visit.setPatientID(patient_id);
                 visit.setState(res.getString("state"));
-
+                visit.setSymptoms(getVisitSymptoms(visit));
+                visit.setDiseasesHistory(getDiseasesHistory(visit));
             }
         } catch (SQLException ex) {
             // Log exception
@@ -242,7 +239,7 @@ public class VisitDB {
 
             StringBuilder insQuery3 = new StringBuilder();
 
-            System.out.println("#VISITDB: PATIENT_ID: " + v.getPatientID() + " DATE: "+ v.getDate());
+
             insQuery3.append("SELECT * FROM visit_diseases")
                     .append(" WHERE ")
                     .append(" patient_id = ").append("'").append(v.getPatientID()).append("'")
@@ -253,7 +250,6 @@ public class VisitDB {
             ResultSet res3 = stmt.getResultSet();
 
             while (res3.next() == true) {
-                System.out.println(res3.getString("diseases"));
                 diseases.add(res3.getString("diseases"));
             }
 
@@ -310,10 +306,8 @@ public class VisitDB {
                 insQuery2 = new StringBuilder();
 
                 insQuery2.append("INSERT INTO ")
-                        .append(" visit_diseases (date, doctor_id, patient_id, diseases) ")
+                        .append(" visit_diseases (patient_id, date, diseases) ")
                         .append(" VALUES (")
-                        .append("'").append(visit.getDate()).append("',")
-                        .append("'").append(visit.getDoctorID()).append("',")
                         .append("'").append(visit.getPatientID()).append("',")
                         .append("DATETIME '").append(visit.getDate()).append("',")
                         .append("'").append(dis).append("');");
@@ -329,7 +323,7 @@ public class VisitDB {
                 insQuery3 = new StringBuilder();
 
                 insQuery3.append("INSERT INTO ")
-                        .append(" visit_symptoms (patient_id, date, symptoms, doctor_id) ")
+                        .append(" visit_symptoms (patient_id, date, symptoms) ")
                         .append(" VALUES (")
                         .append("'").append(visit.getPatientID()).append("',")
                         .append("DATETIME '").append(visit.getDate()).append("',")

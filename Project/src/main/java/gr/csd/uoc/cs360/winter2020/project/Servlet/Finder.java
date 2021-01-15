@@ -54,6 +54,7 @@ public class Finder extends HttpServlet {
         try {
 
             if (type.equals("doctor")) {
+                System.out.println("#FINDER: "+username);
                 Doctor d = DoctorDB.getDoctorByUsername(username);
                 if(d == null) {
                     sendError(response);
@@ -125,6 +126,7 @@ public class Finder extends HttpServlet {
             System.out.println(visits);
             html.append("<div class='visit'>" +"\n<br><br><table>\n")
                     .append("<tr>\n" +
+                            "    <th>ID</th>\n" +
                             "    <th>DATE</th>\n" +
                             "    <th>CURE</th>\n" +
                             "    <th>STATE</th>\n" +
@@ -133,7 +135,9 @@ public class Finder extends HttpServlet {
                             "    <th></th>\n" +
                             "  </tr>\n");
             for (Visit v : visits) {
-                html.append("<tr>\n<td>" + v.getDate() + "</td>\n")
+
+                html.append("<tr>\n<td>" + v.getPatientID() + "</td>\n")
+                        .append("\n<td>" + v.getDate() + "</td>\n")
                         .append("<td>" + v.getCure() + "</td>\n")
                         .append("<td>" + v.getState() + "</td>\n")
                         .append("<td><button type='button' id='prescribe' name='button'><i class='fas fa-lock'></i>Prescribe</button><br><br></td>\n")

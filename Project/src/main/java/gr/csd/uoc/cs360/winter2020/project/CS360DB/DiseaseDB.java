@@ -167,7 +167,7 @@ public class DiseaseDB {
 
                 insQuery.append("SELECT name FROM disease_symptoms ")
                         .append(" WHERE ")
-                        .append(" systoms = ").append("'").append(symptoms).append("';");
+                        .append(" syptoms = ").append("'").append(symptoms).append("';");
 
                 stmt.execute(insQuery.toString());
 
@@ -204,7 +204,6 @@ public class DiseaseDB {
             // close connection
             closeDBConnection(stmt, con);
         }
-
         return dis;
     }
 
