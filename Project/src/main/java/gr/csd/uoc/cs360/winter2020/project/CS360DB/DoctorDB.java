@@ -866,7 +866,7 @@ public class DoctorDB {
 
         try {
             if (doctor_id == null || doctor_id.trim().isEmpty() || exam_id==null || exam_id.trim().isEmpty()
-                    || med_id==null || med_id.trim().isEmpty()) {
+                    || med_id == null || med_id.trim().isEmpty() || date == null || date.trim().isEmpty()) {
                 return;
             }
         } catch (Exception ex) {
