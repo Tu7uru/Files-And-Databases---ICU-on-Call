@@ -42,6 +42,7 @@ body{
 }
 
 nav {
+	top: 0;
 	float: right;
   background-color: #81d4fa;
   width:100vw;
@@ -90,6 +91,19 @@ h2 {
   border-radius: 25px;
 	box-shadow: 15px 20px #8888;
 }
+
+.special-container {
+  margin: 0 auto;
+  width: 1200px;
+	min-height: 700px;
+	border-top: 10px solid #81d4fa;
+	border-left: 5px solid #81d4fa;
+	border-right: 5px solid #81d4fa;
+	border-bottom: 10px solid #81d4fa;
+  border-radius: 25px;
+	box-shadow: 15px 20px #8888;
+}
+
 textarea {
 	outline:none;
 	text-decoration: none;
@@ -124,7 +138,13 @@ button {
 
 button:focus {
   outline: none;
-  background-color: #b3e5fc;
+	color: #0C479D;
+}
+
+button:hover {
+
+	color: #0C479D;
+	text-decoration: underline;
 }
 
 i {
@@ -137,8 +157,53 @@ span {
 	font-size:18px;
 }
 
-.info {
+.nav-info {
 	top: 3vh;
 	right: 0;
 	position:absolute;
+}
+
+.visit table{
+	width: 1000px;
+	margin: 0 auto;
+	border-collapse: collapse;
+}
+table, td {
+	border: 1px solid #81d4fa;
+}
+
+table th {
+	color:white;
+	border:1px solid white;
+	background-color: #81d4fa;
+	padding: 5px 50px;
+}
+
+#pat-info {
+	text-align:center;
+}
+
+.nav-info {
+	right: 5vw;
+}
+
+.visit {
+	margin: 0 auto;
+	width:1100px;
+	border-top: 10px solid #81d4fa;
+	border-left: 5px solid #81d4fa;
+	border-right: 5px solid #81d4fa;
+	border-bottom: 10px solid #81d4fa;
+  border-radius: 25px;
+	box-shadow: 10px 15px #8888;
+}
+
+small {
+	font-size: 18px;
+	font-family: sans-serif;
+	color: #81d4fa;
+}
+
+#log-out {
+	top: 6vh;
 }

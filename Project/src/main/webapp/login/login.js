@@ -40,7 +40,7 @@ function communicateWithServlet(method, url) {
       } else if(type == "nurse") {
         window.location.href = "../profiles/doctor/doctor.html?username=" + user + "&type=nurse";
       } else if(type == "employee") {
-        //window.location.href = "../profiles/asman/asman.html?username=" + user;
+        window.location.href = "../profiles/asman/asman.html?username=" + user;
       }
 
     }

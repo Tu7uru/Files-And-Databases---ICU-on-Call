@@ -101,7 +101,11 @@ public class RandomDB {
             type = "heart";
         }
 
+
+        System.out.println("#RANDOMDB: " + type);
         id = MedicationDB.getMedicationId(type);
+
+        System.out.println("#RANDOMDB: " + id);
 
         return id;
     }

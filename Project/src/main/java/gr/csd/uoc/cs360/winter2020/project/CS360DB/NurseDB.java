@@ -168,6 +168,66 @@ public class NurseDB {
 
     }
 
+    public static Nurse getNurseByView(String username) {
+        Nurse nurse = new Nurse();
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+
+
+            StringBuilder query = new StringBuilder();
+
+            query.append("SELECT * FROM nurse WHERE username = '" + username + "';");
+
+            stmt.executeQuery(query.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if (res.next() == true) {
+
+                nurse = new Nurse();
+                String s = res.getString("type");
+                StringBuilder q = new StringBuilder();
+                String view = new String();
+                q.setLength(0);
+
+                System.out.println("#NURSEDB: " +s);
+                if(s.equals("nurse_surgeon")) {
+                    view = "employee_to_n_surgeon";
+                } else if (s.equals("nurse_neurologist")) {
+                    view = "employee_to_n_neurologist";
+                } else if (s.equals("nurse_general_practitioner")) {
+                    view = "employee_to_n_gp";
+                } else if (s.equals("nurse_haematologist")) {
+                    view = "employee_to_n_haematologist";
+                }
+
+                System.out.println("#NURSEDB:"+view);
+                q.append("SELECT * FROM " + view )
+                        .append(" WHERE username='")
+                        .append(username + "';");
+                stmt.executeQuery(q.toString());
+                res = stmt.getResultSet();
+                if (res.next() == true) {
+                    nurse.setUsername(res.getString("username"));
+                    nurse.setNurse_id(res.getString("nurse_id"));
+                    nurse.setEmail(res.getString("email"));
+                    nurse.setName(res.getString("name"));
+                    nurse.setLastname(res.getString("lastname"));
+                }
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(NurseDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeDBConnection(stmt, con);
+        }
+
+        return nurse;
+    }
+
     /**
      * Get doctor by id
      *

@@ -101,17 +101,18 @@ public class ExamServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
-        Doctor d = DoctorDB.getDoctor(params.get("doctor_id"));
 
+
+        Doctor d = DoctorDB.getDoctor(params.get("doctor_id"));
         String med_id = new RandomDB().getMedication(d);
 
-        DoctorDB.Prescribe(
+        /*DoctorDB.Prescribe(
                 params.get("exam_id"),
                 med_id,
                 params.get("date"),
                 params.get("doctor_id")
         );
-
+*/
         System.out.println("#EXAMSERVLET: PRESCRIBE DONE");
 
         out.println("Prescribe done");
@@ -150,6 +151,7 @@ public class ExamServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Doctor d = DoctorDB.getDoctor(params.get("doctor_id"));
 
+        System.out.println(d);
         String examRoom = new RandomDB().getExamRoom(d);
         String examName = new RandomDB().getExamName(d);
         Examination e = new Examination(

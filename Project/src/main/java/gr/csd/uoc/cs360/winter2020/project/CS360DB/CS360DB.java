@@ -10,9 +10,11 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Administrat
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.AssistantManager;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Employee;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Disease;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Medication;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Shift.Shift;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,8 +46,19 @@ public class CS360DB {
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
         //creatingTables();
-        //__init__();
-        __init_diseases__();
+        __init__();
+        //__init_diseases__();
+        //__init_meds__();
+        /*Shift s = new Shift(
+                "2020-01-01",
+                "",
+                "",
+                "",
+                "",
+                ""
+        );
+
+        ShiftDB.addShift(s); */
         //__clear__();
         /*List<String> symptoms = new ArrayList<>();
         symptoms.add("eye pain");
@@ -65,6 +78,41 @@ public class CS360DB {
         );
 
         VisitDB.addVisit(v);*/
+    }
+
+
+    private static void __init_meds__() throws ClassNotFoundException {
+        for (int i = 1; i <= 5; i++) {
+            Medication m = new Medication(
+                "med#" + i,
+                    "vaccine",
+                    "500mg",
+                    "heart",
+                    "2022-01-01 2:55:0" + i
+            );
+
+            MedicationDB.addMedication(m);
+
+            Medication m2 = new Medication(
+                    "med#" + (i+10),
+                    "vaccine",
+                    "500mg",
+                    "general",
+                    "2022-01-01 2:55:" + i
+            );
+
+            MedicationDB.addMedication(m2);
+
+            Medication m3 = new Medication(
+                    "med#" + (i+20),
+                    "vaccine",
+                    "500mg",
+                    "neurological",
+                    "2022-01-01 2:55:" + i
+            );
+
+            MedicationDB.addMedication(m3);
+        }
     }
 
     private static void __init_diseases__ () throws ClassNotFoundException{
@@ -850,6 +898,51 @@ public class CS360DB {
         createTable.append(("CREATE TABLE IF NOT EXISTS orders (exam_id varchar(50)," +
                 "doctor_id varchar(50), nurse_id varchar(50),exam_name varchar(50),exam_room varchar(50)," +
                 "PRIMARY KEY(exam_id));"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_n_surgeon AS SELECT nurse_id,name,lastname,username,email FROM nurse_surgeon;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_n_neurologist AS SELECT nurse_id,name,lastname,username,email FROM nurse_neurologist;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_n_gp AS SELECT nurse_id,name,lastname,username,email FROM nurse_general_practitioner;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_n_haematologist AS SELECT nurse_id,name,lastname,username,email FROM nurse_haematologist;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_neurologist AS SELECT doctor_id,name,lastname,username,email FROM neurologist;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_surgeon AS SELECT doctor_id,name,lastname,username,email FROM surgeon;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_haematologist AS SELECT doctor_id,name,lastname,username,email FROM haematologist;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_gp AS SELECT doctor_id,name,lastname,username,email FROM general_practitioner;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_cardiologist AS SELECT doctor_id,name,lastname,username,email FROM cardiologist;"));
         stmt.executeUpdate(createTable.toString());
 
     }

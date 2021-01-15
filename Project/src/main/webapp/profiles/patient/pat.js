@@ -2,7 +2,7 @@ const navbar = document.getElementById("nav-info");
 var user = undefined;
 var id = undefined;
 const urlParams = new URLSearchParams(window.location.search);
-const btn = document.getElementById("make-visit");
+const makevisit = document.getElementById("make-visit");
 const date = document.getElementById("date");
 const unchinfo = document.getElementById("unchangeable-info");
 const password = document.getElementById("password");
@@ -38,9 +38,13 @@ submitinfo.addEventListener("click", e => {
   }
 });
 
-btn.addEventListener('click', e => {
+makevisit.addEventListener('click', e => {
   if(date.value != undefined || date.value != "") {
-    var data = "date=" + date.value + "\npatient_id=" + id;
+    var s = document.getElementById("symptoms");
+    var data = "date=" + date.value + "\n" +
+          "patient_id=" + id + "\n" +
+          "symptoms=" + s.value;
+          console.log(data);
     communicateWithServlet('POST',"/Project/VisitServlet",data);
   }
 });

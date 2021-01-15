@@ -80,7 +80,7 @@ public class ShiftDB {
 
             insQuery.append("SELECT * FROM shift ")
                     .append(" WHERE ")
-                    .append(" date = ").append("DATETIME '").append(date).append("';");
+                    .append(" date = ").append("DATE '").append(date).append("';");
 
             stmt.execute(insQuery.toString());
 
@@ -109,6 +109,45 @@ public class ShiftDB {
         return shifts;
     }
 
+    public static void updateShift(Shift shift) throws ClassNotFoundException {
+        try {
+            shift.checkFields();
+
+        } catch (Exception ex) {
+            // Log exception
+            Logger.getLogger(ShiftDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Statement stmt = null;
+        Connection con = null;
+        try {
+
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("UPDATE  ")
+                    .append(" shift ")
+                    .append(" SET ")
+                    .append("doctor_id='").append(shift.getDoctor_ID()).append("',")
+                    .append("nurse_id='").append(shift.getNurse_ID()).append("',")
+                    .append("type='").append(shift.getType()).append("',")
+                    .append("department='").append(shift.getDepartment()).append("',")
+                    .append("employee_id='").append(shift.getEmployee_ID()).append("';");
+
+            PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
+            stmtIns.executeUpdate();
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(ShiftDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+    }
+
     public static void addShift(Shift shift) throws ClassNotFoundException {
 
         try {
@@ -131,7 +170,7 @@ public class ShiftDB {
             insQuery.append("INSERT INTO ")
                     .append(" shift (date, doctor_id, nurse_id, type, department, employee_id) ")
                     .append(" VALUES (")
-                    .append("DATETIME '").append(shift.getDate()).append("',")
+                    .append("DATE '").append(shift.getDate()).append("',")
                     .append("'").append(shift.getDoctor_ID()).append("',")
                     .append("'").append(shift.getNurse_ID()).append("',")
                     .append("'").append(shift.getType()).append("',")

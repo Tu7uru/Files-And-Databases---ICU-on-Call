@@ -6,22 +6,22 @@
 package gr.csd.uoc.cs360.winter2020.project.Servlet;
 
 import com.google.gson.Gson;
-import gr.csd.uoc.cs360.winter2020.project.CS360DB.DoctorDB;
-import gr.csd.uoc.cs360.winter2020.project.CS360DB.EmployeeDB;
-import gr.csd.uoc.cs360.winter2020.project.CS360DB.NurseDB;
-import gr.csd.uoc.cs360.winter2020.project.CS360DB.PatientDB;
+import gr.csd.uoc.cs360.winter2020.project.CS360DB.*;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Administrative;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.AssistantManager;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Employee;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Shift.Shift;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.Buffer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -289,15 +289,19 @@ public class Register extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("#REGISTER: IN UPDATE");
+        System.out.println("#REGISTER: IN UPDATE ");
         BufferedReader body = request.getReader();
         String line;
         HashMap<String, String> params = new HashMap<>();
 
         while((line = body.readLine()) != null) {
             StringTokenizer tk = new StringTokenizer(line, "=");
-            params.put(tk.nextToken(),tk.nextToken());
+            String field = tk.nextToken();
+            String value = tk.nextToken();
+            params.put(field,value);
+
         }
+        System.out.println("#REGISTER: IN UPDATE " + params.toString());
         try {
             switch(params.get("type")) {
                 case "patient":
@@ -340,6 +344,48 @@ public class Register extends HttpServlet {
                     EmployeeDB.updateEmployee(e);
                     sendSuccess(response, e);
                     break;
+                case "visit":
+                    Visit v = VisitDB.getVisit(params.get("patient_id"),params.get("date"));
+                    v.setCure(params.get("cure"));
+                    v.setState(params.get("state"));
+
+                    VisitDB.updateVisit(v);
+                    sendSuccess(response, v);
+                    break;
+                case "shift":
+                    System.out.println("#REGISTER: " + params.toString());
+                    List<Shift> sh = ShiftDB.getShift(params.get("date"));
+
+                    for( Shift s : sh) {
+                        System.out.println("#REGISTER:"+s);
+                        if (!params.get("employee_id").equals("null")) {
+                            System.out.println("#REGISTER: EMPLOYEE_ID");
+                            s.setEmployee_ID(params.get("employee_id"));
+                        }
+                        if (!params.get("nurse_id").equals("null")) {
+                            System.out.println("#REGISTER: EMPLOYEE_ID");
+                            s.setNurse_ID(params.get("nurse_id"));
+                        }
+
+                        if (!params.get("doctor_id").equals("null")) {
+                            System.out.println("#REGISTER: DOCTOR_ID");
+                            s.setDoctor_ID(params.get("nurse_id"));
+                        }
+
+                        if (!params.get("department").equals("null")) {
+                            System.out.println("#REGISTER: DEPARTMENT");
+                            s.setDepartment(params.get("department"));
+                        }
+
+                        if (!params.get("s_type").equals("null")) {
+                            System.out.println("#REGISTER: TYPE");
+                            s.setType(params.get("s_type"));
+                        }
+
+                        ShiftDB.updateShift(s);
+                    }
+                    sendSuccess(response,sh);
+                    break;
                 default:
                         sendError(response);
                 }
@@ -355,6 +401,7 @@ public class Register extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
+        System.out.println("#REGISTER: SENDING RESPONSE");
         String json = new Gson().toJson(o);
         out.println(json);
         out.flush();

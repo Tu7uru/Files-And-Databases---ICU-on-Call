@@ -63,23 +63,44 @@ public class VisitServlet extends HttpServlet {
         BufferedReader body = request.getReader();
         String line;
         HashMap<String, String> h = new HashMap<>();
+        List<String> symptoms = new ArrayList<>();
+        List<String> diseases = new ArrayList<>();
 
         while((line = body.readLine())!= null) {
             StringTokenizer tk = new StringTokenizer(line,"=");
             String field = tk.nextToken();
             String value = tk.nextToken();
 
-            h.put(field,value);
+
+            if(field.equals("symptoms")) {
+                StringTokenizer t = new StringTokenizer(value, ",");
+                while(t.hasMoreElements()) {
+                    symptoms.add(t.nextToken());
+                }
+            } else {
+                h.put(field, value);
+            }
 
         }
 
-        System.out.println("#VISIT: " + h.get("patient_id") +" IS MAKING A VISIT ON " + h.get("date"));
+        System.out.println("#VISITDB: " + symptoms.toString());
 
         // !TODO
         // Create visit with parameters
         Visit v = new Visit(
+            h.get("patient_id"),
+                h.get("date"),
+                "",
+                symptoms,
+                diseases,
+                "",
+                "",
+                "",
+                ""
 
         );
+
+        //VisitDB.addVisit(v);
 
         response.setStatus(201);
         response.setCharacterEncoding("UTF-8");
