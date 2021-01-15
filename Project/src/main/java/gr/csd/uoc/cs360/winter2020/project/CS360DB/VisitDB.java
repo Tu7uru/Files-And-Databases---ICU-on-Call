@@ -639,7 +639,7 @@ public class VisitDB {
             //VisitDB.addVisit(visit);
             List<String> symptoms = visit.getSymptoms();
             List<Shift> shifts = ShiftDB.getShift(visit.getDate());
-            if (symptoms.contains("heart")) {
+            if (symptoms.contains("heart") || symptoms.contains("trouble_walking") || symptoms.contains("trouble_speaking")) {
 
                 for (Shift shift : shifts) {
                     if (DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.CARDIOLOGIST)) {
@@ -655,7 +655,7 @@ public class VisitDB {
                         break;
                     }
                 }
-            } else if (symptoms.contains("damaged nerves")) {
+            } else if (symptoms.contains("memory_loss")) {
 
                 for (Shift shift : shifts) {
                     if (DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.NEUROLOGIST)) {
@@ -671,7 +671,7 @@ public class VisitDB {
                         break;
                     }
                 }
-            } else if (symptoms.contains("cough") || symptoms.contains("cold") || symptoms.contains("headache") || symptoms.contains("high temperature")) {
+            } else if (symptoms.contains("cough") || symptoms.contains("sneezing") || symptoms.contains("headache") || symptoms.contains("fever")) {
                 for (Shift shift : shifts) {
                     if (DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.GP)) {
                         visit.setDoctorID(shift.getDoctor_ID());
@@ -686,7 +686,7 @@ public class VisitDB {
                         break;
                     }
                 }
-            } else if (symptoms.contains("weight loss") || symptoms.contains("weakness") || symptoms.contains("fatigue")) {
+            } else if (symptoms.contains("weight_loss") || symptoms.contains("thirst") || symptoms.contains("dry_mouth")) {
                 for (Shift shift : shifts) {
                     if (DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.HAEMATOLOGIST)) {
                         visit.setDoctorID(shift.getDoctor_ID());
@@ -702,7 +702,7 @@ public class VisitDB {
                     }
                 }
 
-            } else if (symptoms.contains("tumor") || symptoms.contains("internal bleeding") || symptoms.contains("seizure") || symptoms.contains("bleeding")) {
+            } else if (symptoms.contains("headaches") || symptoms.contains("nausea")) {
 
                 for (Shift shift : shifts) {
                     if (DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.SURGEON)) {

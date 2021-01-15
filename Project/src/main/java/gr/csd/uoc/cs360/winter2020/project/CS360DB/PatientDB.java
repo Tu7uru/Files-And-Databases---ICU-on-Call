@@ -6,8 +6,10 @@
 package gr.csd.uoc.cs360.winter2020.project.CS360DB;
 
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Diagnose;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Disease;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Examination;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -241,7 +243,7 @@ public class PatientDB {
      *
      * doctor Assigns Exam is in Doctor.DB
      */
-    public static void PatientReceivesExaminationByDoctor(String patient_id, String doc_id, String date, List<String> symptoms, String ex_room, String ex_name) throws ClassNotFoundException {
+    public static void PatientReceivesExaminationByDoctor(Examination exam, String patient_id, String doc_id, String date, List<String> symptoms) throws ClassNotFoundException {
         if (patient_id == null || patient_id.trim().isEmpty()
                 || date == null || date.trim().isEmpty() || symptoms.isEmpty()) {
             return;
@@ -249,12 +251,13 @@ public class PatientDB {
 
         Statement stmt = null;
         Connection con = null;
+        String ex_room = exam.getExam_Room();
+        String ex_name = exam.getName();
 
         try {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
-            Examination exam = new Examination(null, doc_id, ex_room, ex_name);
             ExamDB.addExam(exam);
 
             Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam.getExam_ID(), null);
@@ -269,6 +272,57 @@ public class PatientDB {
             // close connection
             closeDBConnection(stmt, con);
         }
+    }
+
+    public static String decideHospitalizationByDisease(String disease) {
+
+        if (disease.equals("flu")) {//gp
+            return "released";
+        } else if (disease.equals("alzheimer")) {//neuro
+            return "released";
+        } else if (disease.equals("brain_tumor")) {//surgeon
+            return "hospitalized";
+        } else if (disease.equals("COVID")) {//gp
+            return "released";
+        } else if (disease.equals("broken_bone")) {//surgeon
+            return "hospitalized";
+        } else if (disease.equals("breathing_problems")) {//gp
+            return "released";
+        } else if (disease.equals("dehydration")) {//aemat
+            return "hospitalized";
+        } else if (disease.equals("diabetes")) {//aema
+            return "released";
+        } else if (disease.equals("heart_attack")) {//cardio
+            return "hospitalized";
+        } else {
+            return "not_concluded";
+        }
+    }
+
+    public static Disease PatientSuffersFrom(List<String> symptoms) throws ClassNotFoundException {
+        return DiseaseDB.getDiseaseBySymptoms(symptoms);
+    }
+
+    public static void PatientReExamined(Examination exam, String doctor_id, String date, String patient_id) throws ClassNotFoundException {
+
+        if (patient_id == null || patient_id.trim().isEmpty()
+                || date == null || date.trim().isEmpty() || doctor_id == null || doctor_id.isEmpty()) {
+            return;
+        }
+
+        Statement stmt = null;
+        Connection con = null;
+
+        String hospitalization = null;
+
+        Visit v = VisitDB.getVisit(patient_id, date, doctor_id);
+        Disease patient_dis = PatientSuffersFrom(v.getSymptoms());
+        hospitalization = decideHospitalizationByDisease(patient_dis.getName());
+        v.setState(hospitalization);
+
+        VisitDB.updateVisit(v);
+
+
     }
 
     /**
