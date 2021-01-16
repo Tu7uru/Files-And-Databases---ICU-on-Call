@@ -110,7 +110,6 @@ public class MedicationDB {
         Random rand = new Random();
 
         try {
-
             con = CS360DB.getConnection();
 
             stmt = con.createStatement();
@@ -119,7 +118,7 @@ public class MedicationDB {
 
             insQuery.append("SELECT med_id FROM medication ")
                     .append(" WHERE ")
-                    .append(" use_for = ").append("'").append(type).append("' ORDER BY exp_date;");
+                    .append(" use_for = ").append("'").append(type).append("';");
 
             stmt.execute(insQuery.toString());
             ResultSet res = stmt.getResultSet();
@@ -130,6 +129,7 @@ public class MedicationDB {
             }
             if (!ids.isEmpty()) {
                 id = ids.get(rand.nextInt(ids.size()));
+
             }
 
         } catch (SQLException | ClassNotFoundException ex) {
@@ -139,6 +139,8 @@ public class MedicationDB {
             // close connection
             closeDBConnection(stmt, con);
         }
+
+        System.out.println("#MEDICATIONDB: " + id);
         return id;
     }
 
@@ -208,7 +210,7 @@ public class MedicationDB {
                     .append("'").append(med.getType()).append("',")
                     .append("'").append(med.getDosage()).append("',")
                     .append("'").append(med.getUse_for()).append("',")
-                    .append("DATE '").append(med.getExp_Date()).append("');");
+                    .append("'").append(med.getExp_Date()).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();

@@ -79,3 +79,32 @@ span {
   font-family: caligraphy;
   font-size: 65px;
 }
+
+textarea {
+	margin-top: 50vh;
+	margin-left: 30vw;
+	margin-right: auto;
+}
+
+button {
+  border: none;
+  width: 150px;
+  height: 50px;
+  background-color: #81d4fa;
+  color: white;
+  font-family: sans-serif;
+  font-size: 18px;
+	margin-left: 10vw;
+	border-radius: 5px ;
+}
+
+button:focus {
+  outline: none;
+	color: #0C479D;
+}
+
+button:hover {
+
+	color: #0C479D;
+	text-decoration: underline;
+}

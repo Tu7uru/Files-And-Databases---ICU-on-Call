@@ -86,8 +86,10 @@ public class RandomDB {
         String type;
         String id;
 
-        System.out.println(disease);
         id = MedicationDB.getMedicationId(disease);
+
+
+        System.out.println("#RANDOMDB: " + id);
 
         return id;
     }

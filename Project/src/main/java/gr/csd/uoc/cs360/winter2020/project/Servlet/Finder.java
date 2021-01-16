@@ -13,8 +13,13 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -22,6 +27,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Result;
 
 /**
  *
@@ -53,28 +59,39 @@ public class Finder extends HttpServlet {
     private void handleRequest(String username, String type, HttpServletResponse response) {
         try {
 
-            if (type.equals("doctor")) {
-                System.out.println("#FINDER: "+username);
-                Doctor d = DoctorDB.getDoctorByUsername(username);
+            if (type.contains("doctor")) {
+                Doctor d = DoctorDB.getDoctorByView(username);
                 if(d == null) {
                     sendError(response);
                 } else {
-                    sendSuccess(response,d);
+                    if(type.equals("doctor-info")) {
+                        sendDoctor(response,d);
+                    } else {
+                        sendSuccess(response, d);
+                    }
                 }
-            } else if (type.equals("nurse")) {
-                Nurse n = NurseDB.getNurseByUsername(username);
+            } else if (type.contains("nurse")) {
+                Nurse n = NurseDB.getNurseByView(username);
                 if(n == null) {
                     sendError(response);
                 } else {
-                    sendSuccess(response,n);
+                    if(type.equals("nurse-info")) {
+                        sendNurse(response,n);
+                    } else {
+                        sendSuccess(response, n);
+                    }
                 }
-            } else if (type.equals("patient")) {
+            } else if (type.contains("patient")) {
                 System.out.println("#FINDER: USER IS A PATIENT");
                 Patient p = PatientDB.getPatientbyUsername(username);
                 if (p == null) {
                     sendError(response);
                 } else {
-                    sendPatient(response, p);
+                    if(type.equals("patient-info")) {
+                        sendSuccessEmployee(response, p);
+                    } else {
+                        sendPatient(response, p);
+                    }
                 }
             } else if(type.equals("employee")){
                 Employee e = EmployeeDB.getEmployeebyUsername(username);
@@ -98,6 +115,50 @@ public class Finder extends HttpServlet {
         }
     }
 
+    private void sendNurse(HttpServletResponse response, Nurse d) throws IOException, ClassNotFoundException {
+        PrintWriter out = response.getWriter();
+        StringBuilder html = new StringBuilder();
+        html.append("<div class='visit'>" +"\n<br><br><table>\n")
+                .append("<tr>\n" +
+                        "    <th>ID</th>\n" +
+                        "    <th>NAME</th>\n" +
+                        "    <th>LASTNAME</th>\n" +
+                        "    <th>USERNAME</th>\n" +
+                        "    <th>EMAIL</th>\n" +
+                        "  </tr>\n");
+        html.append("<tr>\n<td>" + d.getNurse_id() + "</td>\n")
+                .append("\n<td>" + d.getName() + "</td>\n")
+                .append("<td>" + d.getLastname() + "</td>\n")
+                .append("<td>" + d.getUsername() + "</td>\n")
+                .append("<td>" + d.getEmail() + "</td>\n");
+        html.append("</table><br><br><br>");
+        response.setStatus(200);
+        response.setContentType("text/html");
+        out.println(html.toString());
+    }
+
+    private void sendDoctor(HttpServletResponse response, Doctor d) throws ClassNotFoundException, IOException {
+        PrintWriter out = response.getWriter();
+        StringBuilder html = new StringBuilder();
+        html.append("<div class='visit'>" +"\n<br><br><table>\n")
+                .append("<tr>\n" +
+                        "    <th>ID</th>\n" +
+                        "    <th>NAME</th>\n" +
+                        "    <th>LASTNAME</th>\n" +
+                        "    <th>USERNAME</th>\n" +
+                        "    <th>EMAIL</th>\n" +
+                        "  </tr>\n");
+        html.append("<tr>\n<td>" + d.getDoctor_id() + "</td>\n")
+                    .append("\n<td>" + d.getName() + "</td>\n")
+                    .append("<td>" + d.getLastname() + "</td>\n")
+                    .append("<td>" + d.getUsername() + "</td>\n")
+                    .append("<td>" + d.getEmail() + "</td>\n");
+        html.append("</table><br><br><br>");
+        response.setStatus(200);
+        response.setContentType("text/html");
+        out.println(html.toString());
+    }
+
     private void sendPatient(HttpServletResponse response, Patient p) throws IOException {
         PrintWriter out = response.getWriter();
         HashMap<String, Object> h = new HashMap<>();
@@ -112,6 +173,68 @@ public class Finder extends HttpServlet {
         out.close();
     }
 
+    private void sendSuccessEmployee(HttpServletResponse response, Object p) throws IOException, ClassNotFoundException {
+        PrintWriter out = response.getWriter();
+        HashMap<String, Object> h = new HashMap<>();
+
+
+        response.setCharacterEncoding("UTF-8");
+
+        if(p instanceof Patient) {
+            StringBuilder html = new StringBuilder();
+            List<Visit> visits = VisitDB.getVisits(((Patient) p).getPatient_id());
+            System.out.println(visits);
+            html.append("<div class='visit'>" +"\n<br><br><table>\n")
+                    .append("<tr>\n" +
+                            "    <th>ID</th>\n" +
+                            "    <th>DATE</th>\n" +
+                            "    <th>CURE</th>\n" +
+                            "    <th>STATE</th>\n" +
+                            "  </tr>\n");
+            for (Visit v : visits) {
+
+                html.append("<tr>\n<td>" + v.getPatientID() + "</td>\n")
+                        .append("\n<td>" + v.getDate() + "</td>\n")
+                        .append("<td>" + v.getCure() + "</td>\n")
+                        .append("<td>" + v.getState() + "</td>\n");
+            }
+            html.append("</table><br><br><br>")
+                    .append("<table>\n<tr>\n<th>DATE</th><th>SYMPTOMS</th></tr>");
+            for (Visit v : visits) {
+                System.out.println(v);
+                for (String s : VisitDB.getVisitSymptoms(v)) {
+                    html.append("<tr><td>" + v.getDate() + "</td><td>" + s + "</td><tr>");
+                }
+            }
+            html.append("</table><br><br><br>");
+
+            html.append("</table><br><br><br>")
+                    .append("<table>\n<tr>\n<th>DATE</th><th>DISEASES</th></tr>");
+            for (Visit v : visits) {
+                for (String s : VisitDB.getDiseasesHistory(v)) {
+                    html.append("<tr><td>" + v.getDate() + "</td><td>" + s + "</td><tr>");
+                }
+            }
+
+            html.append("</table><br><br><br></div><br><br><br><br>");
+
+            response.setStatus(200);
+            response.setContentType("text/html");
+            out.println(html.toString());
+        } else {
+            h.put("user", p);
+            h.put("responseText", "User found");
+            response.setContentType("application/json");
+            String json = new Gson().toJson(h);
+
+            response.setStatus(207);
+
+            out.println(json);
+        }
+
+        out.flush();
+        out.close();
+    }
 
     private void sendSuccess(HttpServletResponse response, Object p) throws IOException, ClassNotFoundException {
         PrintWriter out = response.getWriter();
@@ -205,6 +328,42 @@ public class Finder extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            BufferedReader body = request.getReader();
+            String line;
+            StringBuilder q = new StringBuilder();
+            PrintWriter out = response.getWriter();
+
+            while((line = body.readLine()) != null) {
+                q.append(line);
+            }
+
+
+            Connection con = CS360DB.getConnection();
+
+            Statement stmt = con.createStatement();
+
+            stmt.execute(q.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if(res.next() == true) {
+                response.setStatus(200);
+                response.setCharacterEncoding("UTF-8");
+
+                out.println("Success.");
+            } else {
+                response.setStatus(400);
+                response.setCharacterEncoding("UTF-8");
+
+                out.println("Error.");
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

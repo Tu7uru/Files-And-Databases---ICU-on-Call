@@ -72,7 +72,7 @@ public class VisitServlet extends HttpServlet {
             String field = tk.nextToken();
             String value = tk.nextToken();
 
-            if (field.equals("symptoms")) {
+            if(field.equals("symptoms")) {
                 StringTokenizer t = new StringTokenizer(value, ",");
                 while (t.hasMoreElements()) {
                     symptoms.add(t.nextToken());
@@ -105,7 +105,7 @@ public class VisitServlet extends HttpServlet {
             Logger.getLogger(VisitServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //VisitDB.addVisit(v);
+                //VisitDB.addVisit(v);
         response.setStatus(201);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");

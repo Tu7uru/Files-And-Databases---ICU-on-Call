@@ -9,19 +9,34 @@
         <link rel="stylesheet" href="./asman.css">
     </head>
     <nav id="nav">
-
+        <button type='button' id='log-out' name='button'>Log out</button>
     </nav>
     <body>
         <h1> Find a patient </h1>
         <input type="text" id="patient" name="patient" value="" placeholder="Patient's Username">
-        <button type="button" id="submit" name="button"><i class="fas fa-user-injured"></i>Find Patient</button>
+        <button type="button" id="submitpat" name="button"><i class="fas fa-user-injured"></i>Find Patient</button>
         <br><br><br>
-        <div class="container">
+        <div class="special-container">
             <h2>Patient's Info</h2><br>
-            <div class="pat-info">
+            <div class="pat-info" id="pat-info">
 
             </div>
-            <button type="button" id="sumbit" name="button">Save Changes</button>
+            <!--<input type="text" name="date" value="" placeholder="Date"> <br><br>
+            <input type="text" name="State" value="" placeholder="State"><br><br>
+            <input type="text" name="cure" value="" placeholder="Cure"> <br><br>
+            <input type="text" name="doctor_id" value="" placeholder="Doctor"><br><br>
+            <input type="text" name="nurse_id" value="" placeholder="Nurse"> <br><br>-->
+
+        </div><br><br><br>
+        <div class="container">
+            <h2>Update Patient's Info</h2><br>
+            <div class="pat-info" id="pat-info">
+              <input type="text" id="pat_id" name="patient" value="" placeholder="Patient"><br><br><br><br><br>
+              <input type="text" id="pat_date" name="date" value="" placeholder="YYYY-MM-DD"><br><br><br><br><br>
+              <input type="text" id="pat_cure" name="cure" value="" placeholder="Cure"><br><br><br><br><br>
+              <input type="text" id="pat_state" name="state" value="" placeholder="State"><br><br><br><br><br>
+              <button type="button" id="submit-visit" name="button">Update Visit</button>
+            </div>
             <!--<input type="text" name="date" value="" placeholder="Date"> <br><br>
             <input type="text" name="State" value="" placeholder="State"><br><br>
             <input type="text" name="cure" value="" placeholder="Cure"> <br><br>
@@ -32,32 +47,47 @@
         </div><br><br><br>
         <h1> Find a Doctor </h1>
         <input type="text" id="doctor" name="doctor" value="" placeholder="Doctor's Username">
-        <button type="button" id="submit" name="button"><i class="fas fa-user-md"></i>Find Doctor</button>
+        <button type="button" id="submitdoc" name="button"><i class="fas fa-user-injured"></i>Find Doctor</button>
         <br><br><br>
-        <div class="container">
+        <div class="special-container">
             <h2>Doctor's Info</h2><br>
-            <div class="doc-info">
+            <div class="doc-info" id="doc-info">
 
             </div>
-            <button type="button" id="sumbit" name="button">Save Changes</button>
             <!--<input type="text" name="date" value="" placeholder="Date"> <br><br>
             <input type="text" name="State" value="" placeholder="State"><br><br>
             <input type="text" name="cure" value="" placeholder="Cure"> <br><br>
             <input type="text" name="doctor_id" value="" placeholder="Doctor"><br><br>
             <input type="text" name="nurse_id" value="" placeholder="Nurse"> <br><br>-->
 
-
         </div><br><br><br>
         <h1> Find a Nurse </h1>
         <input type="text" id="nurse" name="nurse" value="" placeholder="Nurse's Username">
-        <button type="button" id="submit" name="button"><i class="fas fa-user-md"></i>Find Nurse</button>
+        <button type="button" id="submitnurse" name="button"><i class="fas fa-user-injured"></i>Find Nurse</button>
         <br><br><br>
-        <div class="container">
+        <div class="special-container">
             <h2>Nurse's Info</h2><br>
-            <div class="nurse-info">
+            <div class="nurse-info" id="nurse-info">
 
             </div>
-            <button type="button" id="sumbit" name="button">Save Changes</button>
+            <!--<input type="text" name="date" value="" placeholder="Date"> <br><br>
+            <input type="text" name="State" value="" placeholder="State"><br><br>
+            <input type="text" name="cure" value="" placeholder="Cure"> <br><br>
+            <input type="text" name="doctor_id" value="" placeholder="Doctor"><br><br>
+            <input type="text" name="nurse_id" value="" placeholder="Nurse"> <br><br>-->
+
+        </div><br><br><br>
+        <div class="container">
+            <h2>Update Shift's Info</h2><br>
+            <div class="pat-info" id="pat-info">
+              <input type="text" id="date" name="date" value="" placeholder="Date"><br><br><br><br><br>
+              <input type="text" id="emp_id" name="employee" value="" placeholder="Employee"><br><br><br><br><br>
+              <input type="text" id="doc_id" name="doctor" value="" placeholder="Doctor"><br><br><br><br><br>
+              <input type="text" id="nurse_id" name="nurse" value="" placeholder="Nurse"><br><br><br><br><br>
+              <input type="text" id="s_type" name="shift-type" value="" placeholder="Type"><br><br><br><br><br>
+              <input type="text" id="s_dept" name="department" value="" placeholder="Department"><br><br><br><br><br>
+              <button type="button" id="submit-shift" name="button">Update Shift</button> <br><br><br>
+            </div>
             <!--<input type="text" name="date" value="" placeholder="Date"> <br><br>
             <input type="text" name="State" value="" placeholder="State"><br><br>
             <input type="text" name="cure" value="" placeholder="Cure"> <br><br>
@@ -68,10 +98,16 @@
         </div><br><br><br>
         <div class="container">
           <h2>My Info</h2>
-
-          <div class="my-info">
+          <div id="unchangeable-info">
 
           </div>
+          <div class="my-info" id="changeable-info">
+                <input type="password" id="password" name="password" value="" placeholder="Type New Password"><br><br><br><br>
+                <input type="text" id="phone" name="phone" value="" placeholder="Phone"><br><br><br><br>
+                <input type="text" id="address" name="address" value="" placeholder="Address"><br><br><br>
+                <button type="button" id="submit-info" name="button">Update My Info</button>
+          </div>
+
         </div>
     </body>
     <script src="./asman.js"></script>

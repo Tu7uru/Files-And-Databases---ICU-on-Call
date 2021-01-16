@@ -45,13 +45,24 @@ public class CS360DB {
     }
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
+
         creatingTables();
         //__init__();
-        //__init_diseases__();
+        //__init_diseases__();   
         //__init_medicines__();
+        /*Shift s = new Shift(
+                "2020-01-01",
+                "",
+                "",
+                "",
+                "",
+                ""
+        );
+
+        ShiftDB.addShift(s); */
         //__clear__();
         //ShiftDB.CreateDayShift("2021-01-16");
-        __init_shift__();
+        //__init_shift__();
         /*List<String> symptoms = new ArrayList<>();
         symptoms.add("eye pain");
         List<String> diseases = new ArrayList<>();
@@ -71,6 +82,7 @@ public class CS360DB {
 
         VisitDB.addVisit(v);*/
     }
+
 
     private static void __init_diseases__ () throws ClassNotFoundException{
         List<String> symptoms = new ArrayList<>();
@@ -908,6 +920,51 @@ public class CS360DB {
         createTable.append(("CREATE TABLE IF NOT EXISTS orders (exam_id varchar(50)," +
                 "doctor_id varchar(50), nurse_id varchar(50),exam_name varchar(50),exam_room varchar(50)," +
                 "PRIMARY KEY(exam_id));"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_n_surgeon AS SELECT nurse_id,name,lastname,username,email FROM nurse_surgeon;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_n_neurologist AS SELECT nurse_id,name,lastname,username,email FROM nurse_neurologist;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_n_gp AS SELECT nurse_id,name,lastname,username,email FROM nurse_general_practitioner;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_n_haematologist AS SELECT nurse_id,name,lastname,username,email FROM nurse_haematologist;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_neurologist AS SELECT doctor_id,name,lastname,username,email FROM neurologist;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_surgeon AS SELECT doctor_id,name,lastname,username,email FROM surgeon;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_haematologist AS SELECT doctor_id,name,lastname,username,email FROM haematologist;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_gp AS SELECT doctor_id,name,lastname,username,email FROM general_practitioner;"));
+        stmt.executeUpdate(createTable.toString());
+
+        createTable.setLength(0);
+
+        createTable.append(("CREATE VIEW employee_to_cardiologist AS SELECT doctor_id,name,lastname,username,email FROM cardiologist;"));
         stmt.executeUpdate(createTable.toString());
 
     }

@@ -113,7 +113,68 @@ public class DoctorDB {
         return doctors;
 
     }
+    public static Doctor getDoctorByView(String username) throws ClassNotFoundException {
+        Doctor doc = null;
 
+        Statement stmt = null;
+        Connection con = null;
+        try {
+            con = CS360DB.getConnection();
+            stmt = con.createStatement();
+
+            StringBuilder query = new StringBuilder();
+            System.out.println("#DOCTORDB: RETURNING: " + username);
+            query.append("SELECT * FROM doctor WHERE username = '" + username + "';");
+
+            stmt.executeQuery(query.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if(res.next() == true) {
+                doc = new Doctor();
+                String s = res.getString("type");
+                StringBuilder q = new StringBuilder();
+                String view = new String();
+                q.setLength(0);
+                if(s.equals("surgeon")) {
+                    view = "employee_to_surgeon";
+                } else if (s.equals("neurologist")) {
+                    view = "employee_to_neurologist";
+                } else if (s.equals("general_practitioner")) {
+                    view = "employee_to_gp";
+                } else if (s.equals("haematologist")) {
+                    view = "employee_to_haematologist";
+                } else {
+                    view = "employee_to_cardiologist";
+                }
+
+                q.append("SELECT * FROM " + view )
+                        .append(" WHERE username='")
+                        .append(username + "';");
+
+                q.setLength(0);
+
+                q.append("SELECT * FROM " + view)
+                        .append(" WHERE username='")
+                        .append(username + "';");
+                stmt.executeQuery(q.toString());
+                res = stmt.getResultSet();
+                if(res.next() == true) {
+                    doc.setUsername(res.getString("username"));
+                    doc.setDoctor_id(res.getString("doctor_id"));
+                    doc.setEmail(res.getString("email"));
+                    doc.setName(res.getString("name"));
+                    doc.setLastname(res.getString("lastname"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeDBConnection(stmt, con);
+        }
+
+
+        return doc;
+    }
     /**
      * Get doctor by username
      *

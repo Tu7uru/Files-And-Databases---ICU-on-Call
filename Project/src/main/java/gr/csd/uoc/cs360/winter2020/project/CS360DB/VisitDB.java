@@ -486,7 +486,9 @@ public class VisitDB {
                     .append("'").append(patient_id).append("',")
                     .append("'").append(exam_id).append("',")
                     .append("DATE '").append(date).append("');");
+
             stmt.execute(insQuery.toString());
+
 
         } catch (SQLException ex) {
             // Log exception

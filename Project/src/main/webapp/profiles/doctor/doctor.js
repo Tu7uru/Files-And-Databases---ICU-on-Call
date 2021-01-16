@@ -1,5 +1,6 @@
 const submitpat = document.getElementById("submitpat");
 const submitinfo = document.getElementById("submit-info");
+const submitvisit = document.getElementById("submit-visit");
 const pat_id = document.getElementById("patient");
 const navbar = document.getElementById("nav-info");
 const patinfo = document.getElementById("pat-info");
@@ -38,6 +39,22 @@ submitpat.addEventListener("click", e => {
     console.log(pat_id.value);
     communicateWithServlet('GET','/Project/Finder?username=' + pat_id.value + "&type=visit");
   }
+});
+
+submitvisit.addEventListener("click", e => {
+  var pat_id = document.getElementById("pat_id");
+  var pat_date = document.getElementById("pat_date");
+  var pat_cure = document.getElementById("pat_cure");
+  var pate_state = document.getElementById("pat_state");
+
+  var data = "patient_id=" + pat_id.value + "\n" +
+              "date=" + pat_date.value + "\n" +
+              "cure=" + pat_cure.value + "\n" +
+              "type=visit\n" +
+              "state=" +  pat_state.value;
+
+              console.log("SENDING "  + data);
+  updateUser('PUT', '/Project/Register',data);
 });
 
 submitinfo.addEventListener("click", e => {
@@ -81,6 +98,9 @@ function communicateWithServlet(method, url) {
         asexam = document.getElementById("assign-exam");
         presc = document.getElementById("prescribe");
         var row = mkexam.parentElement.parentElement.cells;
+
+
+
         mkexam.addEventListener("click", e => {
           var data = 'date=' + row[1].innerHTML + "\n" +
                         'doctor_id=' + id + "\n" +
