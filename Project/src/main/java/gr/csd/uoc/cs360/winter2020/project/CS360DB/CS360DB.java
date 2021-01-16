@@ -15,13 +15,14 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Shift.Shift;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.sql.*;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 /**
  *
@@ -52,22 +53,11 @@ public class CS360DB {
         //__init__();
         //__init_diseases__();
         //__init_medicines__();
-        /*Shift s = new Shift(
-                "2020-01-01",
-                "",
-                "",
-                "",
-                "",
-                ""
-        );
-
-        ShiftDB.addShift(s); */
         //__clear__();
         //__init_shift__();
-
         //the Date and time at which you want to execute
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = (Date) dateFormatter .parse(desiredDate);
+        Date date = dateFormatter .parse(desiredDate);
 
         //Now create the time and schedule it
         Timer timer = new Timer();
@@ -75,26 +65,7 @@ public class CS360DB {
         //Use this if you want to execute it once
         timer.schedule(new MyTimeTask(), date);
 
-        /*List<String> symptoms = new ArrayList<>();
-        symptoms.add("eye pain");
-        List<String> diseases = new ArrayList<>();
-        diseases.add("cancer");
-
-
-
-        Visit v = new Visit(
-                "62c2ab31-aa9a-4cb7-ba25-a0be77850303",
-                "2020-01-14",
-                "medicine",
-                symptoms,
-                diseases,
-                "",
-                "",
-                "",
-                "DANGEROUS"
-        );
-
-        VisitDB.addVisit(v);*/
+        executeQueryOne("2021-01-10 21:00:00");
     }
 
     private static void __init_diseases__ () throws ClassNotFoundException{
@@ -986,6 +957,43 @@ public class CS360DB {
         return UNAME;
     }
 
+    private static void executeQueryOne(String shift_date) throws SQLException, ClassNotFoundException {
+        Connection con = getConnection();
+        Statement stmt = con.createStatement();
+        StringBuilder q = new StringBuilder();
+
+        StringTokenizer tk = new StringTokenizer(shift_date, " ");
+        String day = tk.nextToken();
+        String hour = tk.nextToken();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(day));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        String newDate = sdf.format(c.getTime());
+        newDate += " 09:00:00";
+
+        q.append("SELECT state,date FROM visit ")
+                .append(" WHERE date BETWEEN '" + shift_date)
+                .append("' AND '" + newDate + "'; ");
+
+        stmt.execute(q.toString());
+
+        ResultSet res = stmt.getResultSet();
+        System.out.println("VISITS BETWEEN " + shift_date + " AND "+ newDate);
+        while(res.next() == true) {
+            System.out.println("\t" + res.getString("date"));
+            System.out.println("\t" + res.getString("state"));
+            System.out.println("-----------------------------------------" );
+        }
+
+    }
+
     private static class MyTimeTask extends TimerTask
     {
 
@@ -995,7 +1003,7 @@ public class CS360DB {
                 ShiftDB.CreateDayShift(desiredDate);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (SQLException throwables) {
+            } catch (SQLException | InterruptedException throwables) {
                 throwables.printStackTrace();
             }
         }
