@@ -60,7 +60,7 @@ public class DoctorDB {
                     d.setLastname(res.getString("lastname"));
                     d.setPhone(res.getString("phone"));
                     d.setAddress(res.getString("address"));
-                    d.setSpec(Doctor.fromString(res.getString("spec")));
+                    d.setSpec(Doctor.fromString(res.getString("type")));
                     doctors.add(d);
                 }
             }
@@ -100,7 +100,7 @@ public class DoctorDB {
                 d.setLastname(res.getString("lastname"));
                 d.setPhone(res.getString("phone"));
                 d.setAddress(res.getString("address"));
-                d.setSpec(Doctor.fromString(res.getString("spec")));
+                d.setSpec(Doctor.fromString(spec.toLowerCase()));
                 doctors.add(d);
             }
 
@@ -724,7 +724,7 @@ public class DoctorDB {
         From here and later on we will implement the relations of the DB.Which are the combination of one or more DB's.
     */
 
-    public static void AddOrder(String doctor_id,String exam_id,String nurse_id) throws ClassNotFoundException
+    public static void AddOrder(String doctor_id,String exam_id,String nurse_id,String ex_name,String ex_room) throws ClassNotFoundException
     {
         if (doctor_id == null || doctor_id.trim().isEmpty() || nurse_id == null || nurse_id.trim().isEmpty()) {
             return;
@@ -740,11 +740,13 @@ public class DoctorDB {
             StringBuilder insQuery = new StringBuilder();
 
             insQuery.append("INSERT INTO ")
-                    .append(" orders (doctor_id, exam_id, nurse_id) ")
+                    .append(" orders (doctor_id, exam_id, nurse_id,exam_name,exam_room) ")
                     .append(" VALUES (")
                     .append("'").append(doctor_id).append("',")
                     .append("'").append(exam_id).append("',")
-                    .append("'").append(nurse_id).append("');");
+                    .append("'").append(nurse_id).append("',")
+                    .append("'").append(ex_name).append("',")
+                    .append("'").append(ex_room).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();
@@ -762,7 +764,7 @@ public class DoctorDB {
     }
 
 
-    public static void DoctorOrdersExamFromNurse(String patient_id,String visit_date,String doctor_id,String exam_room,String exam_name)
+    public static void DoctorOrdersExamFromNurse(String patient_id,String visit_date,String doctor_id,String exam_room,String exam_name) throws ClassNotFoundException
     {
         try {
             if (doctor_id == null || doctor_id.trim().isEmpty()) {
@@ -776,6 +778,7 @@ public class DoctorDB {
         Statement stmt = null;
         Connection con = null;
         String nurse_id = null;
+        Visit v = VisitDB.getVisit(patient_id, visit_date);
         try {
 
             con = CS360DB.getConnection();
@@ -787,10 +790,11 @@ public class DoctorDB {
             List<Nurse> nurses = NurseDB.getNursesBySpecialty(doc_spec);
             if (nurses.size() > 0) {
                 nurse_id = nurses.get(rand.nextInt(nurses.size())).getNurse_id();
-
+                v.setNurseID(nurse_id);
+                VisitDB.updateVisit(v);
                 Examination exam = new Examination(nurse_id, doctor_id, exam_room, exam_name);
                 ExamDB.addExam(exam);//add new exam
-                AddOrder(doctor_id, exam.getExam_ID(), nurse_id); //Add assignment to nurse
+                AddOrder(doctor_id, exam.getExam_ID(), nurse_id, exam_name, exam_room); //Add assignment to nurse
                 NurseDB.ConductsExam(exam.getExam_ID(), patient_id, visit_date);    //Nurse conducts the order and inserts in undergo
             }
 
@@ -832,7 +836,7 @@ public class DoctorDB {
                     .append(" VALUES (")
                     .append("'").append(exam_id).append("',")
                     .append("'").append(med_id).append("',")
-                    .append("DATETIME '").append(date).append("',")
+                    .append("DATE '").append(date).append("',")
                     .append("'").append(doctor_id).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
@@ -848,6 +852,8 @@ public class DoctorDB {
 
             //here we have set the cure as the medicine by name and
             //now we will update visit cure.
+            System.out.println(visit.getPatientID());
+            System.out.println(visit.getCure());
             VisitDB.updateVisit(visit);
 
 

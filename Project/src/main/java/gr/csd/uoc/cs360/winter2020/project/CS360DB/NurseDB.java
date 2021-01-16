@@ -71,6 +71,11 @@ public class NurseDB {
 
     public static List<Nurse> getNursesBySpecialty(String specialty) throws ClassNotFoundException, SQLException
     {
+        if(specialty.toLowerCase().equals("cardiologist"))
+        {
+            return new ArrayList<>();
+        }
+
         List<Nurse> nurses = new ArrayList<>();
 
         Statement stmt = null;
@@ -81,7 +86,12 @@ public class NurseDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM ").append(specialty).append(";");
+            if (specialty.contains("nurse")) {
+                query.append("SELECT * FROM ").append(specialty.toLowerCase()).append(";");
+            } else {
+                query.append("SELECT * FROM nurse_").append(specialty.toLowerCase()).append(";");
+            }
+
 
             stmt.executeQuery(query.toString());
 
@@ -98,7 +108,7 @@ public class NurseDB {
                 nurse.setLastname(res.getString("lastname"));
                 nurse.setPhone(res.getString("phone"));
                 nurse.setAddress(res.getString("address"));
-                nurse.setSpec(Nurse.fromString(res.getString("spec")));
+                nurse.setSpec(Nurse.fromString(specialty.toLowerCase()));
                 nurses.add(nurse);
 
 

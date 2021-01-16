@@ -134,18 +134,17 @@ public class DiseaseDB {
         return dis;
     }
 
-    public static Disease getDiseaseBySymptoms(List<String> Symptoms) throws ClassNotFoundException {
+    public static Disease getDiseaseBySymptoms(List<String> symptoms) throws ClassNotFoundException {
 
         Statement stmt = null;
         Connection con = null;
-        List<String> symptoms = new ArrayList<>();
+        //List<String> symptoms = new ArrayList<>();
         Disease dis = null;
         HashMap<String, Integer> best_disease_match = new HashMap<>();
 
         if (symptoms.isEmpty()) {
             return null;
         }
-
         try {
 
             con = CS360DB.getConnection();
@@ -161,20 +160,22 @@ public class DiseaseDB {
                 We do know that this is not optimal at all but it was the only solution
                 we found to find the best matching disease.
              */
-            for (String symptom : Symptoms) {
+            System.out.println("before find disease q");
+            for (String symptom : symptoms) {
 
                 insQuery = new StringBuilder();
 
                 insQuery.append("SELECT name FROM disease_symptoms ")
                         .append(" WHERE ")
-                        .append(" syptoms = ").append("'").append(symptoms).append("';");
+                        .append(" symptoms = ").append("'").append(symptom).append("';");
 
                 stmt.execute(insQuery.toString());
-
+                System.out.println("after q");
                 ResultSet res = stmt.getResultSet();
 
                 if (res.next() == true) {
                     name = res.getString("name");
+                    System.out.println(name);
 
                     if (best_disease_match.containsKey(name)) {
                         count = best_disease_match.get(name) + 1;
@@ -195,6 +196,7 @@ public class DiseaseDB {
                 }
             }
 
+            System.out.println(name);
             dis = DiseaseDB.getDiseaseByName(name);
 
         } catch (SQLException ex) {

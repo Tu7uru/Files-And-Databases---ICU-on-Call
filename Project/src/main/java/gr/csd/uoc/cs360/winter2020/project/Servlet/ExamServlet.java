@@ -10,6 +10,7 @@ import gr.csd.uoc.cs360.winter2020.project.CS360DB.DoctorDB;
 import gr.csd.uoc.cs360.winter2020.project.CS360DB.PatientDB;
 import gr.csd.uoc.cs360.winter2020.project.CS360DB.RandomDB;
 import gr.csd.uoc.cs360.winter2020.project.CS360DB.VisitDB;
+import gr.csd.uoc.cs360.winter2020.project.CS360DB.DiagnoseDB;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Examination;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
@@ -21,6 +22,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,9 +86,12 @@ public class ExamServlet extends HttpServlet {
             if (params.get("type").equals("make")) {
                 Visit v = VisitDB.getVisit(params.get("patient_id"), params.get("date"));
                 symptoms = VisitDB.getVisitSymptoms(v);
+
                 makeExam(response, params, symptoms);
             } else if (params.get("type").equals("assign")) {
                 assignExam(response, params);
+            } else if (params.get("type").equals("")) {
+
             } else {
                 prescribe(response, params);
             }
@@ -103,7 +108,9 @@ public class ExamServlet extends HttpServlet {
 
         Doctor d = DoctorDB.getDoctor(params.get("doctor_id"));
 
-        String med_id = new RandomDB().getMedication(d);
+        String dis_name = DiagnoseDB.getDiagnoseByExID(params.get("exam_id")).getDisease_Name();
+
+        String med_id = new RandomDB().getMedication(dis_name);
 
         DoctorDB.Prescribe(
                 params.get("exam_id"),
@@ -119,20 +126,28 @@ public class ExamServlet extends HttpServlet {
         out.close();
     }
 
-    private void assignExam(HttpServletResponse response, HashMap<String, String> params) throws IOException {
+    private void assignExam(HttpServletResponse response, HashMap<String, String> params) throws IOException, ClassNotFoundException, SQLException {
             response.setStatus(200);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            /*
+
+        List<String> exams = new ArrayList<>();
+        exams.add("blood_exam");
+        exams.add("urine_exam");
+        exams.add("ultrasound_exam");
+        exams.add("checking_vital_sings");
+
+        Random rand = new Random();
+
             DoctorDB.DoctorOrdersExamFromNurse(
                     params.get("patient_id"),
                     params.get("date"),
                     params.get("doctor_id"),
-                    params.get("exam_room"),
-                    params.get("exam_name")
+                    RandomDB.getExamRoom(DoctorDB.getDoctor(params.get("doctor_id"))),
+                    exams.get(rand.nextInt(exams.size()))
             );
-*/
+
         System.out.println("EXAMSERVLET: ASSIGN WAS SUCCESSFULLY DONE.");
 
         String json = new Gson().toJson("Assign was successfully done.");
@@ -160,13 +175,12 @@ public class ExamServlet extends HttpServlet {
         );
 
 
+        //System.out.println(params.get("patient_id") + " " + params.get("doctor_id") + " " + params.get("date"));
+        PatientDB.PatientReceivesExaminationByDoctor(e, params.get("patient_id"),
+                params.get("doctor_id"), params.get("date"),
+                symptoms
+        );
 
-        /*PatientDB.PatientReceivesExaminationByDoctor(e,params.get("patient_id"),
-                            params.get("doctor_id"),
-                            params.get("date"),
-                            symptoms
-                );
-*/
         System.out.println("#EXAMSERVLET: EXAMINATION DONE SUCCESSFULLY ");
         HashMap<String, String> h = new HashMap<>();
         h.put("exam_room", examRoom);

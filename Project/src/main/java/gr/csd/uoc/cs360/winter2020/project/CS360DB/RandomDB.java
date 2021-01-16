@@ -6,9 +6,6 @@
 package gr.csd.uoc.cs360.winter2020.project.CS360DB;
 
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
-import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Medication;
-
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Random;
@@ -85,23 +82,12 @@ public class RandomDB {
         return examName;
     }
 
-    public static String getMedication(Doctor d) {
+    public static String getMedication(String disease) {
         String type;
         String id;
 
-        if(d.getSpec() == Doctor.Spec.GP) {
-            type = "general";
-        } else if (d.getSpec() == Doctor.Spec.NEUROLOGIST) {
-            type = "neurological";
-        } else if (d.getSpec() == Doctor.Spec.HAEMATOLOGIST) {
-            type = "blood";
-        } else if (d.getSpec() == Doctor.Spec.SURGEON) {
-            type = "neurological";
-        } else {
-            type = "heart";
-        }
-
-        id = MedicationDB.getMedicationId(type);
+        System.out.println(disease);
+        id = MedicationDB.getMedicationId(disease);
 
         return id;
     }

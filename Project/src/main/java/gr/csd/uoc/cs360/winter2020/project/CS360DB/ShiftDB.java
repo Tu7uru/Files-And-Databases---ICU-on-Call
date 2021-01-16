@@ -15,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -80,7 +79,7 @@ public class ShiftDB {
 
             insQuery.append("SELECT * FROM shift ")
                     .append(" WHERE ")
-                    .append(" date = ").append("DATETIME '").append(date).append("';");
+                    .append(" date = ").append("DATE '").append(date).append("';");
 
             stmt.execute(insQuery.toString());
 
@@ -131,7 +130,7 @@ public class ShiftDB {
             insQuery.append("INSERT INTO ")
                     .append(" shift (date, doctor_id, nurse_id, type, department, employee_id) ")
                     .append(" VALUES (")
-                    .append("DATETIME '").append(shift.getDate()).append("',")
+                    .append("DATE '").append(shift.getDate()).append("',")
                     .append("'").append(shift.getDoctor_ID()).append("',")
                     .append("'").append(shift.getNurse_ID()).append("',")
                     .append("'").append(shift.getType()).append("',")
@@ -180,9 +179,14 @@ public class ShiftDB {
 
     public static void CreateDayShift(String date) throws ClassNotFoundException, SQLException {
 
-        List<String> doctor_specs = Arrays.asList(new String[]{"surgeon,neurologist,haematologist,general_practitioner,cardiologist"});
-        List<String> nurse_specs = Arrays.asList(new String[]{"nurse_surgeon,nurse_neurologist,nurse_haematologist,nurse_general_practitioner"});
-        List<String> employee_specs = Arrays.asList(new String[]{"employee,administrative,assistant_manager"});
+        String ds = "surgeon,neurologist,haematologist,general_practitioner,cardiologist";
+        String ns = "nurse_surgeon,nurse_neurologist,nurse_haematologist,nurse_general_practitioner";
+        String es = "employee,administrative,assistant_manager";
+
+        int counter = 0;
+        String[] doctor_specs = ds.split(",");
+        String[] nurse_specs = ns.split(",");
+        String[] employee_specs = es.split(",");
 
         List<Doctor> doctors = null;
         List<Nurse> nurses = null;
@@ -193,15 +197,14 @@ public class ShiftDB {
         for (String spec : doctor_specs) {
             doctors = DoctorDB.getDoctorsBySpec(spec);
             rands = getTwoRandomFromRange(doctors.size());
-
             if (!rands.isEmpty())//if not empty
             {
                 for (int i = 0; i < rands.size(); i++) {//try to add 2 random doctors for shift
                     Shift shift = new Shift();
                     shift.setDate(date);
                     shift.setDepartment(getDepartment(spec));
-                    shift.setEmployee_ID(null);
-                    shift.setNurse_ID(null);
+                    shift.setEmployee_ID("");
+                    shift.setNurse_ID("");
                     shift.setType(spec);
                     shift.setDoctor_ID(doctors.get(rands.get(i)).getDoctor_id());//get the id that func twoRandom returned
 
@@ -218,9 +221,9 @@ public class ShiftDB {
                 Shift shift = new Shift();
                 shift.setDate(date);
                 shift.setDepartment(getDepartment(spec));
-                shift.setEmployee_ID(null);
+                shift.setEmployee_ID("");
                 shift.setType(spec);
-                shift.setDoctor_ID(null);
+                shift.setDoctor_ID("");
 
                 shift.setNurse_ID(nurses.get(rands.get(i)).getNurse_id());
                 ShiftDB.addShift(shift);
@@ -236,9 +239,9 @@ public class ShiftDB {
                 Shift shift = new Shift();
                 shift.setDate(date);
                 shift.setDepartment(getDepartment(spec));
-                shift.setNurse_ID(null);
+                shift.setNurse_ID("");
                 shift.setType(spec);
-                shift.setDoctor_ID(null);
+                shift.setDoctor_ID("");
 
                 shift.setEmployee_ID(employees.get(rands.get(i)).getEmployee_id());
                 ShiftDB.addShift(shift);

@@ -259,8 +259,7 @@ public class PatientDB {
             stmt = con.createStatement();
 
             ExamDB.addExam(exam);
-
-            Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam.getExam_ID(), null);
+            Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam.getExam_ID(), "");
             //need to implement the find disease!!
             DiagnoseDB.addDiagnose(diag);
             VisitDB.AddUndergo(patient_id, exam.getExam_ID(), date);

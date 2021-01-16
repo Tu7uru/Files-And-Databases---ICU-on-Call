@@ -8,7 +8,6 @@ package gr.csd.uoc.cs360.winter2020.project.Servlet;
 import com.google.gson.Gson;
 import gr.csd.uoc.cs360.winter2020.project.CS360DB.VisitDB;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -63,30 +64,54 @@ public class VisitServlet extends HttpServlet {
         BufferedReader body = request.getReader();
         String line;
         HashMap<String, String> h = new HashMap<>();
+        List<String> symptoms = new ArrayList<>();
+        List<String> diseases = new ArrayList<>();
 
-        while((line = body.readLine())!= null) {
-            StringTokenizer tk = new StringTokenizer(line,"=");
+        while ((line = body.readLine()) != null) {
+            StringTokenizer tk = new StringTokenizer(line, "=");
             String field = tk.nextToken();
             String value = tk.nextToken();
 
-            h.put(field,value);
+            if (field.equals("symptoms")) {
+                StringTokenizer t = new StringTokenizer(value, ",");
+                while (t.hasMoreElements()) {
+                    symptoms.add(t.nextToken());
+                }
+            } else {
+                h.put(field, value);
+            }
 
         }
 
-        System.out.println("#VISIT: " + h.get("patient_id") +" IS MAKING A VISIT ON " + h.get("date"));
+        System.out.println("#VISITDB: " + symptoms.toString());
 
         // !TODO
         // Create visit with parameters
         Visit v = new Visit(
-
+                h.get("patient_id"),
+                h.get("date"),
+                "",
+                symptoms,
+                diseases,
+                "",
+                "",
+                "",
+                ""
         );
 
+        try {
+            VisitDB.VisitTEP(v);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(VisitServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //VisitDB.addVisit(v);
         response.setStatus(201);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         HashMap<String, Object> json = new HashMap<>();
-        json.put("visit","Visit added successfully");
+        json.put("visit", "Visit added successfully");
         out.println(new Gson().toJson(json));
 
     }

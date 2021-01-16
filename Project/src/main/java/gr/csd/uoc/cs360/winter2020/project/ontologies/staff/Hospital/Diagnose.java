@@ -18,7 +18,6 @@ public class Diagnose {
     private String exam_id = null;
     private List<String> symptoms = null;
     private String disease_Name = null;
-    private String nurse_id = null;
 
     public Diagnose() {
 

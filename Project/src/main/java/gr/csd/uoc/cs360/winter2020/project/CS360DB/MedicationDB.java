@@ -13,9 +13,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Random;
 
 /**
  *
@@ -106,6 +106,8 @@ public class MedicationDB {
         Connection con = null;
         String id = null;
 
+        List<String> ids = new ArrayList<>();
+        Random rand = new Random();
 
         try {
 
@@ -119,11 +121,17 @@ public class MedicationDB {
                     .append(" WHERE ")
                     .append(" use_for = ").append("'").append(type).append("' ORDER BY exp_date;");
 
+            stmt.execute(insQuery.toString());
             ResultSet res = stmt.getResultSet();
 
-            if (res.next() == true) {
+            while (res.next() == true) {
                 id = res.getString("med_id");
+                ids.add(id);
             }
+            if (!ids.isEmpty()) {
+                id = ids.get(rand.nextInt(ids.size()));
+            }
+
         } catch (SQLException | ClassNotFoundException ex) {
             // Log exception
             Logger.getLogger(MedicationDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -200,7 +208,7 @@ public class MedicationDB {
                     .append("'").append(med.getType()).append("',")
                     .append("'").append(med.getDosage()).append("',")
                     .append("'").append(med.getUse_for()).append("',")
-                    .append("DATETIME '").append(med.getExp_Date()).append("');");
+                    .append("DATE '").append(med.getExp_Date()).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
             stmtIns.executeUpdate();

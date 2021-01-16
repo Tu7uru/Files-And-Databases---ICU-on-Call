@@ -80,7 +80,7 @@ public class DiagnoseDB {
         return diagnoses;
     }
 
-    public static Diagnose getDiagnose(String doctor_id, String diagnose_id, String exam_id) throws ClassNotFoundException {
+    public static Diagnose getDiagnose(String diagnose_id, String exam_id) throws ClassNotFoundException {
 
         Statement stmt = null;
         Connection con = null;
@@ -142,6 +142,68 @@ public class DiagnoseDB {
 
         return diag;
     }
+
+    public static Diagnose getDiagnoseByExID(String exam_id) throws ClassNotFoundException {
+
+        Statement stmt = null;
+        Connection con = null;
+        List<String> symptoms = new ArrayList<>();
+        Diagnose diag = null;
+
+        try {
+
+            con = CS360DB.getConnection();
+
+            stmt = con.createStatement();
+
+            StringBuilder insQuery = new StringBuilder();
+
+            insQuery.append("SELECT * FROM diagnose ")
+                    .append(" WHERE ")
+                    .append(" exam_id = ").append("'").append(exam_id).append("';");
+            stmt.execute(insQuery.toString());
+
+            ResultSet res = stmt.getResultSet();
+
+            if (res.next() == true) {
+                diag = new Diagnose();
+                diag.setDiagnoseID(res.getString("exam_id"));
+                diag.setExamID(exam_id);
+                diag.setDisease_Name(res.getString("disease_name"));
+
+                StringBuilder insQuery2 = new StringBuilder();
+
+                insQuery2.append("SELECT symptoms FROM diagnose_symptoms ")
+                        .append(" WHERE ")
+                        .append(" exam_id = ").append("'").append(exam_id).append("';");
+
+                stmt.execute(insQuery2.toString());
+
+                ResultSet res2 = stmt.getResultSet();
+
+                while (res2.next() == true) {
+                    symptoms.add(res2.getString("symptoms"));
+                }
+
+                diag.setSymptoms(symptoms);
+
+            } else {
+
+                System.out.println("Diagnose with diagnose_id " + res.getString("diagnose_id") + " exam_id " + exam_id + " was not found");
+
+            }
+
+        } catch (SQLException ex) {
+            // Log exception
+            Logger.getLogger(DiagnoseDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // close connection
+            closeDBConnection(stmt, con);
+        }
+
+        return diag;
+    }
+
 
     public static void addDiagnose(Diagnose diag) throws ClassNotFoundException {
         try {

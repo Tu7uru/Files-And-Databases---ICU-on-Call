@@ -58,7 +58,7 @@ public class VisitDB {
 
                 insQuery2.append("SELECT symptoms FROM visit_symptoms ")
                         .append(" WHERE ")
-                        .append(" date = ").append("DATETIME '").append(res.getString("date")).append("'")
+                        .append(" date = ").append("DATE '").append(res.getString("date")).append("'")
                         .append(" AND patient_id = ").append("'").append(res.getString("patient_id")).append("';");
 
                 stmt.execute(insQuery2.toString());
@@ -76,7 +76,7 @@ public class VisitDB {
 
                 insQuery3.append("SELECT diseases FROM visit_diseases ")
                         .append(" WHERE ")
-                        .append(" date = ").append("DATETIME '").append(res.getString("date")).append("'")
+                        .append(" date = ").append("DATE '").append(res.getString("date")).append("'")
                         .append(" AND patient_id = ").append("'").append(res.getString("patient_id")).append("';");
 
                 stmt.execute(insQuery3.toString());
@@ -158,7 +158,7 @@ public class VisitDB {
 
             insQuery.append("SELECT * FROM visit ")
                     .append(" WHERE ")
-                    .append(" date = ").append("DATETIME '").append(date).append("'")
+                    .append(" date = ").append("DATE '").append(date).append("'")
                     .append(" AND patient_id = ").append("'").append(patient_id).append("';");
 
             stmt.execute(insQuery.toString());
@@ -205,7 +205,7 @@ public class VisitDB {
             insQuery2.append("SELECT symptoms FROM visit_symptoms ")
                     .append(" WHERE ")
                     .append(" patient_id = ").append("'").append(v.getPatientID()).append("'")
-                    .append(" AND date = ").append("DATETIME '").append(v.getDate()).append("';");
+                    .append(" AND date = ").append("DATE '").append(v.getDate()).append("';");
 
             stmt.execute(insQuery2.toString());
 
@@ -243,7 +243,7 @@ public class VisitDB {
             insQuery3.append("SELECT * FROM visit_diseases")
                     .append(" WHERE ")
                     .append(" patient_id = ").append("'").append(v.getPatientID()).append("'")
-                    .append(" AND date = ").append("DATETIME '").append(v.getDate()).append("';");
+                    .append(" AND date = ").append("DATE '").append(v.getDate()).append("';");
 
             stmt.execute(insQuery3.toString());
 
@@ -289,7 +289,7 @@ public class VisitDB {
                     .append(" visit (patient_id, date, cure, doctor_id, nurse_id, employee_id, state) ")
                     .append(" VALUES (")
                     .append("'").append(visit.getPatientID()).append("',")
-                    .append("DATETIME '").append(visit.getDate()).append("',")
+                    .append("DATE '").append(visit.getDate()).append("',")
                     .append("'").append(visit.getCure()).append("',")
                     .append("'").append(visit.getDoctorID()).append("',")
                     .append("'").append(visit.getNurseID()).append("',")
@@ -309,7 +309,7 @@ public class VisitDB {
                         .append(" visit_diseases (patient_id, date, diseases) ")
                         .append(" VALUES (")
                         .append("'").append(visit.getPatientID()).append("',")
-                        .append("DATETIME '").append(visit.getDate()).append("',")
+                        .append("DATE '").append(visit.getDate()).append("',")
                         .append("'").append(dis).append("');");
 
                 PreparedStatement stmtIns2 = con.prepareStatement(insQuery2.toString());
@@ -326,9 +326,8 @@ public class VisitDB {
                         .append(" visit_symptoms (patient_id, date, symptoms) ")
                         .append(" VALUES (")
                         .append("'").append(visit.getPatientID()).append("',")
-                        .append("DATETIME '").append(visit.getDate()).append("',")
-                        .append("'").append(sympt).append("',")
-                        .append("'").append(visit.getDoctorID()).append("');");
+                        .append("DATE '").append(visit.getDate()).append("',")
+                        .append("'").append(sympt).append("');");
                 PreparedStatement stmtIns3 = con.prepareStatement(insQuery3.toString());
                 stmtIns3.executeUpdate();
             }
@@ -366,7 +365,7 @@ public class VisitDB {
                     .append(" visit_symptoms (patient_id, date, symptoms, doctor_id) ")
                     .append(" VALUES (")
                     .append("'").append(patient_id).append("',")
-                    .append("DATERIME '").append(date).append("',")
+                    .append("DATE '").append(date).append("',")
                     .append("'").append(symptom).append("',")
                     .append("'").append(doctor_id).append("');");
 
@@ -402,7 +401,7 @@ public class VisitDB {
             insQuery.append("INSERT INTO ")
                     .append(" visit_diseases (date, doctor_id, patient_id, diseases) ")
                     .append(" VALUES (")
-                    .append("DATETIME '").append(visit_date).append("',")
+                    .append("DATE '").append(visit_date).append("',")
                     .append("'").append(doctor_id).append("',")
                     .append("'").append(patient_id).append("',")
                     .append("'").append(disease).append("');");
@@ -439,15 +438,16 @@ public class VisitDB {
 
             StringBuilder insQuery = new StringBuilder();
 
+            //System.out
             insQuery.append("UPDATE visit ")
                     .append(" SET ")
-                    .append(" cure = ").append("'").append(visit.getCure()).append("'")
-                    .append(" nurse_id = ").append("'").append(visit.getNurseID()).append("'")
-                    .append(" employee_id = ").append("'").append(visit.getEmployeeID()).append("'")
+                    .append(" cure = ").append("'").append(visit.getCure()).append("',")
+                    .append(" nurse_id = ").append("'").append(visit.getNurseID()).append("',")
+                    .append(" employee_id = ").append("'").append(visit.getEmployeeID()).append("',")
                     .append(" state = ").append("'").append(visit.getState()).append("'")
                     .append(" WHERE patient_id = ").append("'").append(visit.getPatientID()).append("' ")
                     .append(" AND doctor_id = ").append("'").append(visit.getDoctorID()).append("' ")
-                    .append(" AND date = ").append("DATETIME '").append(visit.getDate()).append("';");
+                    .append(" AND date = ").append("DATE '").append(visit.getDate()).append("';");
 
             stmt.executeUpdate(insQuery.toString());
             System.out.println("#DB: The entry visit was successfully updated in the database.");
@@ -485,7 +485,8 @@ public class VisitDB {
                     .append(" VALUES (")
                     .append("'").append(patient_id).append("',")
                     .append("'").append(exam_id).append("',")
-                    .append("DATETIME '").append(date).append("');");
+                    .append("DATE '").append(date).append("');");
+            stmt.execute(insQuery.toString());
 
         } catch (SQLException ex) {
             // Log exception
@@ -512,7 +513,7 @@ public class VisitDB {
             insQuery.append("SELECT patient_id FROM undergo ")
                     .append(" WHERE ")
                     .append(" exam_id = ").append("'").append(exam_id).append("' ")
-                    .append(" AND date = ").append("DATETIME '").append(date).append("';");
+                    .append(" AND date = ").append("DATE '").append(date).append("';");
 
             stmt.execute(insQuery.toString());
 
@@ -547,7 +548,7 @@ public class VisitDB {
             insQuery.append("SELECT exam_id FROM undergo ")
                     .append(" WHERE ")
                     .append(" patient_id = ").append("'").append(patient_id).append("' ")
-                    .append(" AND date = ").append("DATETIME '").append(date).append("';");
+                    .append(" AND date = ").append("DATE '").append(date).append("';");
 
             stmt.execute(insQuery.toString());
 
@@ -603,11 +604,10 @@ public class VisitDB {
 
     }
 
-    public static void VisitTEP(Patient pat, Visit visit) throws ClassNotFoundException {
+    public static void VisitTEP(Visit visit) throws ClassNotFoundException {
 
         try {
             visit.checkFields();
-            pat.checkFields();
 
         } catch (Exception ex) {
             // Log exception
@@ -621,19 +621,20 @@ public class VisitDB {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
-            Patient patient = PatientDB.getPatient(pat.getPatient_id());
+            Patient pat = PatientDB.getPatient(visit.getPatientID());
 
-            if (patient != null) {
+            if (pat != null) {
                 /*just show the patient*/
             } else {
-                PatientDB.addPatient(pat);
+                // PatientDB.addPatient(pat);
+                return;
             }
 
             //Visit need doc to be set and mplampla
             //VisitDB.addVisit(visit);
             List<String> symptoms = visit.getSymptoms();
             List<Shift> shifts = ShiftDB.getShift(visit.getDate());
-            if (symptoms.contains("heart") || symptoms.contains("trouble_walking") || symptoms.contains("trouble_speaking")) {
+            if (symptoms.contains("heart_pain") || symptoms.contains("trouble_walking") || symptoms.contains("trouble_speaking")) {
 
                 for (Shift shift : shifts) {
                     if (DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.CARDIOLOGIST)) {

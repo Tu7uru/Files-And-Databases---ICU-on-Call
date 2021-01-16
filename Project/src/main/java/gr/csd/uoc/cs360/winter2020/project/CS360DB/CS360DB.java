@@ -10,9 +10,11 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Administrat
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.AssistantManager;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Employee;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Disease;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Medication;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Shift.Shift;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,10 +45,13 @@ public class CS360DB {
     }
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException {
-        //creatingTables();
+        creatingTables();
         //__init__();
-        __init_diseases__();
+        //__init_diseases__();
+        //__init_medicines__();
         //__clear__();
+        //ShiftDB.CreateDayShift("2021-01-16");
+        __init_shift__();
         /*List<String> symptoms = new ArrayList<>();
         symptoms.add("eye pain");
         List<String> diseases = new ArrayList<>();
@@ -137,10 +142,10 @@ public class CS360DB {
         symptoms = new ArrayList<>();
         symptoms.add("trouble_walking");
         symptoms.add("trouble_speaking");
-        symptoms.add("numbness");
+        symptoms.add("heart_pain");
 
         Disease d5 = new Disease(
-                "stroke",
+                "heart_attack",
                 symptoms,
                 "unable",
                 "",
@@ -188,6 +193,59 @@ public class CS360DB {
         );
 
         DiseaseDB.addDisease(d8);
+    }
+
+    private static void __init_medicines__() throws ClassNotFoundException {
+        Medication med1 = new Medication("niflamol", "pill", "500mg", "broken_bone", "2022-01-10");
+        Medication med2 = new Medication("niflamol", "pill", "1000mg", "broken_bone", "2022-06-10");
+        Medication med3 = new Medication("intravenous_fluid", "fluid", "not_specified", "dehydration", "2023-06-12");
+        Medication med4 = new Medication("Exelon", "pill", "450mg", "alzheimer", "2022-05-10");
+        Medication med5 = new Medication("Exelon", "pill", "900mg", "alzheimer", "2023-10-10");
+        Medication med6 = new Medication("pioglitazone", "pill", "450mg", "diabetes", "2021-10-10");
+        Medication med7 = new Medication("cardiolip", "pill", "500mg", "heart_attack", "2022-01-20");
+        Medication med8 = new Medication("cardiolip", "pill", "850mg", "heart_attack", "2022-03-26");
+        Medication med9 = new Medication("pfizer_bionteck_covid19", "needle_vaccine", "0.3ml", "COVID", "2024-05-10");
+        Medication med10 = new Medication("cold_n_flu", "pill", "500mg", "flu", "2023-02-10");
+        Medication med11 = new Medication("cold_n_flu", "pill", "250mg", "flu", "2023-02-10");
+        Medication med12 = new Medication("cold_n_flu", "pill", "1000mg", "flu", "2023-07-07");
+        Medication med13 = new Medication("Zithromax", "pill", "250mg", "breathing_problems", "2023-07-07");
+        Medication med14 = new Medication("Temozolomide", "intravenously", "not_specified", "brain_tumor", "2021-08-18");
+
+        MedicationDB.addMedication(med1);
+        MedicationDB.addMedication(med2);
+        MedicationDB.addMedication(med3);
+        MedicationDB.addMedication(med4);
+        MedicationDB.addMedication(med5);
+        MedicationDB.addMedication(med6);
+        MedicationDB.addMedication(med7);
+        MedicationDB.addMedication(med8);
+        MedicationDB.addMedication(med9);
+        MedicationDB.addMedication(med10);
+        MedicationDB.addMedication(med11);
+        MedicationDB.addMedication(med12);
+        MedicationDB.addMedication(med13);
+        MedicationDB.addMedication(med14);
+
+
+    }
+
+    private static void __init_shift__() throws ClassNotFoundException {
+
+        for (int i = 0; i < 1; i++) {
+            Shift shift = new Shift("2020-10-10", DoctorDB.getDoctors().get(i).getDoctor_id(), "x", "x", "x", "");
+            ShiftDB.addShift(shift);
+        }
+
+        /*for (int i = 0; i < 4; i++) {
+            Shift shift = new Shift("2020-10-10", "x", NurseDB.getNurses().get(i).getNurse_id(), "x", "x", "");
+            ShiftDB.addShift(shift);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            Shift shift = new Shift("2020-10-10", "x", "x", "x", "", EmployeeDB.getEmployees().get(i).getEmployee_id());
+            ShiftDB.addShift(shift);
+        }*/
+
     }
 
     private static void __init__() throws ClassNotFoundException {
@@ -485,7 +543,7 @@ public class CS360DB {
             PatientDB.addPatient(p);
 
 
-            List<String> symptoms = Arrays.asList(new String[] {"heart pain"});
+            List<String> symptoms = Arrays.asList(new String[]{"heart_pain"});
             List<String> diseases = Arrays.asList(new String[] {"cancer"});
             Visit v = new Visit(
                     p.getPatient_id(),
@@ -493,8 +551,8 @@ public class CS360DB {
                     "",
                     symptoms,
                     diseases,
-                    null,
-                    null,
+                    "",
+                    "",
                     "",
                     "STABLE"
 
@@ -721,16 +779,16 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS shift (" +
-                "date DATE, doctor_id varchar(50), nurse_id varchar(50)," +
-                "type varchar(15), department varchar(40), employee_id varchar(50)," +
-                "PRIMARY KEY(date)" +
-                ");"));
+ "date DATE, doctor_id varchar(50), nurse_id varchar(50),"
+                + "type varchar(40), department varchar(40), employee_id varchar(50),"
+                + "PRIMARY KEY(date)"
+                +                ");"));
 
         stmt.executeUpdate(createTable.toString());
         //---------------------------------------------------------//
 
 
-        createTable.setLength(0);
+        /*createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS shift (" +
                 "date DATE, doctor_id varchar(50), nurse_id varchar(50)," +
@@ -739,7 +797,7 @@ public class CS360DB {
                 ");"));
 
         stmt.executeUpdate(createTable.toString());
-
+*/
         //---------------------------------------------------------//
 
         createTable.setLength(0);
@@ -829,14 +887,14 @@ public class CS360DB {
 
         createTable.setLength(0);
 
-        createTable.append(("CREATE TABLE IF NOT EXISTS prescribe (" +
-                "exam_id varchar(50), med_id varchar(50),date DATE," +
-                "PRIMARY KEY(exam_id)" +
-                ");"));
+        createTable.append(("CREATE TABLE IF NOT EXISTS prescribe ("
+                + "exam_id varchar(50), med_id varchar(50),date DATE, doctor_id varchar(50),"
+                + "PRIMARY KEY(exam_id,med_id)"
+                + ");"));
 
         stmt.executeUpdate(createTable.toString());
 
-        createTable.setLength(0);
+        /*        createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS prescribe (" +
                 "exam_id varchar(50), diagnose_id varchar(50)," +
@@ -844,7 +902,7 @@ public class CS360DB {
                 ");"));
 
         stmt.executeUpdate(createTable.toString());
-
+*/
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS orders (exam_id varchar(50)," +
