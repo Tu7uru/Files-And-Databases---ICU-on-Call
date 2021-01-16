@@ -175,16 +175,37 @@ public class EmployeeDB {
 
             while (res.next() == true) {
                 Employee emp = new Employee();
-                emp.setAddress(res.getString("address"));
-                emp.setDepartment(res.getString("department"));
-                emp.setEmail(res.getString("email"));
-                emp.setEmployee_id(res.getString("employee_id"));
-                emp.setLastname(res.getString("lastname"));
-                emp.setName(res.getString("name"));
-                emp.setPassword(res.getString("password"));
-                emp.setUsername(res.getString("username"));
+                if (!spec.equals("employee")) {
+
+                    emp.setEmployee_id(res.getString("employee_id"));
+                    emp.setUsername(res.getString("username"));
+                    Employee t_emp = EmployeeDB.getEmployee(res.getString("employee_id"));
+
+                    if (t_emp != null) {
+                        emp.setAddress(t_emp.getAddress());
+                        emp.setEmail(t_emp.getEmail());
+                        emp.setLastname(t_emp.getLastname());
+                        emp.setName(t_emp.getName());
+                        emp.setPassword(t_emp.getPassword());
+                        emp.setPhone(t_emp.getPhone());
+                    }
+                } else {
+                    emp.setEmployee_id(res.getString("employee_id"));
+                    emp.setUsername(res.getString("username"));
+                    emp.setAddress(res.getString("address"));
+                    emp.setEmail(res.getString("email"));
+                    emp.setLastname(res.getString("lastname"));
+                    emp.setName(res.getString("name"));
+                    emp.setPassword(res.getString("password"));
+                    emp.setPhone(res.getString("phone"));
+                    emp.setDepartment(res.getString("department"));
+
+                }
+
                 employees.add(emp);
             }
+            
+
 
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeDB.class.getName()).log(Level.SEVERE, null, ex);
