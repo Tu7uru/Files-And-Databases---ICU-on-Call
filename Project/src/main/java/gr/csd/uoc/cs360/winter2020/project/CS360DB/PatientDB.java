@@ -302,7 +302,7 @@ public class PatientDB {
         return DiseaseDB.getDiseaseBySymptoms(symptoms);
     }
 
-    public static void PatientReExamined(Examination exam, String doctor_id, String date, String patient_id) throws ClassNotFoundException {
+    public static void PatientReExamined(/*Examination exam,*/String doctor_id, String date, String patient_id) throws ClassNotFoundException {
 
         if (patient_id == null || patient_id.trim().isEmpty()
                 || date == null || date.trim().isEmpty() || doctor_id == null || doctor_id.isEmpty()) {

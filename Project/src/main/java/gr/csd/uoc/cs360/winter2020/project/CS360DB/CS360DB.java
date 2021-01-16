@@ -15,14 +15,11 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Shift.Shift;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
 
 /**
  *
@@ -47,16 +44,24 @@ public class CS360DB {
         return DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE, UNAME, PASSWD);
     }
 
-    public static void main(String args[]) throws ClassNotFoundException, SQLException, ParseException {
+    public static void main(String args[]) throws ClassNotFoundException, SQLException, ParseException, InterruptedException {
 
         //creatingTables();
+        //__clear__();
         //__init__();
         //__init_diseases__();
         //__init_medicines__();
-        //__clear__();
         //__init_shift__();
+        //ShiftDB.CreateDayShift(desiredDate);
+        /*List<Shift> shifts;
+        shifts = ShiftDB.getShift(desiredDate);
+        System.out.println(shifts.size());
+        for (Shift shift : shifts) {
+            System.out.println(shift.getType());
+        }
+*/
         //the Date and time at which you want to execute
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /*DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = dateFormatter .parse(desiredDate);
 
         //Now create the time and schedule it
@@ -66,6 +71,7 @@ public class CS360DB {
         timer.schedule(new MyTimeTask(), date);
 
         executeQueryOne("2021-01-10 21:00:00");
+    */
     }
 
     private static void __init_diseases__ () throws ClassNotFoundException{
@@ -747,8 +753,8 @@ public class CS360DB {
 
         createTable.append(("CREATE TABLE IF NOT EXISTS visit (patient_id varchar(50), " +
                 "date DATETIME, cure varchar(40), doctor_id varchar(50), nurse_id varchar(50), employee_id varchar(50), " +
-                "state varchar(10)," +
-                "PRIMARY KEY(patient_id, date));"));
+ "state varchar(20),"
+                +                "PRIMARY KEY(patient_id, date));"));
 
         stmt.executeUpdate(createTable.toString());
 

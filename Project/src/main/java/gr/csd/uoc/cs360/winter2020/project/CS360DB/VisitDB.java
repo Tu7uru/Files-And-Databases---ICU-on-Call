@@ -550,7 +550,7 @@ public class VisitDB {
             insQuery.append("SELECT exam_id FROM undergo ")
                     .append(" WHERE ")
                     .append(" patient_id = ").append("'").append(patient_id).append("' ")
-                    .append(" AND date = ").append(" '").append(date).append("';");
+                    .append(" AND date = ").append("'").append(date).append("';");
 
             stmt.execute(insQuery.toString());
 

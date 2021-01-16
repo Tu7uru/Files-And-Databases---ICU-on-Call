@@ -167,7 +167,7 @@ public class DiagnoseDB {
 
             if (res.next() == true) {
                 diag = new Diagnose();
-                diag.setDiagnoseID(res.getString("exam_id"));
+                diag.setDiagnoseID(res.getString("diagnose_id"));
                 diag.setExamID(exam_id);
                 diag.setDisease_Name(res.getString("disease_name"));
 
