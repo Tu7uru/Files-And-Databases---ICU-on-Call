@@ -79,7 +79,7 @@ public class ShiftDB {
 
             insQuery.append("SELECT * FROM shift ")
                     .append(" WHERE ")
-                    .append(" date = ").append("DATE '").append(date).append("';");
+                    .append(" date = ").append(" '").append(date).append("';");
 
             stmt.execute(insQuery.toString());
 
@@ -169,7 +169,7 @@ public class ShiftDB {
             insQuery.append("INSERT INTO ")
                     .append(" shift (date, doctor_id, nurse_id, type, department, employee_id) ")
                     .append(" VALUES (")
-                    .append("DATE '").append(shift.getDate()).append("',")
+                    .append("'").append(shift.getDate()).append("',")
                     .append("'").append(shift.getDoctor_ID()).append("',")
                     .append("'").append(shift.getNurse_ID()).append("',")
                     .append("'").append(shift.getType()).append("',")
@@ -216,7 +216,7 @@ public class ShiftDB {
         return rands;
     }
 
-    public static void CreateDayShift(String date) throws ClassNotFoundException, SQLException {
+    public static void CreateDayShift(String date) throws ClassNotFoundException, SQLException, InterruptedException {
 
         String ds = "surgeon,neurologist,haematologist,general_practitioner,cardiologist";
         String ns = "nurse_surgeon,nurse_neurologist,nurse_haematologist,nurse_general_practitioner";
@@ -248,6 +248,7 @@ public class ShiftDB {
                     shift.setDoctor_ID(doctors.get(rands.get(i)).getDoctor_id());//get the id that func twoRandom returned
 
                     ShiftDB.addShift(shift);
+                    Thread.sleep(1000);
                 }
             }
 
