@@ -869,10 +869,11 @@ public class DoctorDB {
     {
 
         try {
+            /*
             if (doctor_id == null || doctor_id.trim().isEmpty() || exam_id==null || exam_id.trim().isEmpty()
                     || med_id == null || med_id.trim().isEmpty() || date == null || date.trim().isEmpty()) {
                 return;
-            }
+            } */
         } catch (Exception ex) {
             // Log exception
             Logger.getLogger(DoctorDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -886,7 +887,6 @@ public class DoctorDB {
         Visit visit = null;
 
         try {
-
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
@@ -909,13 +909,17 @@ public class DoctorDB {
             medicine = MedicationDB.getMedication(med_id).getName();
             visit = VisitDB.getVisit(patient_id, date);
 
-            visit.setCure(medicine);
+            if(visit != null) {
+                visit.setCure(medicine);
 
-            //here we have set the cure as the medicine by name and
-            //now we will update visit cure.
-            System.out.println(visit.getPatientID());
-            System.out.println(visit.getCure());
-            VisitDB.updateVisit(visit);
+                //here we have set the cure as the medicine by name and
+                //now we will update visit cure.
+                System.out.println(visit.getPatientID());
+                System.out.println(visit.getCure());
+                VisitDB.updateVisit(visit);
+            }
+
+
 
 
             System.out.println("#DB: The prescription of " + MedicationDB.getMedication(med_id)

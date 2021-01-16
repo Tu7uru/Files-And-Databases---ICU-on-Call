@@ -10,6 +10,7 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Administrat
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.AssistantManager;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Employee.Employee;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Disease;
+import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Examination;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Medication;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
@@ -17,6 +18,7 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Shift.Shift;
 import sun.java2d.pipe.SpanShapeRenderer;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -56,6 +58,7 @@ public class CS360DB {
         //__clear__();
         //__init_shift__();
         //the Date and time at which you want to execute
+
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = dateFormatter .parse(desiredDate);
 
@@ -65,7 +68,12 @@ public class CS360DB {
         //Use this if you want to execute it once
         timer.schedule(new MyTimeTask(), date);
 
-        executeQueryOne("2021-01-10 21:00:00");
+        //executeQueryOne("2021-01-10 21:00:00");
+        //executeQueryTwoPerShift("2021-01-22 21:00:00");
+        //executeQueryTwoPerMonth("2021-01-01 21:00:00");
+        //executeQueryThree();
+        executeQueryFour("2020-10-10 20:00:00", "2020-10-10 23:00:00");
+
     }
 
     private static void __init_diseases__ () throws ClassNotFoundException{
@@ -964,7 +972,6 @@ public class CS360DB {
 
         StringTokenizer tk = new StringTokenizer(shift_date, " ");
         String day = tk.nextToken();
-        String hour = tk.nextToken();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         Calendar c = Calendar.getInstance();
@@ -986,12 +993,267 @@ public class CS360DB {
 
         ResultSet res = stmt.getResultSet();
         System.out.println("VISITS BETWEEN " + shift_date + " AND "+ newDate);
+
+        System.out.println("-----------------------------------------" );
         while(res.next() == true) {
-            System.out.println("\t" + res.getString("date"));
-            System.out.println("\t" + res.getString("state"));
+            System.out.println("\t" + res.getString("date")+" -> " + res.getString("state"));
             System.out.println("-----------------------------------------" );
         }
 
+
+
+    }
+
+    private static void executeQueryTwoPerMonth(String month) throws SQLException, ClassNotFoundException, ParseException {
+        Connection con = getConnection();
+        Statement stmt = con.createStatement();
+        StringBuilder q = new StringBuilder();
+        StringBuilder answer = new StringBuilder();
+
+        StringTokenizer tk = new StringTokenizer(month, " ");
+        String day = tk.nextToken();
+        StringTokenizer tk2 = new StringTokenizer(day, "-");
+        String actualDay = tk2.nextToken();
+        String actualMonth = tk2.nextToken();
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        Calendar c = Calendar.getInstance();
+
+        try {
+            c.setTime(sdf.parse(day));
+            c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String newDate = sdf.format(c.getTime());
+        newDate += " 23:59:59";
+
+        answer.append("DISEASES,MEDICATION,EXAMINATIONS FOR MONTH: " + actualMonth +"\n")
+                .append("-----------------------------------------\n" );
+
+        q.append("SELECT diseases FROM visit_diseases")
+                .append(" WHERE date BETWEEN '" + month + "' AND '" + newDate + "';");
+
+        stmt.execute(q.toString());
+        ResultSet res = stmt.getResultSet();
+
+        answer.append("DISEASES\n")
+                .append("-----------------------------------------\n" );
+        while(res.next() == true) {
+            answer.append("\t" + res.getString("diseases") + "\n");
+        }
+        answer.append("-----------------------------------------\n" );
+
+        q.setLength(0);
+        q.append("SELECT name,dosage FROM medication ")
+                .append( "WHERE med_id IN ( SELECT med_id FROM prescribe WHERE ")
+                .append(" prescribe.date BETWEEN '" + month + "' AND '" + newDate + "');");
+
+        stmt.execute(q.toString());
+        res = stmt.getResultSet();
+
+        answer.append("MEDICATIONS\n")
+                .append("-----------------------------------------\n" );
+        while(res.next() == true) {
+            answer.append("\t" + res.getString("name") + "\t|\t" +res.getString("dosage") + "\n");
+        }
+        answer.append("-----------------------------------------\n" );
+
+        q.setLength(0);
+        q.append("SELECT name FROM examination ")
+                .append( "WHERE exam_id IN ( SELECT exam_id FROM prescribe WHERE ")
+                .append(" prescribe.date BETWEEN '" + month + "' AND '" + newDate + "');");
+
+        stmt.execute(q.toString());
+        res = stmt.getResultSet();
+
+        answer.append("EXAMINATIONS\n")
+                .append("-----------------------------------------\n" );
+        while(res.next() == true) {
+            answer.append("\t" + res.getString("name") + "\n");
+        }
+        answer.append("-----------------------------------------\n" );
+
+        System.out.println(answer.toString());
+    }
+
+    private static void executeQueryTwoPerShift(String shift_date) throws SQLException, ClassNotFoundException {
+        Connection con = getConnection();
+        Statement stmt = con.createStatement();
+        StringBuilder q = new StringBuilder();
+        StringBuilder answer = new StringBuilder();
+
+        StringTokenizer tk = new StringTokenizer(shift_date, " ");
+        String day = tk.nextToken();
+        String hour = tk.nextToken();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(day));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        String newDate = sdf.format(c.getTime());
+        newDate += " 09:00:00";
+
+        answer.append("DISEASES,MEDICATION,EXAMINATIONS FOR SHIFT: " + shift_date +"\n")
+                .append("-----------------------------------------\n" );
+
+        q.append("SELECT DISTINCT diseases FROM visit_diseases")
+                .append(" WHERE date BETWEEN '" + shift_date + "' AND '" + newDate + "';");
+
+        stmt.execute(q.toString());
+        ResultSet res = stmt.getResultSet();
+
+        answer.append("DISEASES\n")
+                .append("-----------------------------------------\n" );
+        while(res.next() == true) {
+            answer.append("\t" +  res.getString("diseases") + "\n");
+        }
+        answer.append("-----------------------------------------\n" );
+
+
+        q.setLength(0);
+        q.append("SELECT DISTINCT name,dosage FROM medication ")
+                .append( "WHERE med_id IN ( SELECT med_id FROM prescribe WHERE ")
+                .append(" prescribe.date BETWEEN '" + shift_date + "' AND '" + newDate + "');");
+
+        stmt.execute(q.toString());
+        res = stmt.getResultSet();
+
+        answer.append("MEDICATIONS\n")
+                .append("-----------------------------------------\n" );
+        while(res.next() == true) {
+            answer.append("\t" + res.getString("name") +"\t|\t"+res.getString("dosage")+ "\n");
+        }
+        answer.append("-----------------------------------------\n" );
+
+        q.setLength(0);
+        q.append("SELECT DISTINCT name FROM examination ")
+                .append( "WHERE exam_id IN ( SELECT exam_id FROM prescribe WHERE ")
+                .append(" prescribe.date BETWEEN '" + shift_date + "' AND '" + newDate + "');");
+
+        stmt.execute(q.toString());
+        res = stmt.getResultSet();
+
+        answer.append("EXAMINATIONS\n")
+                .append("-----------------------------------------\n" );
+        while(res.next() == true) {
+            answer.append("\t" + res.getString("name") + "\n");
+        }
+        answer.append("-----------------------------------------\n" );
+
+        System.out.println(answer.toString());
+    }
+
+    private static void executeQueryThree()throws SQLException, ClassNotFoundException {
+        Connection con = getConnection();
+        Statement stmt = con.createStatement();
+        StringBuilder q = new StringBuilder();
+        StringBuilder answer = new StringBuilder();
+
+        q.append("SELECT COUNT(*) ")
+                .append("FROM visit_diseases WHERE diseases='COVID-19'");
+
+        stmt.execute(q.toString());
+        answer.append("\t COVID-19 REPORT\n")
+                .append("-----------------------------------------\n" );
+        ResultSet res = stmt.getResultSet();
+        while(res.next() == true) {
+            answer.append("Patients with COVID-19:\t"+res.getInt("count(*)") + "\n");
+        }
+        answer.append("-----------------------------------------\n" );
+
+        q.setLength(0);
+        q.append("SELECT name,lastname,phone,address,diseases FROM ")
+                .append("patient P, visit_diseases V WHERE P.patient_id = V.patient_id")
+                .append(" AND V.patient_id IN ( SELECT patient_id FROM visit_diseases WHERE")
+                                .append(" diseases = 'COVID-19');");
+
+
+        stmt.execute(q.toString());
+        ResultSet rs = stmt.getResultSet();
+
+        while(rs.next() == true) {
+            answer.append("\t" + rs.getString("name") )
+                    .append("\t" + rs.getString("lastname") )
+                    .append("\t" + rs.getString("phone") )
+                    .append("\t" + rs.getString("address") )
+                    .append("\t" + rs.getString("diseases") )
+                    .append("\n");
+        }
+        answer.append("-----------------------------------------\n" );
+
+        System.out.println(answer.toString());
+    }
+
+    private static void executeQueryFour(String start, String end) throws SQLException, ClassNotFoundException {
+        Connection con = getConnection();
+        Statement stmt = con.createStatement();
+        StringBuilder q = new StringBuilder();
+        StringBuilder e = new StringBuilder();
+        StringBuilder n = new StringBuilder();
+        StringBuilder d = new StringBuilder();
+
+        q.append("SELECT employee.username, shift.date FROM employee LEFT JOIN shift ON employee.employee_id = shift.employee_id")
+                .append(" WHERE date BETWEEN " )
+                .append("'" + start + "' AND '" + end + "' ORDER BY employee.username;");
+
+        stmt.execute(q.toString());
+
+        ResultSet res = stmt.getResultSet();
+
+        e.append("EMPLOYEE SHIFTS\n")
+                .append("---------------------------\n");
+        while(res.next() == true) {
+            e.append("\t" + res.getString("employee.username") )
+                    .append(" \t->\t" + res.getString("shift.date"));
+        }
+
+        e.append("\n---------------------------\n");
+
+        q.setLength(0);
+        q.append("SELECT doctor.username, shift.date FROM doctor LEFT JOIN shift ON doctor.doctor_id = shift.doctor_id")
+                .append(" WHERE shift.date BETWEEN " )
+                .append("'" + start + "' AND '" + end + "' ORDER BY doctor.username;");
+
+        stmt.execute(q.toString());
+
+        res = stmt.getResultSet();
+
+        d.append("DOCTOR SHIFTS\n")
+                .append("---------------------------\n");
+        while(res.next() == true) {
+            d.append("\t" + res.getString("doctor.username"))
+                    .append(" \t->\t" + res.getString("shift.date") );
+        }
+
+        d.append("\n---------------------------\n");
+
+        q.setLength(0);
+        q.append("SELECT nurse.username, shift.date FROM nurse LEFT JOIN shift ON nurse.nurse_id = shift.doctor_id")
+                .append(" WHERE shift.date BETWEEN " )
+                .append("'" + start + "' AND '" + end + "' ORDER BY nurse.username;");
+
+        stmt.execute(q.toString());
+
+        res = stmt.getResultSet();
+
+        n.append("DOCTOR SHIFTS\n")
+                .append("---------------------------\n");
+        while(res.next() == true) {
+            n.append("\t" + res.getString("nurse.username"))
+                    .append(" \t->\t" + res.getString("shift.date") );
+        }
+
+        n.append("\n---------------------------\n");
+
+        System.out.println(e.toString());
+        System.out.println(d.toString());
     }
 
     private static class MyTimeTask extends TimerTask
