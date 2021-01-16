@@ -17,9 +17,11 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Shift.Shift;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *
@@ -31,7 +33,7 @@ public class CS360DB {
     private static final int PORT = 3306;
     private static String UNAME = new String("root");
     private static String PASSWD = new String("");
-
+    private static String desiredDate = "2021-01-17 21:00:00";
     /**
      * Attempts to establish a database connection Using mariadb
      *
@@ -44,11 +46,11 @@ public class CS360DB {
         return DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE, UNAME, PASSWD);
     }
 
-    public static void main(String args[]) throws ClassNotFoundException, SQLException {
+    public static void main(String args[]) throws ClassNotFoundException, SQLException, ParseException {
 
-        creatingTables();
+        //creatingTables();
         //__init__();
-        //__init_diseases__();   
+        //__init_diseases__();
         //__init_medicines__();
         /*Shift s = new Shift(
                 "2020-01-01",
@@ -61,12 +63,24 @@ public class CS360DB {
 
         ShiftDB.addShift(s); */
         //__clear__();
-        //ShiftDB.CreateDayShift("2021-01-16");
         //__init_shift__();
+
+        //the Date and time at which you want to execute
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = (Date) dateFormatter .parse(desiredDate);
+
+        //Now create the time and schedule it
+        Timer timer = new Timer();
+
+        //Use this if you want to execute it once
+        timer.schedule(new MyTimeTask(), date);
+
         /*List<String> symptoms = new ArrayList<>();
         symptoms.add("eye pain");
         List<String> diseases = new ArrayList<>();
         diseases.add("cancer");
+
+
 
         Visit v = new Visit(
                 "62c2ab31-aa9a-4cb7-ba25-a0be77850303",
@@ -82,7 +96,6 @@ public class CS360DB {
 
         VisitDB.addVisit(v);*/
     }
-
 
     private static void __init_diseases__ () throws ClassNotFoundException{
         List<String> symptoms = new ArrayList<>();
@@ -244,7 +257,7 @@ public class CS360DB {
     private static void __init_shift__() throws ClassNotFoundException {
 
         for (int i = 0; i < 1; i++) {
-            Shift shift = new Shift("2020-10-10", DoctorDB.getDoctors().get(i).getDoctor_id(), "x", "x", "x", "");
+            Shift shift = new Shift("2020-10-10 21:00:00", DoctorDB.getDoctors().get(i).getDoctor_id(), "x", "x", "x", "");
             ShiftDB.addShift(shift);
         }
 
@@ -762,7 +775,7 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS visit (patient_id varchar(50), " +
-                "date DATE, cure varchar(40), doctor_id varchar(50), nurse_id varchar(50), employee_id varchar(50), " +
+                "date DATETIME, cure varchar(40), doctor_id varchar(50), nurse_id varchar(50), employee_id varchar(50), " +
                 "state varchar(10)," +
                 "PRIMARY KEY(patient_id, date));"));
 
@@ -771,7 +784,7 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS visit_diseases (" +
-                "date DATE, " +
+                "date DATETIME, " +
                 "patient_id varchar(50), diseases varchar(50)," +
                 "PRIMARY KEY(patient_id, date,diseases)" +
                 ");"));
@@ -782,7 +795,7 @@ public class CS360DB {
 
         createTable.append(("CREATE TABLE IF NOT EXISTS visit_symptoms (" +
                 "patient_id varchar(50), " +
-                "date DATE, symptoms varchar(50)," +
+                "date DATETIME, symptoms varchar(50)," +
                 "PRIMARY KEY(patient_id, date,symptoms)" +
                 ");"));
 
@@ -791,7 +804,7 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS shift (" +
- "date DATE, doctor_id varchar(50), nurse_id varchar(50),"
+ "date DATETIME, doctor_id varchar(50), nurse_id varchar(50),"
                 + "type varchar(40), department varchar(40), employee_id varchar(50),"
                 + "PRIMARY KEY(date)"
                 +                ");"));
@@ -816,7 +829,7 @@ public class CS360DB {
 
         createTable.append(("CREATE TABLE IF NOT EXISTS medication (" +
                 "med_id varchar(50), name varchar(50), type varchar(15), dosage varchar(15)," +
-                "use_for varchar(20), exp_date DATE," +
+                "use_for varchar(20), exp_date DATETIME," +
                 "PRIMARY KEY(med_id)" +
                 ");"));
 
@@ -882,7 +895,7 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS undergo (" +
-                "patient_id varchar(50), exam_id varchar(50), date DATE, symptoms varchar(50)," +
+                "patient_id varchar(50), exam_id varchar(50), date DATETIME, symptoms varchar(50)," +
                 "PRIMARY KEY(patient_id, exam_id)" +
                 ");"));
 
@@ -900,7 +913,7 @@ public class CS360DB {
         createTable.setLength(0);
 
         createTable.append(("CREATE TABLE IF NOT EXISTS prescribe ("
-                + "exam_id varchar(50), med_id varchar(50),date DATE, doctor_id varchar(50),"
+                + "exam_id varchar(50), med_id varchar(50),date DATETIME, doctor_id varchar(50),"
                 + "PRIMARY KEY(exam_id,med_id)"
                 + ");"));
 
@@ -971,5 +984,20 @@ public class CS360DB {
 
     public static String getUserName() {
         return UNAME;
+    }
+
+    private static class MyTimeTask extends TimerTask
+    {
+
+        public void run()
+        {
+            try {
+                ShiftDB.CreateDayShift(desiredDate);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 }

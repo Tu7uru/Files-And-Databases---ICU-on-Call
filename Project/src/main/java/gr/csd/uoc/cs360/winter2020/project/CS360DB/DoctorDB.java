@@ -60,7 +60,7 @@ public class DoctorDB {
                     d.setLastname(res.getString("lastname"));
                     d.setPhone(res.getString("phone"));
                     d.setAddress(res.getString("address"));
-                    d.setSpec(Doctor.fromString(res.getString("type")));
+                    d.setSpec(Doctor.fromString(table));
                     doctors.add(d);
                 }
             }
@@ -897,7 +897,7 @@ public class DoctorDB {
                     .append(" VALUES (")
                     .append("'").append(exam_id).append("',")
                     .append("'").append(med_id).append("',")
-                    .append("DATE '").append(date).append("',")
+                    .append("'").append(date).append("',")
                     .append("'").append(doctor_id).append("');");
 
             PreparedStatement stmtIns = con.prepareStatement(insQuery.toString());
