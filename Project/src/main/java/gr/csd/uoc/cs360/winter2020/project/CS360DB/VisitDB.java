@@ -634,10 +634,12 @@ public class VisitDB {
 
             //Visit need doc to be set and mplampla
             //VisitDB.addVisit(visit);
+            for (String symp : visit.getSymptoms()) {
+                System.out.println(symp);
+            }
             List<String> symptoms = visit.getSymptoms();
             List<Shift> shifts = ShiftDB.getShift(visit.getDate());
             if (symptoms.contains("heart_pain") || symptoms.contains("trouble_walking") || symptoms.contains("trouble_speaking")) {
-
                 for (Shift shift : shifts) {
                     if (DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.CARDIOLOGIST)) {
                         visit.setDoctorID(shift.getDoctor_ID());
@@ -699,10 +701,14 @@ public class VisitDB {
                     }
                 }
 
-            } else if (symptoms.contains("headaches") || symptoms.contains("nausea")) {
+            }
+            else if (symptoms.contains("headaches") || symptoms.contains("nausea")) {
 
+                System.out.println(shifts.size());
                 for (Shift shift : shifts) {
-                    if (DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.SURGEON)) {
+                    System.out.println("+DOMO " + shift.getDoctor_ID());
+                    System.out.println(shift.getType());
+                    if (!shift.getDoctor_ID().equals("") && DoctorDB.getDoctor((shift.getDoctor_ID())).getSpec().equals(Doctor.Spec.SURGEON)) {
                         visit.setDoctorID(shift.getDoctor_ID());
                         visit.setNurseID(shift.getNurse_ID());
                         visit.setEmployeeID(shift.getEmployee_ID());

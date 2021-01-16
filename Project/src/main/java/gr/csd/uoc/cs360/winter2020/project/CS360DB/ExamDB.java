@@ -72,7 +72,7 @@ public class ExamDB {
 
             StringBuilder insQuery = new StringBuilder();
 
-            insQuery.append("SELECT * FROM disease ")
+            insQuery.append("SELECT * FROM examination")
                     .append(" WHERE ")
                     .append(" exam_id = ").append("'").append(exam_id).append("';");
 

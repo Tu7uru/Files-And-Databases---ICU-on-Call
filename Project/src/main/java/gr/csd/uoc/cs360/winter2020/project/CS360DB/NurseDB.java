@@ -86,9 +86,14 @@ public class NurseDB {
 
             StringBuilder query = new StringBuilder();
 
-            if (specialty.contains("nurse")) {
-                query.append("SELECT * FROM ").append(specialty.toLowerCase()).append(";");
+            System.out.println(specialty.toLowerCase());
+            if (specialty.toLowerCase().contains("gp")) {
+                query.append("SELECT * FROM ").append("nurse_general_practitioner").append(";");
+            } else if (specialty.contains("nurse")) {
+                    query.append("SELECT * FROM ").append(specialty.toLowerCase()).append(";");
+                
             } else {
+
                 query.append("SELECT * FROM nurse_").append(specialty.toLowerCase()).append(";");
             }
 

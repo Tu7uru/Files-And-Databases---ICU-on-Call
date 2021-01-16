@@ -230,7 +230,6 @@ public class ShiftDB {
         int counter = 0;
         int counter_10 = 0;
         date = date.substring(0, date.length() - 2);
-        System.out.println(date);
 
         String[] doctor_specs = ds.split(",");
         String[] nurse_specs = ns.split(",");

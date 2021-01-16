@@ -102,12 +102,7 @@ function communicateWithServlet(method, url) {
 
 
         mkexam.addEventListener("click", e => {
-          var data = 'date=' + row[1].innerHTML + "\n" +
-                        'doctor_id=' + id + "\n" +
-                        'patient_id=' + row[0].innerHTML+ "\n" +
-                        'type=make';
 
-          console.log(data);
 
           if(mkexamdone == false) {
             var data = 'date=' + row[1].innerHTML + "\n" +
@@ -125,6 +120,8 @@ function communicateWithServlet(method, url) {
                           'type=re-examine';
           }
 
+          console.log(data);
+          
           examinePatient('POST', '/Project/ExamServlet', data );
 
         });

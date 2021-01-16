@@ -11,6 +11,7 @@ import gr.csd.uoc.cs360.winter2020.project.CS360DB.PatientDB;
 import gr.csd.uoc.cs360.winter2020.project.CS360DB.RandomDB;
 import gr.csd.uoc.cs360.winter2020.project.CS360DB.VisitDB;
 import gr.csd.uoc.cs360.winter2020.project.CS360DB.DiagnoseDB;
+import gr.csd.uoc.cs360.winter2020.project.CS360DB.ExamDB;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Examination;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
@@ -91,7 +92,7 @@ public class ExamServlet extends HttpServlet {
             } else if (params.get("type").equals("assign")) {
                 assignExam(response, params);
             } else if (params.get("type").equals("re-examine")) {
-
+                reExam(response, params);
             } else {
                 prescribe(response, params);
             }
@@ -179,7 +180,7 @@ public class ExamServlet extends HttpServlet {
         );
 
 
-        //System.out.println(params.get("patient_id") + " " + params.get("doctor_id") + " " + params.get("date"));
+        System.out.println(params.get("patient_id") + " " + params.get("doctor_id") + " " + params.get("date"));
         PatientDB.PatientReceivesExaminationByDoctor(e, params.get("patient_id"),
                 params.get("doctor_id"), params.get("date"),
                 symptoms
@@ -206,11 +207,19 @@ public class ExamServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
-        //Examination e = ExamDB.getExam(VisitDB.getUndergoExam_ID(params.get("date"), params.get("patient_id")));
+        String exam_id = VisitDB.getUndergoExam_ID(params.get("date"), params.get("patient_id"));
+        System.out.println(exam_id);
+        Examination e = ExamDB.getExam(exam_id);
         PatientDB.PatientReExamined(params.get("doctor_id"), params.get("date"), params.get("patient_id"));
 
-        //String json = new Gson().toJson(h);
-        //out.println(json);
+        System.out.println("#EXAMSERVLET: RE-EXAMINATION DONE SUCCESSFULLY ");
+        HashMap<String, String> h = new HashMap<>();
+        h.put("exam_room", e.getExam_Room());
+        h.put("exam_name", e.getName());
+        h.put("exam_id", e.getExam_ID());
+
+        String json = new Gson().toJson(h);
+        out.println(json);
         out.flush();
         out.close();
 
