@@ -103,11 +103,6 @@ function communicateWithServlet(method, url) {
 
         mkexam.addEventListener("click", e => {
 
-
-
-
-
-
           if(mkexamdone == false) {
             var data = 'date=' + row[1].innerHTML + "\n" +
                           'doctor_id=' + id + "\n" +
@@ -125,7 +120,7 @@ function communicateWithServlet(method, url) {
           }
 
           console.log(data);
-          
+
           examinePatient('POST', '/Project/ExamServlet', data );
 
         });

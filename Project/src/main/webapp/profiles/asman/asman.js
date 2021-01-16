@@ -153,6 +153,7 @@ function communicateWithServlet(method, url, type) {
   http.onload = function() {
     if(http.status == 200 ) {
       // OTHERS INFO
+        console.log(http.response);
         var response = http.response;
         if(type == "patient") {
           patinfo.innerHTML = patinfo.innerHTML + response;

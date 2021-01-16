@@ -72,7 +72,7 @@ public class CS360DB {
         //executeQueryTwoPerShift("2021-01-22 21:00:00");
         //executeQueryTwoPerMonth("2021-01-01 21:00:00");
         //executeQueryThree();
-        executeQueryFour("2020-10-10 20:00:00", "2020-10-10 23:00:00");
+        //executeQueryFour("2020-10-10 20:00:00", "2020-10-10 23:00:00");
 
     }
 
@@ -1211,7 +1211,8 @@ public class CS360DB {
                 .append("---------------------------\n");
         while(res.next() == true) {
             e.append("\t" + res.getString("employee.username") )
-                    .append(" \t->\t" + res.getString("shift.date"));
+                    .append(" \t->\t" + res.getString("shift.date"))
+                    .append("\n");
         }
 
         e.append("\n---------------------------\n");
@@ -1229,13 +1230,14 @@ public class CS360DB {
                 .append("---------------------------\n");
         while(res.next() == true) {
             d.append("\t" + res.getString("doctor.username"))
-                    .append(" \t->\t" + res.getString("shift.date") );
+                    .append(" \t->\t" + res.getString("shift.date") )
+                    .append("\n");
         }
 
         d.append("\n---------------------------\n");
 
         q.setLength(0);
-        q.append("SELECT nurse.username, shift.date FROM nurse LEFT JOIN shift ON nurse.nurse_id = shift.doctor_id")
+        q.append("SELECT nurse.username, shift.date FROM nurse LEFT JOIN shift ON nurse.nurse_id = shift.nurse_id")
                 .append(" WHERE shift.date BETWEEN " )
                 .append("'" + start + "' AND '" + end + "' ORDER BY nurse.username;");
 
@@ -1243,17 +1245,19 @@ public class CS360DB {
 
         res = stmt.getResultSet();
 
-        n.append("DOCTOR SHIFTS\n")
+        n.append("NURSE SHIFTS\n")
                 .append("---------------------------\n");
         while(res.next() == true) {
             n.append("\t" + res.getString("nurse.username"))
-                    .append(" \t->\t" + res.getString("shift.date") );
+                    .append(" \t->\t" + res.getString("shift.date") )
+                    .append("\n");
         }
 
         n.append("\n---------------------------\n");
 
         System.out.println(e.toString());
         System.out.println(d.toString());
+        System.out.println(n.toString());
     }
 
     private static class MyTimeTask extends TimerTask
