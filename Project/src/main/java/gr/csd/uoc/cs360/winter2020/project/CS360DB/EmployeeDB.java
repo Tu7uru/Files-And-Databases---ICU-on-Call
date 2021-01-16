@@ -87,8 +87,8 @@ public class EmployeeDB {
 
             StringBuilder query = new StringBuilder();
 
-            query.append("SELECT * FROM employee " +
-                    "WHERE employee_id = " + empl_id+";");
+            query.append("SELECT * FROM employee "
+                    + "WHERE employee_id = '" + empl_id + "';");
 
 
             stmt.execute(query.toString());

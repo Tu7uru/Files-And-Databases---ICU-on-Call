@@ -41,7 +41,8 @@ public class DoctorDB {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
-            for(String table : tables) {
+            for (String table : tables) {
+                System.out.println(table);
                 StringBuilder query = new StringBuilder();
 
                 query.append("SELECT * FROM " + table + ";");

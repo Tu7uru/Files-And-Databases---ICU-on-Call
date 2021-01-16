@@ -167,7 +167,7 @@ public class Doctor implements User{
         sp = sp.toLowerCase();
         if(sp.equals("cardiologist")) {
             return Spec.CARDIOLOGIST;
-        } else if(sp.equals("gp")) {
+        } else if (sp.equals("general_practitioner")) {
             return Spec.GP;
         } else if (sp.equals("haematologist")) {
             return Spec.HAEMATOLOGIST;

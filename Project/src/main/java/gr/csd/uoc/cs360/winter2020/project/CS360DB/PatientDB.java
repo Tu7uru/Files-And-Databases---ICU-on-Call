@@ -258,8 +258,12 @@ public class PatientDB {
             con = CS360DB.getConnection();
             stmt = con.createStatement();
 
+            System.out.println("HELLO ITS ME");
+
             ExamDB.addExam(exam);
+            System.out.println("IN EXAM");
             Diagnose diag = new Diagnose(symptoms, DiseaseDB.getDiseaseBySymptoms(symptoms).getName(), exam.getExam_ID(), "");
+
             //need to implement the find disease!!
             DiagnoseDB.addDiagnose(diag);
             VisitDB.AddUndergo(patient_id, exam.getExam_ID(), date);
@@ -302,7 +306,7 @@ public class PatientDB {
         return DiseaseDB.getDiseaseBySymptoms(symptoms);
     }
 
-    public static void PatientReExamined(Examination exam, String doctor_id, String date, String patient_id) throws ClassNotFoundException {
+    public static void PatientReExamined(/*Examination exam,*/String doctor_id, String date, String patient_id) throws ClassNotFoundException {
 
         if (patient_id == null || patient_id.trim().isEmpty()
                 || date == null || date.trim().isEmpty() || doctor_id == null || doctor_id.isEmpty()) {
@@ -317,6 +321,10 @@ public class PatientDB {
         Visit v = VisitDB.getVisit(patient_id, date);
         Disease patient_dis = PatientSuffersFrom(v.getSymptoms());
         hospitalization = decideHospitalizationByDisease(patient_dis.getName());
+        System.out.println(v.getPatientID());
+        System.out.println(patient_dis);
+        System.out.println(hospitalization);
+
         v.setState(hospitalization);
 
         VisitDB.updateVisit(v);

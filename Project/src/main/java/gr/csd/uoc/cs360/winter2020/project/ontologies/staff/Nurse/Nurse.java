@@ -1,7 +1,6 @@
 package gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse;
 
 import gr.csd.uoc.cs360.winter2020.project.User.User;
-import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Doctor.Doctor;
 
 import java.util.UUID;
 

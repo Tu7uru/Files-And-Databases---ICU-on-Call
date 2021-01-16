@@ -75,11 +75,16 @@ public class ShiftDB {
 
             stmt = con.createStatement();
 
-            StringBuilder insQuery = new StringBuilder();
+            String d_end = date.substring(0, date.length() - 10);
+            d_end = d_end + "8 09:00:00";
 
+            System.out.println(date);
+            System.out.println(d_end);
+
+            StringBuilder insQuery = new StringBuilder();
             insQuery.append("SELECT * FROM shift ")
                     .append(" WHERE ")
-                    .append(" date = ").append(" '").append(date).append("';");
+                    .append(" date BETWEEN '").append(date).append("' AND '").append(d_end).append("';");
 
             stmt.execute(insQuery.toString());
 
@@ -223,6 +228,9 @@ public class ShiftDB {
         String es = "employee,administrative,assistant_manager";
 
         int counter = 0;
+        int counter_10 = 0;
+        date = date.substring(0, date.length() - 2);
+
         String[] doctor_specs = ds.split(",");
         String[] nurse_specs = ns.split(",");
         String[] employee_specs = es.split(",");
@@ -240,6 +248,7 @@ public class ShiftDB {
             {
                 for (int i = 0; i < rands.size(); i++) {//try to add 2 random doctors for shift
                     Shift shift = new Shift();
+                    date = date + String.valueOf(counter_10) + String.valueOf(counter);
                     shift.setDate(date);
                     shift.setDepartment(getDepartment(spec));
                     shift.setEmployee_ID("");
@@ -248,7 +257,14 @@ public class ShiftDB {
                     shift.setDoctor_ID(doctors.get(rands.get(i)).getDoctor_id());//get the id that func twoRandom returned
 
                     ShiftDB.addShift(shift);
-                    Thread.sleep(1000);
+                    date = date.substring(0, date.length() - 2);
+                    //Thread.sleep(1000);
+                    if (counter == 9) {
+                        counter = 0;
+                        counter_10++;
+                    } else {
+                        counter++;
+                    }
                 }
             }
 
@@ -259,6 +275,7 @@ public class ShiftDB {
 
             for (int i = 0; i < rands.size(); i++) {
                 Shift shift = new Shift();
+                date = date + String.valueOf(counter_10) + String.valueOf(counter);
                 shift.setDate(date);
                 shift.setDepartment(getDepartment(spec));
                 shift.setEmployee_ID("");
@@ -267,6 +284,13 @@ public class ShiftDB {
 
                 shift.setNurse_ID(nurses.get(rands.get(i)).getNurse_id());
                 ShiftDB.addShift(shift);
+                date = date.substring(0, date.length() - 2);
+                if (counter == 9) {
+                    counter = 0;
+                    counter_10++;
+                } else {
+                    counter++;
+                }
             }
 
         }
@@ -277,6 +301,7 @@ public class ShiftDB {
 
             for (int i = 0; i < rands.size(); i++) {
                 Shift shift = new Shift();
+                date = date + String.valueOf(counter_10) + String.valueOf(counter);
                 shift.setDate(date);
                 shift.setDepartment(getDepartment(spec));
                 shift.setNurse_ID("");
@@ -285,6 +310,13 @@ public class ShiftDB {
 
                 shift.setEmployee_ID(employees.get(rands.get(i)).getEmployee_id());
                 ShiftDB.addShift(shift);
+                date = date.substring(0, date.length() - 2);
+                if (counter == 9) {
+                    counter = 0;
+                    counter_10++;
+                } else {
+                    counter++;
+                }
             }
 
         }

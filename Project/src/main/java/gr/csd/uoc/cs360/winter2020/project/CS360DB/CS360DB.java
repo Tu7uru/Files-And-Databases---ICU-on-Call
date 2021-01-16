@@ -15,16 +15,11 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Hospital.Medication;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
-import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Shift.Shift;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import javax.xml.transform.Result;
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
 
 /**
  *
@@ -49,30 +44,39 @@ public class CS360DB {
         return DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE, UNAME, PASSWD);
     }
 
-    public static void main(String args[]) throws ClassNotFoundException, SQLException, ParseException {
+    public static void main(String args[]) throws ClassNotFoundException, SQLException, ParseException, InterruptedException {
 
         //creatingTables();
+        //__clear__();
         //__init__();
         //__init_diseases__();
         //__init_medicines__();
-        //__clear__();
         //__init_shift__();
+        __TEP_FULL__();
+
+        /*List<Shift> shifts;
+        shifts = ShiftDB.getShift(desiredDate);
+        System.out.println(shifts.size());
+        for (Shift shift : shifts) {
+            System.out.println(shift.getType());
+        }
+*/
         //the Date and time at which you want to execute
+        /*DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = dateFormatter .parse(desiredDate);
-
+        Date date = dateFormatter.parse(desiredDate);
+         */
         //Now create the time and schedule it
-        Timer timer = new Timer();
+        //Timer timer = new Timer();
 
         //Use this if you want to execute it once
-        timer.schedule(new MyTimeTask(), date);
+        //timer.schedule(new MyTimeTask(), date);
 
         //executeQueryOne("2021-01-10 21:00:00");
         //executeQueryTwoPerShift("2021-01-22 21:00:00");
         //executeQueryTwoPerMonth("2021-01-01 21:00:00");
         //executeQueryThree();
-        //executeQueryFour("2020-10-10 20:00:00", "2020-10-10 23:00:00");
+        //executeQueryFour("2021-01-17 20:00:00", "2021-01-17 23:00:00");
 
     }
 
@@ -233,23 +237,14 @@ public class CS360DB {
 
     }
 
-    private static void __init_shift__() throws ClassNotFoundException {
+    private static void __init_shift__() throws ClassNotFoundException, SQLException, InterruptedException {
 
-        for (int i = 0; i < 1; i++) {
-            Shift shift = new Shift("2020-10-10 21:00:00", DoctorDB.getDoctors().get(i).getDoctor_id(), "x", "x", "x", "");
-            ShiftDB.addShift(shift);
-        }
-
-        /*for (int i = 0; i < 4; i++) {
-            Shift shift = new Shift("2020-10-10", "x", NurseDB.getNurses().get(i).getNurse_id(), "x", "x", "");
-            ShiftDB.addShift(shift);
-        }
-
-        for (int i = 0; i < 4; i++) {
-            Shift shift = new Shift("2020-10-10", "x", "x", "x", "", EmployeeDB.getEmployees().get(i).getEmployee_id());
-            ShiftDB.addShift(shift);
-        }*/
-
+        ShiftDB.CreateDayShift(desiredDate);
+        ShiftDB.CreateDayShift("2019-02-15 21:00:00");
+        ShiftDB.CreateDayShift("2020-11-18 21:00:00");
+        ShiftDB.CreateDayShift("2020-04-19 21:00:00");
+        //ShiftDB.CreateDayShift("2021-01-17 21:00:00");
+        ShiftDB.CreateDayShift("2019-05-19 21:00:00");
     }
 
     private static void __init__() throws ClassNotFoundException {
@@ -569,6 +564,136 @@ public class CS360DB {
 
     }
 
+    private static void __TEP_FULL__() throws ClassNotFoundException {
+        Patient pat1 = new Patient("tolis", "maurogiannakis", "6981234859", "neverland", "Golden_trick", "123456789", "tolis98", "tolis98", "tolis98@hot.com");
+        Patient pat2 = new Patient("habos", "varsamis", "6989992319", "neverland", "Golden_trick", "987654321", "habos98", "habos98", "habos98@hot.com");
+        Patient pat3 = new Patient("droyle", "noname", "6989992319", "neverland", "Droyle_trick", "987654321", "droyle", "droyle", "droyle98@hot.com");
+        Patient pat4 = new Patient("dragonio", "nothing", "6989992319", "neverland", "Darktick", "987654321", "dragonio", "dragonio", "dragonio@hot.com");
+        Patient pat5 = new Patient("biskoto", "atall", "6989992319", "neverland", "ticktock", "987654321", "biskoto", "biskoto", "biskoto98@hot.com");
+
+        PatientDB.addPatient(pat1);
+        PatientDB.addPatient(pat2);
+        PatientDB.addPatient(pat3);
+        PatientDB.addPatient(pat4);
+        PatientDB.addPatient(pat5);
+
+        List<String> symptoms = new ArrayList<>();
+        List<String> diseases = new ArrayList<>();
+
+        List<String> symptoms2 = new ArrayList<>();
+        List<String> diseases2 = new ArrayList<>();
+
+        List<String> symptoms3 = new ArrayList<>();
+        List<String> diseases3 = new ArrayList<>();
+
+        List<String> symptoms4 = new ArrayList<>();
+        List<String> diseases4 = new ArrayList<>();
+
+        List<String> symptoms5 = new ArrayList<>();
+        List<String> diseases5 = new ArrayList<>();
+
+        symptoms.add("heart_pain");
+        symptoms.add("trouble_walking");
+
+        diseases.add("flu");
+        diseases.add("diabetes");
+
+        Visit visit = new Visit(pat1.getPatient_id(), "2021-01-17 21:00:01", "", symptoms, diseases, "", "", "", "");
+        //VisitDB.addVisit(visit);
+
+        symptoms2.add("memory_loss");
+
+        diseases2.add("flu");
+        diseases2.add("pneumonia");
+
+        Visit visit2 = new Visit(pat2.getPatient_id(), "2021-01-17 21:00:02", "", symptoms2, diseases2, "", "", "", "");
+        // VisitDB.addVisit(visit2);
+
+        symptoms3.add("fever");
+        symptoms3.add("sneezing");
+        symptoms3.add("cough");
+
+        diseases3.add("flu");
+        diseases3.add("cancer");
+
+        Visit visit3 = new Visit(pat3.getPatient_id(), "2021-01-17 21:00:03", "", symptoms3, diseases3, "", "", "", "");
+        //VisitDB.addVisit(visit3);
+
+        symptoms4.add("weight_loss");
+        symptoms4.add("dry_mouth");
+
+        diseases4.add("diabetes");
+        diseases4.add("staphylococos");
+
+        Visit visit4 = new Visit(pat4.getPatient_id(), "2021-01-17 21:00:04", "", symptoms4, diseases4, "", "", "", "");
+        //VisitDB.addVisit(visit4);
+
+        symptoms5.add("headaches");
+        symptoms5.add("nausea");
+
+        diseases5.add("COVID");
+        diseases5.add("dehydration");
+
+        Visit visit5 = new Visit(pat5.getPatient_id(), "2021-01-17 21:00:06", "", symptoms5, diseases5, "", "", "", "");
+        //VisitDB.addVisit(visit5);
+
+
+        VisitDB.VisitTEP(visit);
+        VisitDB.VisitTEP(visit2);
+        VisitDB.VisitTEP(visit3);
+        VisitDB.VisitTEP(visit4);
+        VisitDB.VisitTEP(visit5);
+
+        visit = VisitDB.getVisit(visit.getPatientID(), visit.getDate());
+        visit2 = VisitDB.getVisit(visit2.getPatientID(), visit2.getDate());
+        visit3 = VisitDB.getVisit(visit3.getPatientID(), visit3.getDate());
+        visit4 = VisitDB.getVisit(visit4.getPatientID(), visit4.getDate());
+        visit5 = VisitDB.getVisit(visit5.getPatientID(), visit5.getDate());
+
+        Examination exam = new Examination("", visit.getDoctorID(), "C8", "nuclear_cardiac_stress");
+        Examination exam2 = new Examination("", visit2.getDoctorID(), "C3", "heart_checkup");
+        Examination exam3 = new Examination("", visit3.getDoctorID(), "C2", "nuclear_cardiac_stress");
+        Examination exam4 = new Examination("", visit4.getDoctorID(), "C5", "Echocardiogram");
+        Examination exam5 = new Examination("", visit5.getDoctorID(), "C9", "Electrocardiogram");
+
+        PatientDB.PatientReceivesExaminationByDoctor(exam, visit.getPatientID(), visit.getDoctorID(), visit.getDate(), visit.getSymptoms());
+        PatientDB.PatientReceivesExaminationByDoctor(exam2, visit2.getPatientID(), visit2.getDoctorID(), visit2.getDate(), visit2.getSymptoms());
+        PatientDB.PatientReceivesExaminationByDoctor(exam3, visit3.getPatientID(), visit3.getDoctorID(), visit3.getDate(), visit3.getSymptoms());
+        PatientDB.PatientReceivesExaminationByDoctor(exam4, visit4.getPatientID(), visit4.getDoctorID(), visit4.getDate(), visit4.getSymptoms());
+        PatientDB.PatientReceivesExaminationByDoctor(exam5, visit5.getPatientID(), visit5.getDoctorID(), visit5.getDate(), visit5.getSymptoms());
+
+        DoctorDB.DoctorOrdersExamFromNurse(visit.getPatientID(), visit.getDate(), visit.getDoctorID(), exam.getExam_Room(), exam.getName());
+        DoctorDB.DoctorOrdersExamFromNurse(visit2.getPatientID(), visit2.getDate(), visit2.getDoctorID(), exam2.getExam_Room(), exam2.getName());
+        DoctorDB.DoctorOrdersExamFromNurse(visit3.getPatientID(), visit3.getDate(), visit3.getDoctorID(), exam3.getExam_Room(), exam3.getName());
+        DoctorDB.DoctorOrdersExamFromNurse(visit4.getPatientID(), visit4.getDate(), visit4.getDoctorID(), exam4.getExam_Room(), exam4.getName());
+        DoctorDB.DoctorOrdersExamFromNurse(visit5.getPatientID(), visit5.getDate(), visit5.getDoctorID(), exam5.getExam_Room(), exam5.getName());
+
+        String dis_name = DiagnoseDB.getDiagnoseByExID(exam.getExam_ID()).getDisease_Name();
+        String dis_name2 = DiagnoseDB.getDiagnoseByExID(exam2.getExam_ID()).getDisease_Name();
+        String dis_name3 = DiagnoseDB.getDiagnoseByExID(exam3.getExam_ID()).getDisease_Name();
+        String dis_name4 = DiagnoseDB.getDiagnoseByExID(exam4.getExam_ID()).getDisease_Name();
+        String dis_name5 = DiagnoseDB.getDiagnoseByExID(exam5.getExam_ID()).getDisease_Name();
+
+        String med_id = new RandomDB().getMedication(dis_name);
+        String med_id2 = new RandomDB().getMedication(dis_name2);
+        String med_id3 = new RandomDB().getMedication(dis_name3);
+        String med_id4 = new RandomDB().getMedication(dis_name4);
+        String med_id5 = new RandomDB().getMedication(dis_name5);
+
+        DoctorDB.Prescribe(exam.getExam_ID(), med_id, visit.getDate(), visit.getDoctorID());
+        DoctorDB.Prescribe(exam2.getExam_ID(), med_id2, visit2.getDate(), visit2.getDoctorID());
+        DoctorDB.Prescribe(exam3.getExam_ID(), med_id3, visit3.getDate(), visit3.getDoctorID());
+        DoctorDB.Prescribe(exam4.getExam_ID(), med_id4, visit4.getDate(), visit4.getDoctorID());
+        DoctorDB.Prescribe(exam5.getExam_ID(), med_id5, visit5.getDate(), visit5.getDoctorID());
+
+        PatientDB.PatientReExamined(visit.getDoctorID(), visit.getDate(), visit.getPatientID());
+        PatientDB.PatientReExamined(visit2.getDoctorID(), visit2.getDate(), visit2.getPatientID());
+        PatientDB.PatientReExamined(visit3.getDoctorID(), visit3.getDate(), visit3.getPatientID());
+        PatientDB.PatientReExamined(visit4.getDoctorID(), visit4.getDate(), visit4.getPatientID());
+        PatientDB.PatientReExamined(visit5.getDoctorID(), visit5.getDate(), visit5.getPatientID());
+
+    }
+
     private static void __clear__() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection con = DriverManager.getConnection(URL + ":" + PORT + "/" + DATABASE + "?characterEncoding=UTF-8", UNAME, PASSWD);
@@ -755,8 +880,8 @@ public class CS360DB {
 
         createTable.append(("CREATE TABLE IF NOT EXISTS visit (patient_id varchar(50), " +
                 "date DATETIME, cure varchar(40), doctor_id varchar(50), nurse_id varchar(50), employee_id varchar(50), " +
-                "state varchar(10)," +
-                "PRIMARY KEY(patient_id, date));"));
+ "state varchar(20),"
+                +                "PRIMARY KEY(patient_id, date));"));
 
         stmt.executeUpdate(createTable.toString());
 
@@ -1249,7 +1374,7 @@ public class CS360DB {
                 .append("---------------------------\n");
         while(res.next() == true) {
             n.append("\t" + res.getString("nurse.username"))
-                    .append(" \t->\t" + res.getString("shift.date") )
+                    .append(" \t->\t" + res.getString("shift.date"))
                     .append("\n");
         }
 
