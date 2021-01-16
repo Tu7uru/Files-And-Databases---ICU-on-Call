@@ -110,10 +110,19 @@ function communicateWithServlet(method, url) {
           console.log(data);
 
           if(mkexamdone == false) {
+            var data = 'date=' + row[1].innerHTML + "\n" +
+                          'doctor_id=' + id + "\n" +
+                          'patient_id=' + row[0].innerHTML+ "\n" +
+                          'type=make';
                   mkexamdone = true;
                   mkexam.innerHTML = "<i class='fas fa-lock-open'></i>Re-Examine";
                   asexam.innerHTML = "<i class='fas fa-lock-open'></i>Assign Exam";
                   presc.innerHTML = "<i class='fas fa-lock-open'></i>Prescribe";
+          } else {
+            var data = 'date=' + row[1].innerHTML + "\n" +
+                          'doctor_id=' + id + "\n" +
+                          'patient_id=' + row[0].innerHTML+ "\n" +
+                          'type=re-examine';
           }
 
           examinePatient('POST', '/Project/ExamServlet', data );

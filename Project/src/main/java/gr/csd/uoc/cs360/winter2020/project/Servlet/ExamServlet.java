@@ -90,7 +90,7 @@ public class ExamServlet extends HttpServlet {
                 makeExam(response, params, symptoms);
             } else if (params.get("type").equals("assign")) {
                 assignExam(response, params);
-            } else if (params.get("type").equals("")) {
+            } else if (params.get("type").equals("re-examine")) {
 
             } else {
                 prescribe(response, params);
@@ -106,19 +106,22 @@ public class ExamServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
+        System.out.println("date is" + params.get("date"));
+        System.out.println("p id is" + params.get("patient_id"));
+        System.out.println("exam id is" + params.get("exam_id"));
 
         String dis_name = DiagnoseDB.getDiagnoseByExID(params.get("exam_id")).getDisease_Name();
 
         String med_id = new RandomDB().getMedication(dis_name);
 
 
-        /*DoctorDB.Prescribe(
+        DoctorDB.Prescribe(
                 params.get("exam_id"),
                 med_id,
                 params.get("date"),
                 params.get("doctor_id")
         );
-*/
+
         System.out.println("#EXAMSERVLET: PRESCRIBE DONE");
 
         out.println("Prescribe done");
@@ -195,6 +198,23 @@ public class ExamServlet extends HttpServlet {
 
     }
 
+    private void reExam(HttpServletResponse response, HashMap<String, String> params) throws ClassNotFoundException, IOException {
+
+        response.setStatus(200);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+
+        PrintWriter out = response.getWriter();
+
+        //Examination e = ExamDB.getExam(VisitDB.getUndergoExam_ID(params.get("date"), params.get("patient_id")));
+        PatientDB.PatientReExamined(params.get("doctor_id"), params.get("date"), params.get("patient_id"));
+
+        //String json = new Gson().toJson(h);
+        //out.println(json);
+        out.flush();
+        out.close();
+
+    }
     /**
      * Returns a short description of the servlet.
      *
