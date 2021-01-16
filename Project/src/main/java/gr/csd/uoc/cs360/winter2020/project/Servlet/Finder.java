@@ -13,8 +13,13 @@ import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Nurse.Nurse;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Patient;
 import gr.csd.uoc.cs360.winter2020.project.ontologies.staff.Patient.Visit;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -22,6 +27,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Result;
 
 /**
  *
@@ -322,6 +328,42 @@ public class Finder extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            BufferedReader body = request.getReader();
+            String line;
+            StringBuilder q = new StringBuilder();
+            PrintWriter out = response.getWriter();
+
+            while((line = body.readLine()) != null) {
+                q.append(line);
+            }
+
+
+            Connection con = CS360DB.getConnection();
+
+            Statement stmt = con.createStatement();
+
+            stmt.execute(q.toString());
+
+            ResultSet res = stmt.getResultSet();
+            if(res.next() == true) {
+                response.setStatus(200);
+                response.setCharacterEncoding("UTF-8");
+
+                out.println("Success.");
+            } else {
+                response.setStatus(400);
+                response.setCharacterEncoding("UTF-8");
+
+                out.println("Error.");
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
