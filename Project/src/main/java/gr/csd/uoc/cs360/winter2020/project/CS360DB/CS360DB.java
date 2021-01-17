@@ -1355,14 +1355,14 @@ public class CS360DB {
                 .append("---------------------------\n");
         while(res.next() == true) {
             d.append("\t" + res.getString("doctor.username"))
-                    .append(" \t->\t" + res.getString("shift.date"))
+                    .append(" \t->\t" + res.getString("shift.date") )
                     .append("\n");
         }
 
         d.append("\n---------------------------\n");
 
         q.setLength(0);
-        q.append("SELECT nurse.username, shift.date FROM nurse LEFT JOIN shift ON nurse.nurse_id = shift.doctor_id")
+        q.append("SELECT nurse.username, shift.date FROM nurse LEFT JOIN shift ON nurse.nurse_id = shift.nurse_id")
                 .append(" WHERE shift.date BETWEEN " )
                 .append("'" + start + "' AND '" + end + "' ORDER BY nurse.username;");
 
