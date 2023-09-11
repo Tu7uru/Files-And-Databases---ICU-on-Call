@@ -26,6 +26,6 @@ The implementation of the system should also provide the user interface to suppo
 ## Files and Folders
 
 - cs360.sql is the initialization of the database for testing
-- Within the Project folder:
-  - There is the main code under the `java` folder to handle the communication between the interface and the database along with all the required functionalities
-  - There is the webapp folder that contains all the files required to have a functional user interface
+- Within the `/Project` folder:
+  - There is the main code under the `../java` folder to handle the communication between the interface and the database along with all the required functionalities
+  - There is the `../webapp` folder that contains all the files required to have a functional user interface
