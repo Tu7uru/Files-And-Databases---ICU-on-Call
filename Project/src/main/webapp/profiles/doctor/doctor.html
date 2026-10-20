@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+
+        <title>BEST HOSPITAL EUNE</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="./doctor.css">
+    </head>
+    <nav id="nav">
+      <button type='button' id='log-out' name='button'>Log out</button>
+      <div class='nav-info' id="nav-info">
+
+      </div>
+    </nav>
+    <body>
+        <h1> Find a patient </h1>
+        <input type="text" id="patient" name="patient" value="" placeholder="Patient's Username">
+        <button type="button" id="submitpat" name="button"><i class="fas fa-user-injured"></i>Find Patient</button>
+        <br><br><br>
+        <div class="special-container">
+            <h2>Patient's Info</h2><br>
+            <div class="pat-info" id="pat-info">
+
+            </div>
+            <!--<input type="text" name="date" value="" placeholder="Date"> <br><br>
+            <input type="text" name="State" value="" placeholder="State"><br><br>
+            <input type="text" name="cure" value="" placeholder="Cure"> <br><br>
+            <input type="text" name="doctor_id" value="" placeholder="Doctor"><br><br>
+            <input type="text" name="nurse_id" value="" placeholder="Nurse"> <br><br>-->
+
+        </div><br><br><br>
+        <div class="container">
+            <h2>Update Patient's Info</h2><br>
+            <div class="pat-info" id="pat-info">
+              <input type="text" id="pat_id" name="patient" value="" placeholder="Patient"><br><br><br><br><br>
+              <input type="text" id="pat_date" name="date" value="" placeholder="YYYY-MM-DD HH:MM:SS"><br><br><br><br><br>
+              <input type="text" id="pat_cure" name="cure" value="" placeholder="Cure"><br><br><br><br><br>
+              <input type="text" id="pat_state" name="state" value="" placeholder="State"><br><br><br><br><br>
+              <button type="button" id="submit-visit" name="button">Update Visit</button>
+            </div>
+            <!--<input type="text" name="date" value="" placeholder="Date"> <br><br>
+            <input type="text" name="State" value="" placeholder="State"><br><br>
+            <input type="text" name="cure" value="" placeholder="Cure"> <br><br>
+            <input type="text" name="doctor_id" value="" placeholder="Doctor"><br><br>
+            <input type="text" name="nurse_id" value="" placeholder="Nurse"> <br><br>-->
+
+
+        </div><br><br><br>
+
+        <div class="container">
+          <h2>My Info</h2>
+          <div id="unchangeable-info">
+
+          </div>
+          <div class="my-info" id="changeable-info">
+                <input type="password" id="password" name="password" value="" placeholder="Type New Password"><br><br><br><br>
+                <input type="text" id="phone" name="phone" value="" placeholder="Phone"><br><br><br><br>
+                <input type="text" id="address" name="address" value="" placeholder="Address"><br><br><br>
+                <button type="button" id="submit-info" name="button">Update My Info</button>
+          </div>
+
+        </div>
+    </body>
+    <script src="./doctor.js"></script>
+</html>

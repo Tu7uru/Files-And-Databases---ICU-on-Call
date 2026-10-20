@@ -1,0 +1,246 @@
+* {
+	box-sizing: border-box;
+	transition: all ease-in-out 250ms;
+}
+
+/*
+  Font & Font-Families
+*/
+
+@font-face {
+  font-family: oswald-light;
+  src: url("../fonts/Oswald-Light.ttf");
+}
+
+@font-face {
+  font-family: caligraphy;
+  src: url("../../fonts/Nathalia.ttf");
+}
+
+@font-face {
+  font-family: quote-font;
+  src: url("../../fonts/Montserrat-LightItalic.ttf");
+}
+
+@font-face {
+  font-family: oswald-regular;
+  src: url("../../fonts/Oswald-Regular.ttf");
+}
+
+@font-face {
+  font-family: open-sans-li;
+  src: url("../../fonts/OpenSans-LightItalic.ttf");
+}
+
+
+body{
+  margin: 0;
+  font-family: sans-serif;
+  text-align: center;
+  background-color: #FFF;
+
+}
+
+nav {
+  background-color: #81d4fa;
+  width:100vw;
+  height:10vh;
+}
+
+header{
+  position: absolute;
+  left: 0;
+	right: 0;
+	margin: 1em;
+  text-align: center;
+}
+
+h1 {
+  font-family:caligraphy;
+  font-size: 5rem;
+}
+
+h2 {
+  font-family:caligraphy;
+  font-size:3.5rem;
+  text-shadow: 2px 2px 5px #81d4fa;
+}
+
+#patient {
+  width:250px;
+  height:50px;
+  border:none;
+  border-bottom: 2px solid black;
+}
+
+#patient:focus {
+  outline:none;
+  border-bottom: 2px solid #81d4fa;
+}
+
+.container {
+  margin: 0 auto;
+  width: 800px;
+	min-height: 700px;
+	border-top: 10px solid #81d4fa;
+	border-left: 5px solid #81d4fa;
+	border-right: 5px solid #81d4fa;
+	border-bottom: 10px solid #81d4fa;
+  border-radius: 25px;
+	box-shadow: 15px 20px #8888;
+}
+
+.special-container {
+  margin: 0 auto;
+  width: 1200px;
+	min-height: 700px;
+	border-top: 10px solid #81d4fa;
+	border-left: 5px solid #81d4fa;
+	border-right: 5px solid #81d4fa;
+	border-bottom: 10px solid #81d4fa;
+  border-radius: 25px;
+	box-shadow: 15px 20px #8888;
+}
+
+textarea {
+	outline:none;
+	text-decoration: none;
+
+}
+
+input {
+  font-size:18px;
+  width: 250px;
+  height: 30px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 2px solid black;
+}
+
+input:focus,select:focus {
+      outline: none;
+      border-bottom: 2px solid #81d4fa;
+}
+
+button {
+  border: none;
+  width: 150px;
+  height: 50px;
+  background-color: #81d4fa;
+  color: white;
+  font-family: sans-serif;
+  font-size: 18px;
+	margin-left: 20px;
+	border-radius: 5px ;
+}
+
+button:focus {
+  outline: none;
+	color: #0C479D;
+}
+
+button:hover {
+
+	color: #0C479D;
+	text-decoration: underline;
+}
+
+i {
+	padding-right: 10px;
+}
+
+span {
+	font-family: sans-serif;
+	color: white;
+	font-size:18px;
+}
+
+.nav-info {
+	top: 3vh;
+	right: 0;
+	position:absolute;
+}
+
+.visit table{
+	width: 1000px;
+	margin: 0 auto;
+	border-collapse: collapse;
+}
+table, td {
+	border: 1px solid #81d4fa;
+}
+
+table th {
+	color:white;
+	border:1px solid white;
+	background-color: #81d4fa;
+	padding: 5px 50px;
+}
+
+#pat-info {
+	text-align:center;
+}
+
+.nav-info {
+	right: 5vw;
+}
+
+.visit {
+	margin: 0 auto;
+	width:1100px;
+	border-top: 10px solid #81d4fa;
+	border-left: 5px solid #81d4fa;
+	border-right: 5px solid #81d4fa;
+	border-bottom: 10px solid #81d4fa;
+  border-radius: 25px;
+	box-shadow: 10px 15px #8888;
+}
+
+small {
+	font-size: 18px;
+	font-family: sans-serif;
+	color: #81d4fa;
+}
+
+#log-out {
+	top: 6vh;
+}
+
+#make-exam {
+	background-color: white;
+	color: #81d4fa;
+	margin: 0 auto;
+	width: 100px;
+  height: 25px;
+	font-size: 14px;
+}
+
+#assign-exam {
+	background-color: white;
+	color: #81d4fa;
+	margin: 0 auto;
+	width: 100px;
+  height: 25px;
+	font-size: 14px;
+}
+
+#prescribe {
+	background-color: white;
+	color: #81d4fa;
+	margin: 0 auto;
+	width: 100px;
+  height: 25px;
+	font-size: 14px;
+}
+
+#prescribe:hover, #assign-exam:hover, #make-exam:hover {
+  text-decoration: underline;
+	color: #0C479D;
+}
+
+
+#prescribe:focus, #assign-exam:focus, #make-exam:focus {
+  outline: none;
+	color: #0C479D;
+}

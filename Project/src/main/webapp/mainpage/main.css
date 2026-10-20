@@ -1,0 +1,110 @@
+
+* {
+	box-sizing: border-box;
+	transition: all ease-in-out 250ms;
+}
+
+/*
+  Font & Font-Families
+*/
+
+@font-face {
+  font-family: oswald-light;
+  src: url("../fonts/Oswald-Light.ttf");
+}
+
+@font-face {
+  font-family: caligraphy;
+  src: url("../fonts/Nathalia.ttf");
+}
+
+@font-face {
+  font-family: quote-font;
+  src: url("../fonts/Montserrat-LightItalic.ttf");
+}
+
+@font-face {
+  font-family: oswald-regular;
+  src: url("../fonts/Oswald-Regular.ttf");
+}
+
+@font-face {
+  font-family: open-sans-li;
+  src: url("../fonts/OpenSans-LightItalic.ttf");
+}
+
+body{
+  margin: 0;
+  font-family: sans-serif;
+  text-align: center;
+  background-color: #FFF;
+  background-image: url("../images/mainpage-wallpaper.jpg");
+  background-size: cover;
+}
+
+header{
+  position: absolute;
+  left: 0;
+	right: 0;
+	margin: 1em;
+  text-align: center;
+}
+
+nav {
+  top: 3vh;
+  width: 100vw;
+  height: 10vh;
+  background-color: #81d4fa;
+  position: absolute;
+}
+
+a {
+  color: white;
+  float: right;
+  text-decoration: none;
+  padding: 30px 20px;
+  font-size: 26px;
+}
+
+h1 {
+  transform: translateX(-50%);
+  left: 50%;
+  top: 2vh;
+  position: absolute;
+  color: white;
+  font-family: sans-serif;
+}
+
+span {
+  font-family: caligraphy;
+  font-size: 65px;
+}
+
+textarea {
+	margin-top: 50vh;
+	margin-left: 30vw;
+	margin-right: auto;
+}
+
+button {
+  border: none;
+  width: 150px;
+  height: 50px;
+  background-color: #81d4fa;
+  color: white;
+  font-family: sans-serif;
+  font-size: 18px;
+	margin-left: 10vw;
+	border-radius: 5px ;
+}
+
+button:focus {
+  outline: none;
+	color: #0C479D;
+}
+
+button:hover {
+
+	color: #0C479D;
+	text-decoration: underline;
+}
